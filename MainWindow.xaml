@@ -1,0 +1,72 @@
+<Window
+ x:Class="LegendBar.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:local="using:LegendBar"
+ xmlns:widgets="using:LegendBar.Widgets">
+
+    <Grid x:Name="RootGrid"
+      Background="Transparent"
+      Margin="0,-1,0,0"
+      Padding="0,0,0,1">
+
+        <!-- Offset to primary monitor -->
+        <Grid x:Name="ContentGrid">
+
+            <!-- LEFT: Media + Pin -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="24,0,0,0"
+                        Spacing="12">
+
+                <Button x:Name="PinButton"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Width="16"
+                    Height="16"
+                    Click="PinButton_Click"
+                    ToolTipService.ToolTip="Pin bar">
+                    <Image x:Name="PinIcon"
+                       Width="14"
+                       Height="14"
+                       Opacity="0.5"/>
+                </Button>
+
+                <widgets:MediaWidget VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+            <!-- CENTER: Clock -->
+            <widgets:ClockWidget HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+
+            <!-- RIGHT: Date + Settings -->
+            <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,0,24,0"
+                    Spacing="16">
+
+                <widgets:DateWidget VerticalAlignment="Center"/>
+
+                <Button x:Name="SettingsButton"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Width="16"
+                    VerticalAlignment="Center"
+                    Click="SettingsButton_Click">
+                    <FontIcon Glyph="&#xE713;"
+                          FontSize="14"
+                          Foreground="White"/>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+
+</Window>

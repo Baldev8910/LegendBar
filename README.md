@@ -1,4 +1,4 @@
-# LegendBar
+# Legend Bar
 
 A custom top bar for Windows 11 with acrylic frosted glass, auto-hide, media controls, and dual monitor support.
 
@@ -131,4 +131,3 @@ Click the ⚙️ gear icon on the right side of the bar to open settings.
 ## License
 
 This project is released under the [MIT License](LICENSE).
-
