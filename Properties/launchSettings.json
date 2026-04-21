@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LegendBar (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "LegendBar (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
