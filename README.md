@@ -4,7 +4,14 @@ A custom top bar for Windows 11 with acrylic frosted glass, auto-hide, media con
 
 ![LegendBar Screenshot](Screenshots/1.png)
 
-<!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
+---
+
+## Screenshots
+
+![LegendBar Screenshot](Screenshots/2.png)
+![LegendBar Screenshot](Screenshots/3.png)
+![LegendBar Screenshot](Screenshots/4.png)
+![LegendBar Screenshot](Screenshots/5.png)
 
 ---
 
