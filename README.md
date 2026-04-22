@@ -1,7 +1,7 @@
 # Legend Bar
 
 > [!WARNING]
-> **Work-In-Progress**
+> **Work-In-Progress:**
 > Use at your own risk!
 
 A custom top bar for Windows 11 with acrylic frosted glass, auto-hide, media controls, and dual monitor support.
