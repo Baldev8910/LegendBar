@@ -1,0 +1,106 @@
+<UserControl
+    x:Class="LegendBar.PomodoroControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid x:Name="RootGrid"
+          VerticalAlignment="Center"
+          PointerEntered="Root_PointerEntered"
+          PointerExited="Root_PointerExited">
+
+        <!-- Outer pill — fixed width, expands leftward via ActionsPanel -->
+        <Grid x:Name="PillGrid"
+              Height="28"
+              HorizontalAlignment="Right">
+
+            <Grid.ColumnDefinitions>
+                <!-- Actions column — starts at 0, expands on hover -->
+                <ColumnDefinition Width="0"/>
+                <!-- Timer column — always fixed -->
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Colored pill background — spans both columns -->
+            <Border x:Name="PillBackground"
+                    Grid.ColumnSpan="2"
+                    CornerRadius="14"
+                    Background="Transparent"/>
+
+            <!-- Actions panel — in left column -->
+            <StackPanel x:Name="ActionsPanel"
+                        Grid.Column="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Opacity="0"
+                        Spacing="10">
+
+                <Button x:Name="ResetButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Click="Reset_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <FontIcon Glyph="&#xE711;"
+                              FontSize="15"
+                              Foreground="White"/>
+                </Button>
+
+                <Button x:Name="PausePlayButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="4,0,-15,0"
+                        VerticalAlignment="Center"
+                        Click="PausePlay_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <FontIcon x:Name="PausePlayIcon"
+                              Glyph="&#xE769;"
+                              FontSize="13"
+                              Foreground="White"/>
+                </Button>
+
+            </StackPanel>
+
+            <!-- Timer button — always in right column, always 70px, never moves -->
+            <Button x:Name="TimerButton"
+                    Grid.Column="1"
+                    Width="70"
+                    Height="28"
+                    Background="#01000000"
+                    BorderThickness="0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Click="TimerButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="14">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <TextBlock x:Name="TimerText"
+                           Text="45:00"
+                           Foreground="White"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           FontFamily="Segoe UI Mono"
+                           Width="46"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Button>
+
+        </Grid>
+    </Grid>
+</UserControl>

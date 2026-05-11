@@ -1,0 +1,97 @@
+<Page x:Class="LegendBar.Pages.WidgetsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      NavigationCacheMode="Required">
+
+    <ScrollViewer Padding="24,24,24,24"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="8"
+                    MaxWidth="600"
+                    HorizontalAlignment="Left">
+
+            <!-- Page Title -->
+            <TextBlock Text="Widgets"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,16"/>
+
+            <TextBlock Text="Choose which widgets are visible in the bar."
+                       FontSize="13"
+                       Opacity="0.6"
+                       Margin="0,0,0,8"/>
+
+            <!-- Media Player -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="Media Player" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="Shows current track, artist, and playback controls"
+                                   FontSize="12" Opacity="0.6"/>
+                    </StackPanel>
+                    <ToggleSwitch x:Name="MediaToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="MediaToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Clock -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="Clock" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="Shows the current time in the center of the bar"
+                                   FontSize="12" Opacity="0.6"/>
+                    </StackPanel>
+                    <ToggleSwitch x:Name="ClockToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="ClockToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Date -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="Date" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="Shows the current date on the right side of the bar"
+                                   FontSize="12" Opacity="0.6"/>
+                    </StackPanel>
+                    <ToggleSwitch x:Name="DateToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="DateToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

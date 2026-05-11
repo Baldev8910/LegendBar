@@ -1,0 +1,20 @@
+<UserControl
+    x:Class="LegendBar.Widgets.NotesWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Button x:Name="NotesButton"
+        Background="Transparent"
+        BorderThickness="0"
+        Padding="0"
+        Width="16"
+        Height="16"
+        VerticalAlignment="Center"
+        Click="NotesButton_Click"
+        ToolTipService.ToolTip="Quick Notes">
+        <Image Source="ms-appx:///Assets/pen.svg"
+           Width="14"
+           Height="14"/>
+    </Button>
+
+</UserControl>

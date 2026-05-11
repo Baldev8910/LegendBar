@@ -1,0 +1,219 @@
+<Window
+    x:Class="LegendBar.AddReminderPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="Transparent">
+        <Border CornerRadius="12"
+                BorderThickness="0"
+                Padding="0"
+                Background="Transparent">
+            <StackPanel Padding="20,16,20,20"
+                        Spacing="16">
+
+                <!-- Header -->
+                <TextBlock Text="Add Reminder"
+                           Foreground="White"
+                           FontFamily="Segoe UI"
+                           FontSize="16"
+                           FontWeight="SemiBold"/>
+
+                <!-- Divider -->
+                <Rectangle Height="1" Fill="#22FFFFFF"/>
+
+                <!-- Title -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="TITLE"
+                               Foreground="White"
+                               FontFamily="Segoe UI"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Opacity="0.5"/>
+                    <TextBox x:Name="TitleBox"
+                             PlaceholderText="Reminder title..."
+                             Background="#22FFFFFF"
+                             Foreground="White"
+                             BorderThickness="0"
+                             CornerRadius="6"
+                             Padding="10,8"/>
+                </StackPanel>
+
+                <!-- Date -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="DATE"
+                               Foreground="White"
+                               FontFamily="Segoe UI"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Opacity="0.5"/>
+                    <CalendarDatePicker x:Name="DatePicker"
+                                        PlaceholderText="Pick a date"
+                                        HorizontalAlignment="Stretch"
+                                        Background="#22FFFFFF"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        CornerRadius="6"/>
+                </StackPanel>
+
+                <!-- Time -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="TIME"
+                               Foreground="White"
+                               FontFamily="Segoe UI"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Opacity="0.5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <NumberBox x:Name="HourBox"
+                                   Grid.Column="0"
+                                   Minimum="0"
+                                   Maximum="23"
+                                   Value="12"
+                                   SpinButtonPlacementMode="Hidden"
+                                   SmallChange="1"
+                                   Background="#22FFFFFF"
+                                   Foreground="White"
+                                   BorderThickness="0"
+                                   CornerRadius="6"
+                                   Header=""
+                                   PlaceholderText="HH"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Text=":"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0"/>
+
+                        <NumberBox x:Name="MinuteBox"
+                                   Grid.Column="2"
+                                   Minimum="0"
+                                   Maximum="59"
+                                   Value="0"
+                                   SpinButtonPlacementMode="Hidden"
+                                   SmallChange="1"
+                                   Background="#22FFFFFF"
+                                   Foreground="White"
+                                   BorderThickness="0"
+                                   CornerRadius="6"
+                                   PlaceholderText="MM"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Repeat -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="REPEAT"
+                               Foreground="White"
+                               FontFamily="Segoe UI"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Opacity="0.5"/>
+                    <ComboBox x:Name="RepeatBox"
+                              HorizontalAlignment="Stretch"
+                              Background="#22FFFFFF"
+                              Foreground="White"
+                              BorderThickness="0"
+                              CornerRadius="6"
+                              SelectionChanged="RepeatBox_Changed">
+                        <ComboBoxItem Content="One-time" IsSelected="True"/>
+                        <ComboBoxItem Content="Daily"/>
+                        <ComboBoxItem Content="Weekly"/>
+                        <ComboBoxItem Content="Monthly"/>
+                    </ComboBox>
+
+                    <!-- Weekly day selector -->
+                    <StackPanel x:Name="WeeklyPanel"
+                                Orientation="Horizontal"
+                                Spacing="4"
+                                Visibility="Collapsed">
+                        <Button x:Name="BtnSun" Content="Su" Tag="0" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnMon" Content="Mo" Tag="1" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnTue" Content="Tu" Tag="2" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnWed" Content="We" Tag="3" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnThu" Content="Th" Tag="4" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnFri" Content="Fr" Tag="5" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                        <Button x:Name="BtnSat" Content="Sa" Tag="6" Width="36" Height="36"
+                                Background="#22FFFFFF" Foreground="White" BorderThickness="0"
+                                CornerRadius="18" Padding="0" Click="DayButton_Click"
+                                FontSize="11" FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <!-- Monthly calendar selector -->
+                    <StackPanel x:Name="MonthlyPanel"
+                                Spacing="8"
+                                Visibility="Collapsed">
+                        <TextBlock Text="Select dates:"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   Opacity="0.7"/>
+                        <CalendarView x:Name="MonthlyCalendar"
+                                      SelectionMode="Multiple"
+                                      HorizontalAlignment="Stretch"
+                                      Background="#22FFFFFF"
+                                      Foreground="White"
+                                      BorderThickness="0"
+                                      CornerRadius="8"
+                                      SelectedDatesChanged="MonthlyCalendar_SelectedDatesChanged"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!-- Divider -->
+                <Rectangle Height="1" Fill="#22FFFFFF"/>
+
+                <!-- Buttons -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Content="Cancel"
+                            HorizontalAlignment="Stretch"
+                            Background="#22FFFFFF"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="6"
+                            Click="Cancel_Click"/>
+
+                    <Button Grid.Column="2"
+                            Content="Save"
+                            HorizontalAlignment="Stretch"
+                            Background="#4472C4"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="6"
+                            Click="Save_Click"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

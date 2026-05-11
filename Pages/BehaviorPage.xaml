@@ -1,0 +1,189 @@
+<Page x:Class="LegendBar.Pages.BehaviorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      NavigationCacheMode="Required">
+
+    <ScrollViewer Padding="24,24,24,24"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="8"
+                    MaxWidth="600"
+                    HorizontalAlignment="Left">
+
+            <!-- Page Title -->
+            <TextBlock Text="Behavior"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,16"/>
+
+            <!-- Startup -->
+            <TextBlock Text="System"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="Control how LegendBar starts and runs."
+                       FontSize="13"
+                       Opacity="0.6"
+                       Margin="0,0,0,8"/>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="Launch on Startup" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="Start LegendBar automatically with Windows"
+                                   FontSize="12" Opacity="0.6"/>
+                    </StackPanel>
+                    <ToggleSwitch x:Name="StartupToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="StartupToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Spacer -->
+            <Rectangle Height="8"/>
+
+            <!-- Animation -->
+            <TextBlock Text="Animation"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="Adjust how fast the bar shows and hides."
+                       FontSize="13"
+                       Opacity="0.6"
+                       Margin="0,0,0,8"/>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <StackPanel Spacing="16">
+
+                    <!-- Show Speed -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Show Speed" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="How fast the bar slides into view"
+                                       FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <TextBlock x:Name="ShowSpeedLabel"
+                                   Grid.Column="1"
+                                   FontSize="13"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    <Slider x:Name="ShowSpeedSlider"
+                            Minimum="50"
+                            Maximum="500"
+                            ValueChanged="ShowSpeedSlider_Changed"/>
+
+                    <Rectangle Height="1"
+                               Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+
+                    <!-- Hide Speed -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Hide Speed" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="How fast the bar slides out of view"
+                                       FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <TextBlock x:Name="HideSpeedLabel"
+                                   Grid.Column="1"
+                                   FontSize="13"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    <Slider x:Name="HideSpeedSlider"
+                            Minimum="50"
+                            Maximum="500"
+                            ValueChanged="HideSpeedSlider_Changed"/>
+
+                    <Rectangle Height="1"
+                               Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+
+                    <!-- Hide Delay -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                            <TextBlock Text="Hide Delay" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="How long to wait before hiding the bar"
+                                       FontSize="12" Opacity="0.6"/>
+                        </StackPanel>
+                        <TextBlock x:Name="HideDelayLabel"
+                                   Grid.Column="1"
+                                   FontSize="13"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    <Slider x:Name="HideDelaySlider"
+                            Minimum="0"
+                            Maximum="1000"
+                            ValueChanged="HideDelaySlider_Changed"/>
+
+                </StackPanel>
+            </Border>
+
+            <!-- Spacer -->
+            <Rectangle Height="8"/>
+
+            <!-- Temperature -->
+            <TextBlock Text="Units"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+            <TextBlock Text="Measurement preferences."
+                       FontSize="13"
+                       Opacity="0.6"
+                       Margin="0,0,0,8"/>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="Temperature Unit" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="Used by the weather widget"
+                                   FontSize="12" Opacity="0.6"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                Spacing="16"
+                                VerticalAlignment="Center">
+                        <RadioButton x:Name="CelsiusRadio"
+                                     Content="°C"
+                                     GroupName="TempUnit"
+                                     Checked="TempUnit_Changed"/>
+                        <RadioButton x:Name="FahrenheitRadio"
+                                     Content="°F"
+                                     GroupName="TempUnit"
+                                     Checked="TempUnit_Changed"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

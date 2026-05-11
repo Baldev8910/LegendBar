@@ -1,0 +1,58 @@
+<Window
+    x:Class="LegendBar.NotesPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:web="using:Microsoft.UI.Xaml.Controls">
+
+    <Grid Background="Transparent">
+        <Border CornerRadius="12"
+                BorderThickness="0"
+                Background="Transparent">
+            <StackPanel Padding="20,16,20,20"
+                        Spacing="12">
+
+                <!-- Header -->
+                <Grid>
+                    <TextBlock Text="Quick Notes"
+                               Foreground="White"
+                               FontFamily="Segoe UI"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Spacing="8">
+                        <Button x:Name="MathPreviewButton"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="4"
+                                Click="MathPreview_Click"
+                                ToolTipService.ToolTip="Preview Math">
+                            <FontIcon Glyph="&#xE8EF;"
+                                      FontSize="14"
+                                      Foreground="#AAAAAA"/>
+                        </Button>
+                        <Button x:Name="OpenFolderButton"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="4"
+                                Click="OpenFolder_Click"
+                                ToolTipService.ToolTip="Open in File Explorer">
+                            <FontIcon Glyph="&#xE838;"
+                                      FontSize="14"
+                                      Foreground="#AAAAAA"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Divider -->
+                <Rectangle Height="1" Fill="#22FFFFFF"/>
+
+                <!-- Editor -->
+                <web:WebView2 x:Name="PreviewView"
+                              Height="380"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
