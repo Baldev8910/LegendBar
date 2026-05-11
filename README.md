@@ -1,8 +1,20 @@
-# Legend Bar
+<div align="center">
 
-A custom top bar for Windows 11 with acrylic frosted glass, auto-hide, media controls, and dual monitor support.
+# LegendBar
 
-![LegendBar Screenshot](Screenshots/1.png)
+A customizable Windows 11 top bar built with WinUI 3.
+
+Acrylic glass • Auto-hide • Media controls • Multi-monitor support
+
+<br>
+
+<img src="Assets/GIF.gif" alt="LegendBar Demo" width="100%"/>
+
+<br>
+
+![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge) ![Language](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+</div>
 
 <!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
 
@@ -10,124 +22,161 @@ A custom top bar for Windows 11 with acrylic frosted glass, auto-hide, media con
 
 ## Features
 
-- **Acrylic frosted glass** — matches Windows 11 aesthetic
-- **Auto-hide** — slides up and out of the way when not in use, reappears when you move your mouse to the top edge
-- **Pin mode** — locks the bar in place and reserves screen space so windows open below it
-- **Media controls** — play/pause, previous, next for any media playing on your PC (Spotify, Firefox, Chrome, Edge, VLC, Screenbox, and more)
-- **Per-app volume** — scroll over the media widget to change the volume of the currently playing app
-- **Click to focus** — click the song title to bring the media app to the foreground
-- **Clock** — center of the bar, 24-hour format
-- **Date** — right side of the bar
-- **Dual monitor support** — bar spans both monitors, widgets appear only on the primary monitor
-- **Customizable** — bar height, acrylic tint, blur, show/hide speed, hide delay
-- **Launch on startup** — optional, toggle in settings
+### 🎨 Interface & Appearance
+
+- Acrylic, Mica, Mica Alt, and Solid material support
+- Live acrylic tint and blur customization
+- Smooth auto-hide with cubic-ease animations
+- Borderless always-on-top WinUI 3 window
+- Thin Windows 11-style bottom border
+- Dynamic popup material synchronization
+- Adjustable bar height and animation speeds
+
+---
+
+### 🖥️ Window & Monitor Integration
+
+- Full dual-monitor support
+- Windows AppBar API integration for pinned mode
+- Auto-hide detection using low-level mouse hooks
+- Proper reserved screen space when pinned
+- Hidden from Alt+Tab and taskbar switchers
+- Re-asserts topmost state automatically
+
+---
+
+### 🎵 Media Controls
+
+- System-wide media controls (Spotify, Chrome, Firefox, VLC, etc.)
+- Play, pause, previous, and next controls
+- Click song title to focus media app
+- Per-app volume control via mouse wheel
+- Animated volume overlay indicator
+- Dynamic media session detection
+
+---
+
+### ⏰ Productivity Widgets
+
+- Pomodoro timer with animated transitions
+- Expandable timer controls (pause/reset/skip)
+- Reminder system with recurring schedules
+- Clipboard history with image support
+- Quick Notes popup with Markdown + KaTeX rendering
+- Clock and Date widgets
+- PowerToys shortcuts reference panel
+- DevToys launcher integration
+
+---
+
+### ⚙️ Customization & Settings
+
+- Live settings preview
+- Launch on startup support
+- Widget visibility toggles
+- Persistent JSON-based settings
+- Reset-to-defaults support
+- Dynamic popup resizing
+
+---
+
+### 🛠️ Technical Highlights
+
+- Built with WinUI 3 and .NET 8
+- Uses DesktopAcrylicController for true acrylic blur
+- Uses Windows System Media Transport Controls (SMTC)
+- Uses low-level Win32 hooks for edge detection
+- Uses WebView2 for the Notes editor
+- Uses NAudio for per-app audio sessions
+- JSON-based persistence system
+- Timer-driven custom animation engine
 
 ---
 
 ## Requirements
 
-- **Windows 11** (Windows 10 is not supported)
-- **Display scale: 100% on all monitors** — other DPI settings are not supported yet
-- **x64 system**
+| Requirement | Details |
+|---|---|
+| Operating System | Windows 11 |
+| Architecture | x64 |
+| Display Scaling | 100% DPI scaling on all monitors |
+| Runtime | Windows App Runtime |
+
+> [!WARNING]
+> LegendBar currently relies on fixed DPI calculations for monitor layout and popup positioning.  
+> Running at DPI scales other than 100% may cause visual alignment issues.
 
 ---
 
 ## Installation
 
-### Step 1 — Install Windows App Runtime
+1. Go to the [Releases](https://github.com/Baldev8910/LegendBar/releases/latest) page
+2. Download the latest installer
+3. Run `LegendBarSetup.exe`
+4. Launch LegendBar from the Start Menu
 
-Download and install the Windows App Runtime if you don't have it already:
+> [!IMPORTANT]
+> Windows App Runtime is required.  
+> If it is not already installed, the setup process will prompt you automatically.
 
-👉 [Download Windows App Runtime](https://aka.ms/windowsappsdk/1.8/latest/windowsappruntimeinstall-x64.exe)
-
-Run the installer and follow the prompts.
-
----
-
-### Step 2 — Enable Developer Mode
-
-LegendBar is distributed as a sideloaded package and requires Developer Mode to install.
-
-1. Open **Settings**
-2. Go to **System → For developers**
-3. Turn on **Developer Mode**
-
----
-
-### Step 3 — Download LegendBar
-
-Go to the [Releases page](https://github.com/Baldev8910/LegendBar/releases/latest) and download all of the following files into the **same folder**:
-
-- `LegendBar_x.x.x.x_x86_x64_arm64.msixbundle`
-- `LegendBar_x.x.x.x_x86_x64_arm64.cer`
-- `Install.ps1`
-
----
-
-### Step 4 — Install the Certificate
-
-Before installing the app, you need to trust the certificate:
-
-1. Right-click `LegendBar_x.x.x.x_x86_x64_arm64.cer`
-2. Click **Install Certificate**
-3. Select **Local Machine** → click **Next**
-4. Select **Place all certificates in the following store**
-5. Click **Browse** → select **Trusted Root Certification Authorities** → click **OK**
-6. Click **Next** → **Finish**
-
----
-
-### Step 5 — Run the Installer
-
-Right-click `Install.ps1` and select **Run with PowerShell**.
-
-This will install LegendBar automatically. Once done, search for **LegendBar** in the Start menu and launch it.
+> [!NOTE]
+> Developer Mode may be required for sideloaded MSIX installation on some systems.
 
 ---
 
 ## Settings
 
-Click the ⚙️ gear icon on the right side of the bar to open settings.
+Access settings from the ⚙️ icon on the right side of the bar.
 
-| Setting | Description |
-|---------|-------------|
-| Bar Height | Height of the bar in pixels |
-| Acrylic Tint | Darkness of the acrylic background |
-| Acrylic Blur | Blur intensity of the acrylic background |
-| Show Speed | How fast the bar slides down (ms) |
-| Hide Speed | How fast the bar slides up (ms) |
-| Hide Delay | How long to wait before hiding (ms) |
-| Launch on Startup | Start LegendBar with Windows |
-| Reset to Defaults | Restore all settings to default values |
+| Category | Options |
+|---|---|
+| Appearance | Material type, acrylic tint, blur intensity, bar height |
+| Animation | Show speed, hide speed, hide delay |
+| Widgets | Toggle visibility for Clock, Date, Media, and utility widgets |
+| System | Launch on startup, reset to defaults |
+| Behavior | Temperature unit and interaction settings |
+
+All settings are applied live and saved automatically.
 
 ---
 
 ## Uninstalling
 
 1. Open **Settings → Apps → Installed Apps**
-2. Search for **LegendBar**
-3. Click the three dots → **Uninstall**
+2. Locate **LegendBar**
+3. Click **Uninstall**
 
 ---
 
 ## Known Limitations
 
-- **DPI scaling** — only 100% display scale is supported on all monitors. Other DPI settings may cause visual issues.
-- **Browser volume** — scrolling to change volume controls the app's Windows audio session volume, not the browser's internal volume slider (e.g. YouTube's volume bar).
-- **Multiple media apps** — if two media apps are playing simultaneously, the bar may not always focus the correct one when clicking the title.
-- **Windows 11 only** — not tested on Windows 10.
+- Only **100% DPI scaling** is currently supported across all monitors
+- Browser volume scrolling adjusts the Windows audio session volume, not in-page player volume (e.g. YouTube volume slider)
+- When multiple media apps are playing simultaneously, title focus detection may occasionally target the wrong app
+- Windows 10 is currently unsupported and untested
 
 ---
 
 ## Built With
 
-- [WinUI 3](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/) — UI framework
-- [Windows App SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/) — windowing and composition
-- [NAudio](https://github.com/naudio/NAudio) — per-app audio session control
+- [WinUI 3](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
+- [Windows App SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
+- [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+- [NAudio](https://github.com/naudio/NAudio)
 - C# / .NET 8
+- Win32 APIs
+- Windows System Media Transport Controls (SMTC)
 
 ---
 
 ## License
 
 This project is released under the [MIT License](LICENSE).
+
+---
+
+## Acknowledgements
+
+LegendBar was built as an experimental Windows 11 desktop enhancement project focused on acrylic composition, low-level window management, and productivity tooling.
+
+Inspired by the flexibility of custom desktop environments and utility bars found across Linux and macOS ecosystems — rebuilt for native Windows 11 using WinUI 3 and Win32 APIs.
