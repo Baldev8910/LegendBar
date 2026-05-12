@@ -37,74 +37,97 @@ All popup windows (`ClipboardHistoryPopup`, `PomodoroPopup`, `ViewRemindersPopup
 The `MenuFlyout` is anchored to the bar window, so when the auto-hide animation triggered while the menu was open, the menu moved with the bar. Fixed by calling `SetExternalWindowOpen(true)` when the flyout opens and `SetExternalWindowOpen(false)` on its `Closed` event, keeping the bar locked in position for the duration of the menu.
 
 **#BF4 — Unhandled Win32 exception crashing the bar during Clipboard and Notes use**
+
 The bar was intermittently crashing with an unhandled Win32 exception, most reproducible during Clipboard history and Quick Notes interactions. Root cause was a combination of issues across multiple files that together created conditions for exceptions to escape managed handlers entirely.
 
 **#BF5 — Mouse hook callback had no exception handling**
+
 `AutoHideHelper.MouseHookCallback` had no try/catch around `Marshal.PtrToStructure<MSLLHOOKSTRUCT>()`. Any exception inside a `WH_MOUSE_LL` hook callback escapes to the Win32 level and becomes an unhandled exception. Wrapped the callback body in a try/catch with Debug logging.
 
 **#BF6 — Mouse hook delegate could be garbage collected**
+
 `_mouseProc` was declared as an instance field, meaning the GC could collect the delegate while the native hook still held a pointer to it, causing a callback into freed memory. Changed to a `static` field to keep the delegate alive for the process lifetime.
 
 **#BF7 — Animation timer leak in `AutoHideHelper.AnimateTo`**
+
 Every show/hide animation created a new `DispatcherQueueTimer` without stopping the previous one. Rapid open/close of popups stacked dozens of timers all calling `MoveAndResize` simultaneously on the bar window. Fixed by tracking the animation timer in `_animTimer` and stopping it before starting a new animation.
 
 **#BF8 — Mouse hook never unhooked on shutdown**
+
 `UnhookWindowsHookEx` was never called when the bar closed, leaving a dangling hook. Added `Dispose()` to `AutoHideHelper` and wired it to `MainWindow.Closed`.
 
 **#BF9 — Clipboard debounce timer leak**
+
 `ClipboardWidget.Clipboard_ContentChanged` created a new `DispatcherQueueTimer` on every clipboard change event, stacking async read operations that fought each other. Refactored to a single reusable timer initialized once, with the tick logic moved to a named `Debounce_Tick` method.
 
 **#BF10 — Clipboard event never unsubscribed**
+
 `Clipboard.ContentChanged` was subscribed in the constructor but never unsubscribed, causing the handler to keep firing even after the widget was unloaded. Added unsubscription on `Unloaded`.
 
 **#BF11 — WebView2 `NavigationCompleted` handler stacking in `NotesPopup`**
+
 `InitWebView` used `+=` to subscribe `PreviewView_NavigationCompleted` without ever unsubscribing first. If `InitWebView` ran more than once, scripts would execute multiple times per navigation. Fixed by adding `-=` before `+=`.
 
 **#BF12 — `ExecuteScriptAsync` called on failed navigation**
+
 `PreviewView_NavigationCompleted` called `ExecuteScriptAsync` regardless of whether navigation succeeded, risking a call into a broken WebView2 environment. Added an `args.IsSuccess` guard at the top of the handler.
 
 **#BF13 — `SettingsService.Save()` called twice unconditionally in `PinButton_Click`**
+
 Both `IsPinned = true` and `IsPinned = false` assignments ran at the end of `PinButton_Click` regardless of which branch executed, always saving `false`. Replaced with a single `SettingsService.Current.IsPinned = _isPinned` using the already-toggled value.
 
 **#BF14 — `_topmostTimer` used but never initialized**
+
 `_topmostTimer` was declared and referenced throughout `MainWindow` but never created, meaning all `?.Stop()` and `?.Start()` calls silently did nothing. Added proper initialization in `SetupWindow()` after `_autoHide` is created.
 
 **#BF15 — Pomodoro color animation timer leak**
+
 `AnimateColor` created a new `DispatcherQueueTimer` on every call. Rapid state changes (focus → pause → resume) stacked multiple color timers running simultaneously. Refactored to a single reusable `_colorTimer` with tick logic in a named `ColorTimer_Tick` method. The pill brush is now tracked as `_pillBrush` field to be accessible across methods.
 
 **#BF16 — Pomodoro expand/collapse timer leak and wrong handler**
+
 `ExpandActions` and `CollapseActions` each created new timers and used separate tick handlers. When `CollapseActions` reused `_expandTimer` created by `ExpandActions`, it still had the expand tick handler attached and would expand instead of collapse. Refactored to a single `_expandTimer` with a unified `ExpandCollapseTimer_Tick` method controlled by an `_expanding` direction flag.
 
 **#BF17 — Pomodoro `Reset_Click` left state as `Paused` instead of `Idle`**
+
 After reset, `_state` was set to `PomodoroState.Paused` and the pill turned red, which was confusing and incorrect. Reset now sets state to `Idle`, collapses the actions panel, and animates the pill back to transparent.
 
 **#BF18 — Pomodoro `PausePlay_Click` was performing a reset instead of pausing**
+
 The pause branch had reset logic accidentally placed inside it during an earlier edit, stopping the timer and clearing state instead of simply pausing. Restored correct pause/resume behavior.
 
 **#BF19 — Pomodoro session auto-advance did not restart the timer**
+
 When `_remaining` reached zero in `Timer_Tick`, the session flipped and color animated but `_timer` was not restarted, silently stopping the countdown. Also, a stray `_timer?.Start()` was placed outside the `if` block, restarting the timer on every tick. Fixed by removing the stray call and keeping the restart inside the session-flip block only.
 
 **#BF20 — Pomodoro `SkipRequested` started timer regardless of state**
+
 `_timer?.Start()` was called unconditionally in the skip handler, starting the timer even when the session was idle or paused. Guarded with a state check so the timer only restarts if already in `Focus` or `Break` state.
 
 **#BF21 — Pomodoro popup events wired after `Activate()`**
+
 `TimersChanged` and `SkipRequested` were subscribed after `_popup.Activate()`, creating a window where events fired before handlers were attached. Moved all event subscriptions to before `Activate()`.
 
 **#BF22 — `ReminderService` timer leak in `ScheduleNext`**
+
 Every call to `ScheduleNext` created a new `DispatcherQueueTimer`, accumulating timers over time. Refactored to reuse a single `_preciseTimer`, only updating its `Interval` before each start.
 
 **#BF23 — `ReminderService.Save` could throw uncaught from a timer tick**
+
 `Save()` had no exception handling. A file lock or disk error during a timer tick callback would become an unhandled exception. Wrapped in try/catch with Debug logging.
 
 ### Improvements
 
 **#I1 — Global unhandled exception logging**
+
 Added `App.UnhandledException`, `TaskScheduler.UnobservedTaskException`, and `AppDomain.CurrentDomain.UnhandledException` handlers in `App.xaml.cs`. All unhandled exceptions are now written to `%AppData%\LegendBar\crash.log` with full stack traces instead of silently crashing.
 
 **#I2 — Bare `catch { }` blocks replaced with logged catches**
+
 All silent `catch { }` blocks across `NotesPopup`, `ClipboardWidget`, `ReminderService`, and `MainWindow` now log the exception message to the Debug output, making issues visible during development without affecting release behavior.
 
 **#I3 — `Activated` deactivation guard hardened in popups**
+
 The `_loaded` flag pattern in `ClipboardHistoryPopup` and `NotesPopup` could close the popup prematurely if `Activated` fired with a `Deactivated` state before the window fully showed. Updated to only set `_loaded = true` on a non-deactivated activation event.
 
 ---
