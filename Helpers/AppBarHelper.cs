@@ -85,7 +85,14 @@ namespace LegendBar.Helpers
                 }
             }
 
-            SystemParametersInfo(0x002F, 0, IntPtr.Zero, 0x0002);
+            try
+            {
+                SystemParametersInfo(0x002F, 0, IntPtr.Zero, 0x0002);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[AppBar] Register failed: {ex.Message}");
+            }
             _isRegistered = true;
         }
 

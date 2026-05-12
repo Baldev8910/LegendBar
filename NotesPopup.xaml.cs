@@ -57,7 +57,12 @@ namespace LegendBar
             bool _loaded = false;
             this.Activated += (s, e) =>
             {
-                if (!_loaded) { _loaded = true; return; }
+                if (!_loaded)
+                {
+                    if (e.WindowActivationState != WindowActivationState.Deactivated)
+                        _loaded = true;
+                    return;
+                }
                 if (e.WindowActivationState == WindowActivationState.Deactivated)
                     this.Close();
             };
@@ -84,6 +89,7 @@ namespace LegendBar
                     AppContext.BaseDirectory,
                     "Assets", "Editor", "editor.html");
                 PreviewView.Source = new Uri(editorPath);
+                PreviewView.NavigationCompleted -= PreviewView_NavigationCompleted;
                 PreviewView.NavigationCompleted += PreviewView_NavigationCompleted;
             }
             catch (Exception ex)
@@ -96,6 +102,7 @@ namespace LegendBar
             Microsoft.UI.Xaml.Controls.WebView2 sender,
             Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
         {
+            if (!args.IsSuccess) return;
             try
             {
                 var tint = SettingsService.GetTintColor();
@@ -129,7 +136,10 @@ namespace LegendBar
                     UseShellExecute = true
                 });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Notes] error: {ex.Message}");
+            }
         }
 
         private void SetupWindow()
@@ -229,7 +239,10 @@ namespace LegendBar
             {
                 await PreviewView.ExecuteScriptAsync("window.showMathPreview()");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Notes] error: {ex.Message}");
+            }
         }
 
         private AppWindow GetAppWindow()

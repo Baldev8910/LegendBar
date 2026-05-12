@@ -1,9 +1,9 @@
 #define MyAppName "LegendBar (Stable Release)"
-#define MyAppVersion "1.1.6.3"
+#define MyAppVersion "1.1.6.4"
 #define MyAppPublisher "Baldev8910"
 #define MyAppURL "https://github.com/Baldev8910/LegendBar"
-#define MyMsixBundle "F:\LegendBar\AppPackages\LegendBar_1.1.6.3_Test\LegendBar_1.1.6.3_x86_x64_arm64.msixbundle"
-#define MyCertFile "F:\LegendBar\AppPackages\LegendBar_1.1.6.3_Test\LegendBar_1.1.6.3_x86_x64_arm64.cer"
+#define MyMsixBundle "F:\LegendBar\AppPackages\LegendBar_1.1.6.4_Test\LegendBar_1.1.6.4_x86_x64_arm64.msixbundle"
+#define MyCertFile "F:\LegendBar\AppPackages\LegendBar_1.1.6.4_Test\LegendBar_1.1.6.4_x86_x64_arm64.cer"
 
 [Setup]
 AppName={#MyAppName}
@@ -41,7 +41,7 @@ Filename: "{tmp}\WindowsAppRuntimeInstall-x64.exe"; \
 
 ; Step 2 — Install certificate to Trusted Root
 Filename: "certutil.exe"; \
-    Parameters: "-addstore ""Root"" ""{tmp}\LegendBar_1.1.6.3_x86_x64_arm64.cer"""; \
+    Parameters: "-addstore ""Root"" ""{tmp}\LegendBar_1.1.6.4_x86_x64_arm64.cer"""; \
     StatusMsg: "Installing certificate..."; \
     Flags: runhidden waituntilterminated
 
@@ -53,7 +53,7 @@ Filename: "powershell.exe"; \
 
 ; Step 4 — Install MSIX bundle
 Filename: "powershell.exe"; \
-    Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage -Path '{tmp}\LegendBar_1.1.6.3_x86_x64_arm64.msixbundle'"""; \
+    Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage -Path '{tmp}\LegendBar_1.1.6.4_x86_x64_arm64.msixbundle'"""; \
     StatusMsg: "Installing LegendBar..."; \
     Flags: runhidden waituntilterminated
 

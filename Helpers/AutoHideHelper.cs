@@ -11,6 +11,9 @@ namespace LegendBar.Helpers
 {
     public class AutoHideHelper
     {
+        private DispatcherQueueTimer? _animTimer;
+        private static LowLevelMouseProc? _mouseProc;
+
         // All layout values come from MonitorHelper — nothing hardcoded
         private int WindowX => MonitorHelper.WinX;
         private int WindowW => MonitorHelper.WinW;
@@ -35,7 +38,6 @@ namespace LegendBar.Helpers
         private const int VK_RBUTTON = 0x02;
 
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-        private static LowLevelMouseProc? _mouseProc;
         private static IntPtr _hookID = IntPtr.Zero;
 
         public void SetPinnedPosition(bool pinned) { } // no-op
@@ -95,21 +97,28 @@ namespace LegendBar.Helpers
         {
             if (nCode >= 0 && wParam == (IntPtr)WM_MOUSEMOVE)
             {
-                var hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-
-                bool mouseAtTopEdge = hookStruct.pt.Y <= 2
-                    && hookStruct.pt.X >= MouseXMin
-                    && hookStruct.pt.X <= MouseXMax;
-
-                if (mouseAtTopEdge && !_isVisible)
+                try
                 {
-                    _dispatcherQueue.TryEnqueue(() =>
+                    var hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+                    bool mouseAtTopEdge = hookStruct.pt.Y <= 2
+                        && hookStruct.pt.X >= MouseXMin
+                        && hookStruct.pt.X <= MouseXMax;
+
+                    if (mouseAtTopEdge && !_isVisible)
                     {
-                        _hideDelayTimer.Stop();
-                        _isVisible = true;
-                        AnimateTo(ShownY, _showDurationMs);
-                    });
+                        _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            _hideDelayTimer.Stop();
+                            _isVisible = true;
+                            AnimateTo(ShownY, _showDurationMs);
+                        });
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[AutoHide] Hook callback exception: {ex}");
+                }
+                return CallNextHookEx(_hookID, nCode, wParam, lParam);
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
@@ -153,6 +162,18 @@ namespace LegendBar.Helpers
 
         // Hidden Y = just above screen so 1px sliver remains visible
         private int HiddenY() => (int)-(_barHeight - 1) - 8;
+
+        public void Dispose()
+        {
+            _checkTimer.Stop();
+            _hideDelayTimer.Stop();
+            _animTimer?.Stop();
+            if (_hookID != IntPtr.Zero)
+            {
+                UnhookWindowsHookEx(_hookID);
+                _hookID = IntPtr.Zero;
+            }
+        }
 
         public void UpdateBarHeight(double height)
         {
@@ -232,12 +253,13 @@ namespace LegendBar.Helpers
 
         private void AnimateTo(int targetY, int durationMs)
         {
+            _animTimer?.Stop();
             var startY = _appWindow.Position.Y;
             var startTime = DateTime.Now;
 
-            var animTimer = _dispatcherQueue.CreateTimer();
-            animTimer.Interval = TimeSpan.FromMilliseconds(10);
-            animTimer.Tick += (s, e) =>
+            _animTimer = _dispatcherQueue.CreateTimer();
+            _animTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _animTimer.Tick += (s, e) =>
             {
                 double elapsed = (DateTime.Now - startTime).TotalMilliseconds;
                 double progress = Math.Min(elapsed / durationMs, 1.0);
@@ -251,9 +273,9 @@ namespace LegendBar.Helpers
                     new RectInt32(WindowX, currentY, WindowW, (int)_barHeight));
 
                 if (progress >= 1.0)
-                    s.Stop();
+                    _animTimer.Stop();
             };
-            animTimer.Start();
+            _animTimer.Start();
         }
     }
 }

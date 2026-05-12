@@ -34,6 +34,7 @@ namespace LegendBar
         private double _colorProgress;
 
         // Colors
+        private SolidColorBrush? _pillBrush;
         private static readonly Color FocusColor = Color.FromArgb(255, 68, 114, 196);
         private static readonly Color BreakColor = Color.FromArgb(255, 50, 170, 100);   
         private static readonly Color PauseColor = Color.FromArgb(255, 196, 68, 68);
@@ -118,62 +119,91 @@ namespace LegendBar
         {
             _colorTimer?.Stop();
 
-            if (PillBackground.Background is not SolidColorBrush brush)
+            if (_pillBrush == null)
             {
-                brush = new SolidColorBrush(ClearColor);
-                PillBackground.Background = brush;
+                _pillBrush = new SolidColorBrush(ClearColor);
+                PillBackground.Background = _pillBrush;
+            }
+            else if (PillBackground.Background is SolidColorBrush existing)
+            {
+                _pillBrush = existing;
             }
 
-            _colorFrom = brush.Color;
+            _colorFrom = _pillBrush.Color;
             _colorTo = to;
             _colorProgress = 0;
 
-            _colorTimer = DispatcherQueue.CreateTimer();
-            _colorTimer.Interval = TimeSpan.FromMilliseconds(16);
-            _colorTimer.Tick += (s, e) =>
+            if (_colorTimer == null)
             {
-                _colorProgress = Math.Min(_colorProgress + 0.05, 1.0);
-                double t = _colorProgress < 0.5
-                    ? 4 * _colorProgress * _colorProgress * _colorProgress
-                    : 1 - Math.Pow(-2 * _colorProgress + 2, 3) / 2;
+                _colorTimer = DispatcherQueue.CreateTimer();
+                _colorTimer.Interval = TimeSpan.FromMilliseconds(16);
+                _colorTimer.Tick += ColorTimer_Tick;
+            }
+            _colorTimer.Start();
+        }
 
-                brush.Color = Color.FromArgb(
+        private void ColorTimer_Tick(DispatcherQueueTimer s, object e)
+        {
+            _colorProgress = Math.Min(_colorProgress + 0.05, 1.0);
+            double t = _colorProgress < 0.5
+                ? 4 * _colorProgress * _colorProgress * _colorProgress
+                : 1 - Math.Pow(-2 * _colorProgress + 2, 3) / 2;
+
+            if (_pillBrush != null)
+            {
+                _pillBrush.Color = Color.FromArgb(
                     (byte)(_colorFrom.A + (_colorTo.A - _colorFrom.A) * t),
                     (byte)(_colorFrom.R + (_colorTo.R - _colorFrom.R) * t),
                     (byte)(_colorFrom.G + (_colorTo.G - _colorFrom.G) * t),
                     (byte)(_colorFrom.B + (_colorTo.B - _colorFrom.B) * t));
+            }
 
-                if (_colorProgress >= 1.0)
-                    _colorTimer!.Stop();
-            };
-            _colorTimer.Start();
+            if (_colorProgress >= 1.0)
+                _colorTimer?.Stop();
         }
 
         // ── Hover expand/collapse ──────────────────────────────────────────
 
+        private bool _expanding = false;
+
         private void ExpandActions()
         {
             ActionsPanel.Visibility = Visibility.Visible;
+            _expanding = true;
             _expandTimer?.Stop();
-            _expandTimer = DispatcherQueue.CreateTimer();
-            _expandTimer.Interval = TimeSpan.FromMilliseconds(16);
-            _expandTimer.Tick += (s, e) =>
+            if (_expandTimer == null)
             {
-                _actionsWidth = Math.Min(_actionsWidth + 6, ActionsExpanded);
-                PillGrid.ColumnDefinitions[0].Width = new GridLength(_actionsWidth);
-                ActionsPanel.Opacity = _actionsWidth / ActionsExpanded;
-                if (_actionsWidth >= ActionsExpanded)
-                    _expandTimer!.Stop();
-            };
+                _expandTimer = DispatcherQueue.CreateTimer();
+                _expandTimer.Interval = TimeSpan.FromMilliseconds(16);
+                _expandTimer.Tick += ExpandCollapseTimer_Tick;
+            }
             _expandTimer.Start();
         }
 
         private void CollapseActions()
         {
+            _expanding = false;
             _expandTimer?.Stop();
-            _expandTimer = DispatcherQueue.CreateTimer();
-            _expandTimer.Interval = TimeSpan.FromMilliseconds(16);
-            _expandTimer.Tick += (s, e) =>
+            if (_expandTimer == null)
+            {
+                _expandTimer = DispatcherQueue.CreateTimer();
+                _expandTimer.Interval = TimeSpan.FromMilliseconds(16);
+                _expandTimer.Tick += ExpandCollapseTimer_Tick;
+            }
+            _expandTimer.Start();
+        }
+
+        private void ExpandCollapseTimer_Tick(DispatcherQueueTimer s, object e)
+        {
+            if (_expanding)
+            {
+                _actionsWidth = Math.Min(_actionsWidth + 6, ActionsExpanded);
+                PillGrid.ColumnDefinitions[0].Width = new GridLength(_actionsWidth);
+                ActionsPanel.Opacity = _actionsWidth / ActionsExpanded;
+                if (_actionsWidth >= ActionsExpanded)
+                    _expandTimer?.Stop();
+            }
+            else
             {
                 _actionsWidth = Math.Max(_actionsWidth - 6, 0);
                 PillGrid.ColumnDefinitions[0].Width = new GridLength(_actionsWidth);
@@ -182,12 +212,10 @@ namespace LegendBar
                 {
                     ActionsPanel.Visibility = Visibility.Collapsed;
                     ActionsPanel.Opacity = 0;
-                    PillGrid.ColumnDefinitions[0].Width = new GridLength(_actionsWidth);
                     PillGrid.ColumnDefinitions[0].Width = new GridLength(0);
-                    _expandTimer!.Stop();
+                    _expandTimer?.Stop();
                 }
-            };
-            _expandTimer.Start();
+            }
         }
 
         // ── Hover handlers ─────────────────────────────────────────────────
@@ -221,14 +249,14 @@ namespace LegendBar
                 _timer?.Stop();
                 _state = PomodoroState.Paused;
                 PausePlayIcon.Glyph = "\uE768";
-                AnimateColor(PauseColor); // ← red
+                AnimateColor(PauseColor);
             }
             else if (_state == PomodoroState.Paused)
             {
                 _timer?.Start();
                 _state = _isFocus ? PomodoroState.Focus : PomodoroState.Break;
                 PausePlayIcon.Glyph = "\uE769";
-                AnimateColor(_isFocus ? FocusColor : BreakColor); // ← back to session color
+                AnimateColor(_isFocus ? FocusColor : BreakColor);
             }
         }
 
@@ -237,10 +265,10 @@ namespace LegendBar
             _timer?.Stop();
             _remaining = _focusSeconds;
             _isFocus = true;
-            _state = PomodoroState.Paused;
+            _state = PomodoroState.Idle;
             UpdateTimerText();
-            PausePlayIcon.Glyph = "\uE768";
-            AnimateColor(PauseColor); // ← red since it's paused
+            CollapseActions();
+            AnimateColor(ClearColor);
         }
 
         // ── Popup ──────────────────────────────────────────────────────────
@@ -273,9 +301,7 @@ namespace LegendBar
                 _popup = null;
                 PopupClosed?.Invoke();
             };
-            _popup.Activate();
-            System.Diagnostics.Debug.WriteLine($"Popup activated, position: {popupX}, {popupY}");
-
+    
             _popup.TimersChanged += (focusSecs, breakSecs) =>
             {
                 _focusSeconds = focusSecs;
@@ -305,8 +331,11 @@ namespace LegendBar
                 UpdateTimerText();
                 AnimateColor(_isFocus ? FocusColor : BreakColor);
                 PausePlayIcon.Glyph = "\uE769";
-                _timer?.Start();
+                if (_state == PomodoroState.Focus || _state == PomodoroState.Break)
+                    _timer?.Start();
             };
+            _popup.Activate();
+            System.Diagnostics.Debug.WriteLine($"Popup activated, position: {popupX}, {popupY}");
 
         }
 

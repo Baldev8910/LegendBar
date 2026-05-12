@@ -83,14 +83,17 @@ namespace LegendBar.Helpers
             System.Diagnostics.Debug.WriteLine(
                 $"[Reminder] Next reminder in {delay.TotalSeconds:F0}s at {nearest.Value:HH:mm:ss}");
 
-            _preciseTimer = _dispatcherQueue.CreateTimer();
-            _preciseTimer.Interval = delay;
-            _preciseTimer.IsRepeating = false;
-            _preciseTimer.Tick += (s, e) =>
+            if (_preciseTimer == null)
             {
-                FireDueReminders();
-                ScheduleNext();
-            };
+                _preciseTimer = _dispatcherQueue.CreateTimer();
+                _preciseTimer.IsRepeating = false;
+                _preciseTimer.Tick += (s, e) =>
+                {
+                    FireDueReminders();
+                    ScheduleNext();
+                };
+            }
+            _preciseTimer.Interval = delay;
             _preciseTimer.Start();
         }
 
@@ -138,8 +141,15 @@ namespace LegendBar.Helpers
             "Uses JsonSerializer which may not be trim-safe")]
         private void Save()
         {
-            var json = JsonSerializer.Serialize(_reminders, _jsonOptions);
-            File.WriteAllText(_filePath, json);
+            try
+            {
+                var json = JsonSerializer.Serialize(_reminders, _jsonOptions);
+                File.WriteAllText(_filePath, json);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Reminder] Save failed: {ex.Message}");
+            }
         }
     }
 }

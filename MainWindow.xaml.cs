@@ -365,12 +365,7 @@ namespace LegendBar
                 ToolTipService.SetToolTip(PinButton, "Pin bar");
             }
 
-            // In the pinning branch, after SetPinIcon(true):
-            SettingsService.Current.IsPinned = true;
-            SettingsService.Save();
-
-            // In the unpinning branch, after SetPinIcon(false):
-            SettingsService.Current.IsPinned = false;
+            SettingsService.Current.IsPinned = _isPinned;
             SettingsService.Save();
         }
 
@@ -488,6 +483,17 @@ namespace LegendBar
             _autoHide = new AutoHideHelper(_appWindow, DispatcherQueue,
                 SettingsService.Current.BarHeight);
 
+            _topmostTimer = DispatcherQueue.CreateTimer();
+            _topmostTimer.Interval = TimeSpan.FromMilliseconds(500);
+            _topmostTimer.IsRepeating = true;
+            _topmostTimer.Tick += (s, e) =>
+            {
+                var h = WinRT.Interop.WindowNative.GetWindowHandle(this);
+                SetWindowPos(h, HWND_TOPMOST, 0, 0, 0, 0,
+                    SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+            };
+            _topmostTimer.Start();
+
             // Initialize reminder service
             _reminderService = new ReminderService(DispatcherQueue);
             _reminderService.ReminderFired += ShowReminderNotification;
@@ -535,6 +541,7 @@ namespace LegendBar
             LoadPowerToysIcon();
             //_ = WeatherService.InitializeAsync();
             //WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
+            this.Closed += (s, e) => _autoHide?.Dispose();
         }
 
         private async void LoadPowerToysIcon()
@@ -591,7 +598,10 @@ namespace LegendBar
                     UseShellExecute = true
                 });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DevToys] Launch failed: {ex.Message}");
+            }
         }
 
         private async void LoadDevToysIcon()

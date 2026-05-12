@@ -57,7 +57,12 @@ namespace LegendBar
             bool _loaded = false;
             this.Activated += (s, e) =>
             {
-                if (!_loaded) { _loaded = true; return; }
+                if (!_loaded)
+                {
+                    if (e.WindowActivationState != WindowActivationState.Deactivated)
+                        _loaded = true;
+                    return;
+                }
                 if (e.WindowActivationState == WindowActivationState.Deactivated)
                     this.Close();
             };

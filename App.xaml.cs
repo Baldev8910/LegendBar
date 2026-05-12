@@ -1,20 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,7 +20,53 @@ namespace LegendBar
         /// </summary>
         public App()
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                var logPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "LegendBar", "crash.log");
+                try
+                {
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(logPath)!);
+                    System.IO.File.AppendAllText(logPath,
+                        $"{DateTime.Now} [AppDomain]: {e.ExceptionObject}\n\n");
+                }
+                catch { }
+            };
+
             InitializeComponent();
+
+            this.UnhandledException += (s, e) =>
+            {
+                e.Handled = true;
+                System.Diagnostics.Debug.WriteLine($"[App] Unhandled exception: {e.Exception}");
+                var logPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "LegendBar", "crash.log");
+                try
+                {
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(logPath)!);
+                    System.IO.File.AppendAllText(logPath,
+                        $"{DateTime.Now}: {e.Exception}\n\n");
+                }
+                catch { }
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                e.SetObserved();
+                System.Diagnostics.Debug.WriteLine($"[App] Unobserved task exception: {e.Exception}");
+                var logPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "LegendBar", "crash.log");
+                try
+                {
+                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(logPath)!); ;
+                    System.IO.File.AppendAllText(logPath,
+                        $"{DateTime.Now} [Task]: {e.Exception}\n\n");
+                }
+                catch { }
+            };
         }
 
         /// <summary>
