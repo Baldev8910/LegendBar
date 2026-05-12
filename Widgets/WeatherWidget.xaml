@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="LegendBar.Widgets.WeatherWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lottie="using:CommunityToolkit.WinUI.Lottie">
+
+	<Button x:Name="RootButton"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="6,0,6,0"
+            VerticalAlignment="Stretch"
+            Click="RootButton_Click">
+		<StackPanel Orientation="Horizontal"
+                    Spacing="6"
+                    VerticalAlignment="Center">
+
+			<!-- Lottie icon (shown when file exists) -->
+			<AnimatedVisualPlayer x:Name="WeatherPlayer"
+                                  Width="20"
+                                  Height="20"
+                                  AutoPlay="True"
+                                  VerticalAlignment="Center"
+                                  Visibility="Collapsed"/>
+
+			<!-- Emoji fallback (shown when Lottie file missing) -->
+			<TextBlock x:Name="EmojiText"
+                       FontSize="14"
+                       VerticalAlignment="Center"
+                       Visibility="Collapsed"/>
+
+			<!-- Temperature -->
+			<TextBlock x:Name="TempText"
+                       FontSize="12"
+                       FontFamily="Segoe UI"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Text="--°"/>
+
+		</StackPanel>
+	</Button>
+</UserControl>

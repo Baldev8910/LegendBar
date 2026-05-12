@@ -123,12 +123,7 @@
                 <Rectangle Width="1"
                            Height="14"
                            Fill="#33FFFFFF"
-                           VerticalAlignment="Center"/>
-
-                <Rectangle Width="1"
-                           Height="14"
-                           Fill="#33FFFFFF"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"/> 
 
                 <widgets:DateWidget x:Name="DateWidgetContainer" VerticalAlignment="Center"/>
 

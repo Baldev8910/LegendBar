@@ -1,10 +1,22 @@
 # Release Notes
 
-## Version 1.1.6.4
+## Version 1.1.6.4 (Not Released)
 
 ### Features
 
-**#F1 — (A new settings window)(Delete this part tho)**
+**#F1    — New Settings Window (WinUI 3 NavigationView)**
+
+Replaced the old compact `SettingsPopup` (TabView-based floating window) with a proper full WinUI 3 settings window `(SettingsWindow)` modeled after the Windows 11 Settings app. The new window features:
+
+- `NavigationView` with a left pane and four pages: Appearance, Widgets, Behavior, About (About in progress)
+Working search box with AutoSuggestBox that filters and navigates to the relevant settings page
+- Mica material always applied, independent of the bar's material setting
+- Resizable window with minimize and maximize buttons
+- Window position and size persisted across sessions via SettingsService
+- Clean single-row card layout — label on the left, control flush to the right
+- Acrylic opacity sliders only visible when Acrylic material is selected
+- Tint color input only visible when Acrylic or Solid material is selected
+- Proper title bar with drag region
 
 **#F2 — Dynamic PowerToys Shortcuts Panel**
 

@@ -22,7 +22,7 @@ namespace LegendBar.Widgets
 
         private void UpdateClock()
         {
-            TimeText.Text = DateTime.Now.ToString("HH:mm");
+            TimeText.Text = DateTime.Now.ToString("HH:mm:ss");
         }
     }
 }
