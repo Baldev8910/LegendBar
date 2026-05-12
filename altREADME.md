@@ -17,11 +17,11 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
 </div>
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=Baldev8910&show_icons=true&theme=tokyonight)
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Baldev8910&layout=compact&theme=tokyonight)
+![GitHub Stats](https://gh-stats.com/api?username=Baldev8910&show_icons=true&theme=tokyonight)
+![Top Languages](https://gh-stats.com/api/top-langs/?username=Baldev8910&layout=compact&theme=tokyonight)
 [![GitHub Streak](https://streak-stats.demolab.com?user=Baldev8910&theme=tokyonight)](https://git.io/streak-stats)
 [![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=Baldev8910&theme=tokyo-night)](https://github.com/ashutosh00710/github-readme-activity-graph)
-[![LegendBar](https://github-readme-stats.vercel.app/api/pin/?username=Baldev8910&repo=LegendBar&theme=tokyonight)](https://github.com/Baldev8910/LegendBar)
+[![LegendBar](https://gh-stats.com/api/pin/?username=Baldev8910&repo=LegendBar&theme=tokyonight)](https://github.com/Baldev8910/LegendBar)
 
 <!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
 
