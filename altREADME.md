@@ -15,13 +15,9 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 <!-- Platform & Stack -->
 ![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge&logo=windows11&logoColor=white) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge&logo=microsoft&logoColor=white) ![Language](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)
 
-</div>
+![GitHub Stats](https://gh-stats.com/api?username=Baldev8910&show_icons=true&theme=tokyonight) ![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=Baldev8910&theme=tokyonight) [![GitHub Streak](https://streak-stats.demolab.com?user=Baldev8910&theme=tokyonight)](https://git.io/streak-stats) [![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=Baldev8910&theme=tokyo-night)](https://github.com/ashutosh00710/github-readme-activity-graph)
 
-![GitHub Stats](https://gh-stats.com/api?username=Baldev8910&show_icons=true&theme=tokyonight)
-![Top Languages](https://gh-stats.com/api/top-langs/?username=Baldev8910&layout=compact&theme=tokyonight)
-[![GitHub Streak](https://streak-stats.demolab.com?user=Baldev8910&theme=tokyonight)](https://git.io/streak-stats)
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=Baldev8910&theme=tokyo-night)](https://github.com/ashutosh00710/github-readme-activity-graph)
-[![LegendBar](https://gh-stats.com/api/pin/?username=Baldev8910&repo=LegendBar&theme=tokyonight)](https://github.com/Baldev8910/LegendBar)
+</div>
 
 <!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
 

@@ -337,6 +337,8 @@ namespace LegendBar
                     var hWnd3 = WinRT.Interop.WindowNative.GetWindowHandle(this);
                     var m = new MARGINS { cxLeftWidth = -1, cxRightWidth = -1, cyTopHeight = -1, cyBottomHeight = -1 };
                     DwmExtendFrameIntoClientArea(hWnd3, ref m);
+                    int noShadow2 = 2;
+                    DwmSetWindowAttribute(hWnd3, 2, ref noShadow2, sizeof(int));
                     t.Stop();
                 };
                 t.Start();
@@ -349,6 +351,8 @@ namespace LegendBar
                     cyBottomHeight = -1
                 };
                 DwmExtendFrameIntoClientArea(hWnd, ref margins);
+                int noShadow1 = 2;
+                DwmSetWindowAttribute(hWnd, 2, ref noShadow1, sizeof(int));
                 SetPinIcon(true);
                 ToolTipService.SetToolTip(PinButton, "Unpin bar");
             }

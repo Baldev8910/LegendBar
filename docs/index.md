@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 1.1.6.5
+
+### Features
+
+### Bugs Fixed
+
+**#BF1 — Bar shadow bleeding onto windows when pinned**
+
+When the bar was pinned, its DWM shadow was casting onto windows positioned beneath it, making them appear trapped behind the bar rather than simply below it in the z-order. Root cause: `DwmExtendFrameIntoClientArea` called during the pin sequence was re-enabling DWM non-client rendering as a side effect, overriding the `DWMNCRP_DISABLED` attribute (`DWMWA_NCRENDERING_POLICY = 2`) set at startup. Fixed by explicitly re-applying `DwmSetWindowAttribute(hWnd, 2, ref noShadow, sizeof(int))` immediately after both `DwmExtendFrameIntoClientArea` calls in `PinButton_Click` — once outside the timer and once inside the timer tick.
+
+### Improvements
+
+**#I1 — About page implemented in Settings**
+
+The About page in the Settings window was previously a stub with no content. Now displays app name, version (read dynamically from the MSIX package manifest), framework info, all open-source dependencies with their versions, and quick-link cards for the Release Notes and GitHub pages that open in the system browser on click.
+
 ## Version 1.1.6.4
 
 ### Features
