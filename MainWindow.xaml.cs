@@ -393,6 +393,8 @@ namespace LegendBar
         private AutoHideHelper? _autoHide;
         private AppWindow _appWindow;
         private DispatcherQueueTimer? _topmostTimer;
+        private DispatcherQueueTimer? _fullScreenTimer;
+        private bool _isFullScreenAppRunning = false;
 
         [DllImport("dwmapi.dll")]
         private static extern int DwmExtendFrameIntoClientArea(
@@ -629,7 +631,12 @@ namespace LegendBar
             LoadPins();
             //_ = WeatherService.InitializeAsync();
             //WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
-            this.Closed += (s, e) => _autoHide?.Dispose();
+            StartFullScreenWatcher();
+            this.Closed += (s, e) =>
+            {
+                _autoHide?.Dispose();
+                _fullScreenTimer?.Stop();
+            };
         }
 
         private async void LoadPowerToysIcon()
@@ -696,6 +703,102 @@ namespace LegendBar
 
         public void UpdateHideDelay(int delayMs)
             => _autoHide?.UpdateHideDelay(delayMs);
+
+        private void StartFullScreenWatcher()
+        {
+            _fullScreenTimer = DispatcherQueue.CreateTimer();
+            _fullScreenTimer.Interval = TimeSpan.FromMilliseconds(2000);
+            _fullScreenTimer.IsRepeating = true;
+            _fullScreenTimer.Tick += (s, e) =>
+            {
+                bool isFullScreen = IsFullScreenAppRunning();
+
+                if (isFullScreen && !_isFullScreenAppRunning)
+                {
+                    _isFullScreenAppRunning = true;
+                    _topmostTimer?.Stop();
+                    _autoHide?.ForceHide();
+                    _autoHide?.SetFullScreenMode(true);
+                    System.Diagnostics.Debug.WriteLine("[FullScreen] Full-screen app detected, backing off.");
+                }
+                else if (!isFullScreen && _isFullScreenAppRunning)
+                {
+                    _isFullScreenAppRunning = false;
+                    _topmostTimer?.Start();
+                    _autoHide?.SetFullScreenMode(false);
+                    var h = WinRT.Interop.WindowNative.GetWindowHandle(this);
+                    SetWindowPos(h, HWND_TOPMOST, 0, 0, 0, 0,
+                        SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+                    System.Diagnostics.Debug.WriteLine("[FullScreen] Full-screen app gone, reinstating.");
+                }
+            };
+            _fullScreenTimer.Start();
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT { public int Left, Top, Right, Bottom; }
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
+
+        private const int GWL_STYLE = -16;
+        private const int WS_CAPTION = 0x00C00000;
+
+        private bool IsFullScreenAppRunning()
+        {
+            try
+            {
+                var foreground = GetForegroundWindow();
+                if (foreground == IntPtr.Zero) return false;
+
+                // Ignore our own window
+                var ownHwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+                if (foreground == ownHwnd) return false;
+
+                // Ignore desktop window
+                var className = new System.Text.StringBuilder(256);
+                GetClassName(foreground, className, 256);
+                var cn = className.ToString();
+                if (cn == "Progman" || cn == "WorkerW" || cn == "Shell_TrayWnd")
+                    return false;
+
+                // Get primary monitor bounds
+                var primary = MonitorHelper.Primary;
+                if (primary == null) return false;
+
+                int screenW = primary.PhysicalBounds.Width;
+                int screenH = primary.PhysicalBounds.Height;
+                int screenX = primary.PhysicalBounds.Left;
+                int screenY = primary.PhysicalBounds.Top;
+
+                // Get foreground window rect
+                if (!GetWindowRect(foreground, out RECT r)) return false;
+
+                int winW = r.Right - r.Left;
+                int winH = r.Bottom - r.Top;
+
+                // Must cover entire primary monitor
+                if (winW < screenW || winH < screenH || r.Left > screenX || r.Top > screenY)
+                    return false;
+
+                // Must have no caption/title bar — rules out maximized browsers
+                int style = GetWindowLong(foreground, GWL_STYLE);
+                if ((style & WS_CAPTION) != 0)
+                    return false;
+
+                return true;
+            }
+            catch { return false; }
+        }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
             => OpenSettings();

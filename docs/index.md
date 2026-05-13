@@ -4,6 +4,10 @@
 
 ### Features
 
+**#F1 — Full-screen app detection**
+
+Added a full-screen watcher that runs every 2 seconds and detects when a true exclusive full-screen application (such as a game) is running on the primary monitor. When detected, the bar completely backs off — the topmost timer stops, the mouse hook is unhooked, and all auto-hide timers are paused — preventing the bar from fighting the full-screen app for focus and causing it to minimize. When the full-screen app is closed, the mouse hook is reinstalled, timers resume, and the bar reinstates itself as topmost automatically. Regular maximized windows such as browsers are excluded via a `WS_CAPTION` style check, so the bar behaves normally during everyday use.
+
 ### Bugs Fixed
 
 **#BF1 — Bar shadow bleeding onto windows when pinned**

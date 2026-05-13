@@ -198,6 +198,28 @@ namespace LegendBar.Helpers
             if (isOpen) _hideDelayTimer.Stop();
         }
 
+        public void SetFullScreenMode(bool isFullScreen)
+        {
+            if (isFullScreen)
+            {
+                _checkTimer.Stop();
+                _hideDelayTimer.Stop();
+                _animTimer?.Stop();
+                if (_hookID != IntPtr.Zero)
+                {
+                    UnhookWindowsHookEx(_hookID);
+                    _hookID = IntPtr.Zero;
+                }
+            }
+            else
+            {
+                if (_hookID == IntPtr.Zero)
+                    InstallMouseHook();
+                if (!_isPinnedByUser)
+                    _checkTimer.Start();
+            }
+        }
+
         private void CheckTimer_Tick(DispatcherQueueTimer sender, object args)
         {
             GetCursorPos(out POINT pos);
