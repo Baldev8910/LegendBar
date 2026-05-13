@@ -8,6 +8,10 @@
 
 Added a full-screen watcher that runs every 2 seconds and detects when a true exclusive full-screen application (such as a game) is running on the primary monitor. When detected, the bar completely backs off — the topmost timer stops, the mouse hook is unhooked, and all auto-hide timers are paused — preventing the bar from fighting the full-screen app for focus and causing it to minimize. When the full-screen app is closed, the mouse hook is reinstalled, timers resume, and the bar reinstates itself as topmost automatically. Regular maximized windows such as browsers are excluded via a `WS_CAPTION` style check, so the bar behaves normally during everyday use.
 
+**#F2 — Pinned app & file launcher**
+
+Replaced the hardcoded DevToys launcher with a fully configurable pins system. Users can now pin up to 10 files or applications of any type directly from the Settings window via a file picker. Pinned items appear in the bar as icon-only buttons with the actual filesystem icon pulled from the file or executable, and a tooltip showing the item name on hover. Clicking a pin launches the target with its default application via `UseShellExecute`. Pins are managed from a new **Pins** page in the Settings window, where items can be added, removed, and reordered. All pins persist across sessions via the existing JSON settings file.
+
 ### Bugs Fixed
 
 **#BF1 — Bar shadow bleeding onto windows when pinned**
