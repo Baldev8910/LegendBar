@@ -629,8 +629,8 @@ namespace LegendBar
 
             LoadPowerToysIcon();
             LoadPins();
-            //_ = WeatherService.InitializeAsync();
-            //WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
+            _ = WeatherService.InitializeAsync();
+            WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
             StartFullScreenWatcher();
             this.Closed += (s, e) =>
             {
@@ -655,20 +655,20 @@ namespace LegendBar
         }
 
         private PowerToysPopup? _powerToysPopup;
-        // private WeatherPopup? _weatherPopup;
+        private WeatherPopup? _weatherPopup;
 
-        //private void WeatherWidget_OpenPopupRequested()
-        //{
-        //    if (_weatherPopup != null) return;
-        //    _autoHide?.SetExternalWindowOpen(true);
-        //    _weatherPopup = new WeatherPopup();
-        //    _weatherPopup.Closed += (s, e) =>
-        //    {
-        //        _weatherPopup = null;
-        //        _autoHide?.SetExternalWindowOpen(false);
-        //    };
-        //    _weatherPopup.Activate();
-        //}
+        private void WeatherWidget_OpenPopupRequested()
+        {
+            if (_weatherPopup != null) return;
+            _autoHide?.SetExternalWindowOpen(true);
+            _weatherPopup = new WeatherPopup();
+            _weatherPopup.Closed += (s, e) =>
+            {
+                _weatherPopup = null;
+                _autoHide?.SetExternalWindowOpen(false);
+            };
+            _weatherPopup.Activate();
+        }
 
         private void PowerToysButton_Click(object sender, RoutedEventArgs e)
         {

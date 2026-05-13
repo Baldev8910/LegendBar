@@ -110,6 +110,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="WeatherPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\PinsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

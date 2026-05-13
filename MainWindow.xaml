@@ -118,6 +118,18 @@
 
                 <widgets:DateWidget x:Name="DateWidgetContainer" VerticalAlignment="Center"/>
 
+                <Rectangle Width="1"
+                           Height="14"
+                           Fill="#33FFFFFF"
+                           VerticalAlignment="Center"/>
+
+                <widgets:WeatherWidget x:Name="WeatherWidgetContainer" VerticalAlignment="Center"/>
+
+                <Rectangle Width="1"
+                           Height="14"
+                           Fill="#33FFFFFF"
+                           VerticalAlignment="Center"/>
+
                 <Button x:Name="SettingsButton"
                         Background="Transparent"
                         BorderThickness="0"

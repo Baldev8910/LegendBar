@@ -113,7 +113,10 @@ namespace LegendBar.Helpers
             // Stage 2 — IP fallback
             try
             {
-                var json = await _http.GetStringAsync("https://ip-api.com/json");
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://ip-api.com/json");
+                request.Headers.Add("User-Agent", "LegendBar/1.0");
+                var ipResponse = await _http.SendAsync(request);
+                var json = await ipResponse.Content.ReadAsStringAsync();
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
                 if (root.GetProperty("status").GetString() == "success")
@@ -249,6 +252,48 @@ namespace LegendBar.Helpers
                 96 or 99 => "thunderstorms-rain",
                 _ => "not-available"
             };
+        }
+
+        public static string GetConditionText(int weatherCode)
+        {
+            return weatherCode switch
+            {
+                0 => "Clear sky",
+                1 => "Mainly clear",
+                2 => "Partly cloudy",
+                3 => "Overcast",
+                45 => "Foggy",
+                48 => "Icy fog",
+                51 => "Light drizzle",
+                53 => "Drizzle",
+                55 => "Heavy drizzle",
+                56 => "Freezing drizzle",
+                57 => "Heavy freezing drizzle",
+                61 => "Light rain",
+                63 => "Rain",
+                65 => "Heavy rain",
+                66 => "Freezing rain",
+                67 => "Heavy freezing rain",
+                71 => "Light snow",
+                73 => "Snow",
+                75 => "Heavy snow",
+                77 => "Snow grains",
+                80 => "Light showers",
+                81 => "Showers",
+                82 => "Heavy showers",
+                85 => "Snow showers",
+                86 => "Heavy snow showers",
+                95 => "Thunderstorm",
+                96 => "Thunderstorm with hail",
+                99 => "Thunderstorm with heavy hail",
+                _ => "Unknown"
+            };
+        }
+
+        public static string WindDirectionToCompass(double degrees)
+        {
+            string[] dirs = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+            return dirs[(int)Math.Round(degrees / 45) % 8];
         }
 
         public static string GetWeatherEmoji(int weatherCode)
