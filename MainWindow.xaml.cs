@@ -10,7 +10,9 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Windows.Graphics;
 using WinRT;
 
@@ -223,8 +225,23 @@ namespace LegendBar
         public void UpdateWidgetVisibility()
         {
             var s = SettingsService.Current;
+            if (PinButton != null)
+                PinButton.Visibility = s.ShowPinButton
+                    ? Visibility.Visible : Visibility.Collapsed;
             if (MediaWidgetContainer != null)
                 MediaWidgetContainer.Visibility = s.ShowMediaWidget
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (PomodoroWidgetContainer != null)
+                PomodoroWidgetContainer.Visibility = s.ShowPomodoro
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (PowerToysButton != null)
+                PowerToysButton.Visibility = s.ShowPowerToys
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (NotesWidgetContainer != null)
+                NotesWidgetContainer.Visibility = s.ShowNotes
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (ClipboardWidgetContainer != null)
+                ClipboardWidgetContainer.Visibility = s.ShowClipboard
                     ? Visibility.Visible : Visibility.Collapsed;
             if (ClockWidgetContainer != null)
                 ClockWidgetContainer.Visibility = s.ShowClock
@@ -423,6 +440,73 @@ namespace LegendBar
         private const uint SWP_NOSIZE = 0x0001;
         private const uint SWP_NOACTIVATE = 0x0010;
 
+        public void LoadPins()
+        {
+            PinsPanel.Children.Clear();
+
+            var pins = SettingsService.Current.PinnedItems
+                .OrderBy(p => p.Order)
+                .ToList();
+
+            foreach (var pin in pins)
+            {
+                var button = new Button
+                {
+                    Background = null,
+                    BorderThickness = new Thickness(0),
+                    Padding = new Thickness(0),
+                    Width = 18,
+                    Height = 18,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var icon = new Image { Width = 16, Height = 16 };
+                button.Content = icon;
+
+                ToolTipService.SetToolTip(button, pin.DisplayName);
+
+                var pinPath = pin.Path;
+                button.Click += (s, e) =>
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(
+                            new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = pinPath,
+                                UseShellExecute = true
+                            });
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[Pins] Launch failed: {ex.Message}");
+                    }
+                };
+
+                _ = LoadPinIconAsync(pin.Path, icon);
+                PinsPanel.Children.Add(button);
+            }
+        }
+
+        public void UpdatePins()
+        {
+            LoadPins();
+        }
+
+        private async Task LoadPinIconAsync(string path, Image target)
+        {
+            try
+            {
+                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                var thumbnail = await file.GetThumbnailAsync(
+                    Windows.Storage.FileProperties.ThumbnailMode.SingleItem, 32);
+                var bmp = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage();
+                await bmp.SetSourceAsync(thumbnail);
+                target.Source = bmp;
+            }
+            catch { }
+        }
+
         private void SetupWindow()
         {
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
@@ -541,8 +625,8 @@ namespace LegendBar
                 t.Start();
             }
 
-            LoadDevToysIcon();
             LoadPowerToysIcon();
+            LoadPins();
             //_ = WeatherService.InitializeAsync();
             //WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
             this.Closed += (s, e) => _autoHide?.Dispose();
@@ -590,37 +674,6 @@ namespace LegendBar
                 _autoHide?.SetExternalWindowOpen(false);
             };
             _powerToysPopup.Activate();
-        }
-
-        private void DevToysButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = @"C:\Users\ADMIN\AppData\Local\Programs\DevToys Preview\DevToys.exe",
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[DevToys] Launch failed: {ex.Message}");
-            }
-        }
-
-        private async void LoadDevToysIcon()
-        {
-            try
-            {
-                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(
-                    @"C:\Users\ADMIN\AppData\Local\Programs\DevToys Preview\DevToys.exe");
-                var thumbnail = await file.GetThumbnailAsync(
-                    Windows.Storage.FileProperties.ThumbnailMode.SingleItem, 256);
-                var bmp = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage();
-                await bmp.SetSourceAsync(thumbnail);
-                DevToysIcon.Source = bmp;
-            }
-            catch { }
         }
 
         private AppWindow GetAppWindowForCurrentWindow()

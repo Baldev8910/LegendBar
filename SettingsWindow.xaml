@@ -59,6 +59,14 @@
                         <FontIcon Glyph="&#xE713;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Name="PinsItem"
+                                    Content="Pins"
+                                    Tag="Pins">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE840;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

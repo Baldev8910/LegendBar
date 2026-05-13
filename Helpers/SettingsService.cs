@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
 namespace LegendBar.Helpers
 {
+    public class PinnedItem
+    {
+        public string Path { get; set; } = "";
+        public string DisplayName { get; set; } = "";
+        public int Order { get; set; } = 0;
+    }
+
     public class AppSettings
     {
         public int SettingsWindowX { get; set; } = 0;
@@ -36,9 +44,17 @@ namespace LegendBar.Helpers
         public bool LaunchOnStartup { get; set; } = false;
 
         // ── Widget visibility ──────────────────────────────────────────────
+        public bool ShowPinButton { get; set; } = true;
         public bool ShowMediaWidget { get; set; } = true;
+        public bool ShowPomodoro { get; set; } = true;
+        public bool ShowNotes { get; set; } = true;
+        public bool ShowClipboard { get; set; } = true;
+        public bool ShowPowerToys { get; set; } = true;
         public bool ShowClock { get; set; } = true;
         public bool ShowDate { get; set; } = true;
+
+        // ── Pins ───────────────────────────────────────────────────────────
+        public List<PinnedItem> PinnedItems { get; set; } = new ();
     }
 
     public static class SettingsService

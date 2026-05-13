@@ -88,19 +88,10 @@
                     Fill="#33FFFFFF"
                     VerticalAlignment="Center"/>
 
-                <Button x:Name="DevToysButton"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Padding="0"
-                        Width="18"
-                        Height="18"
-                        VerticalAlignment="Center"
-                        Click="DevToysButton_Click"
-                        ToolTipService.ToolTip="Open DevToys">
-                    <Image x:Name="DevToysIcon"
-                           Width="16"
-                           Height="16"/>
-                </Button>
+                <StackPanel x:Name="PinsPanel"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Spacing="16"/>
 
                 <Button x:Name="PowerToysButton"
                         Background="Transparent"

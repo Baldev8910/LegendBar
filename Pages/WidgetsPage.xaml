@@ -13,13 +13,14 @@
                        FontWeight="SemiBold"
                        Margin="0,0,0,20"/>
 
-            <TextBlock Text="Visibility"
+            <!-- Section: Left Side -->
+            <TextBlock Text="Left"
                        FontSize="13"
                        FontWeight="SemiBold"
                        Opacity="0.6"
                        Margin="4,0,0,6"/>
 
-            <!-- Media Player -->
+            <!-- Pin Button -->
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -31,10 +32,28 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="Media Player"
-                               FontSize="13"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="Pin Button" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="PinButtonToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="PinButtonToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Media Player -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Media Player" FontSize="13" VerticalAlignment="Center"/>
                     <ToggleSwitch x:Name="MediaToggle"
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
@@ -43,7 +62,35 @@
                 </Grid>
             </Border>
 
-            <!-- Clock -->
+            <!-- Section: Right Side -->
+            <TextBlock Text="Right"
+                       FontSize="13"
+                       FontWeight="SemiBold"
+                       Opacity="0.6"
+                       Margin="4,16,0,6"/>
+
+            <!-- Pomodoro -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8,8,0,0"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Pomodoro Timer" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="PomodoroToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="PomodoroToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- PowerToys -->
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -55,10 +102,77 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="Clock"
-                               FontSize="13"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="PowerToys" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="PowerToysToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="PowerToysToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Quick Notes -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Quick Notes" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="NotesToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="NotesToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Clipboard -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Clipboard" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="ClipboardToggle"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0"
+                                  Toggled="ClipboardToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Section: Center -->
+            <TextBlock Text="Center"
+                       FontSize="13"
+                       FontWeight="SemiBold"
+                       Opacity="0.6"
+                       Margin="4,16,0,6"/>
+
+            <!-- Clock -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8,8,0,0"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Clock" FontSize="13" VerticalAlignment="Center"/>
                     <ToggleSwitch x:Name="ClockToggle"
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
@@ -79,10 +193,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="Date"
-                               FontSize="13"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="Date" FontSize="13" VerticalAlignment="Center"/>
                     <ToggleSwitch x:Name="DateToggle"
                                   Grid.Column="1"
                                   VerticalAlignment="Center"

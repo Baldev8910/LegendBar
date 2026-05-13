@@ -41,6 +41,9 @@ namespace LegendBar
             ("celsius", "Behavior"), ("fahrenheit", "Behavior"),
             ("about", "About"), ("version", "About"),
             ("github", "About"), ("reset", "About"),
+            ("pins", "Pins"), ("pin", "Pins"),
+            ("launch", "Pins"), ("shortcut", "Pins"),
+            ("app", "Pins"), ("file", "Pins"),
         };
 
         public SettingsWindow(MainWindow mainWindow)
@@ -163,6 +166,7 @@ namespace LegendBar
                 "Appearance" => typeof(Pages.AppearancePage),
                 "Widgets" => typeof(Pages.WidgetsPage),
                 "Behavior" => typeof(Pages.BehaviorPage),
+                "Pins" => typeof(Pages.PinsPage),
                 "About" => typeof(Pages.AboutPage),
                 _ => null
             };
@@ -210,6 +214,7 @@ namespace LegendBar
                 "Appearance" => AppearanceItem,
                 "Widgets" => WidgetsItem,
                 "Behavior" => BehaviorItem,
+                "Pins" => PinsItem,
                 "About" => AboutItem,
                 _ => null
             };
