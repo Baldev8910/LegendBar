@@ -717,8 +717,10 @@ namespace LegendBar
                 {
                     _isFullScreenAppRunning = true;
                     _topmostTimer?.Stop();
-                    _autoHide?.ForceHide();
                     _autoHide?.SetFullScreenMode(true);
+                    var h = WinRT.Interop.WindowNative.GetWindowHandle(this);
+                    SetWindowPos(h, HWND_NOTOPMOST, 0, 0, 0, 0,
+                        SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
                     System.Diagnostics.Debug.WriteLine("[FullScreen] Full-screen app detected, backing off.");
                 }
                 else if (!isFullScreen && _isFullScreenAppRunning)

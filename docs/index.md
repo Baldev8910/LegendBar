@@ -1,14 +1,28 @@
 # Release Notes
 
-## Version 1.1.6.5 (Upcoming Release)
+## Version 1.1.6.5
 
 ### Features
 
-**#F1 — Full-screen app detection**
+<br>
+
+<img src="/Assets/w1.png" alt="w1" width="100%"/> <img src="/Assets/w2.png" alt="w2" width="100%"/>
+
+</br>
+
+**#F1 — Weather widget and popup**
+
+A weather widget sits in the bar between the Clipboard and Date widgets, showing a Meteocons Lottie animated icon and the current temperature. Clicking it opens `WeatherPopup`, a full weather detail popup showing city name, current date/time, large animated weather icon, temperature, feels like, condition description, humidity, wind speed and compass direction, UV index, precipitation, visibility, cloud cover, sunrise and sunset times, and a horizontally scrollable 7-day forecast strip with per-day animated icons, high/low temperatures, and precipitation totals.
+
+Weather data is fetched from the Open-Meteo API (free, no API key required). Location is detected automatically in two stages: Windows Location API first, falling back to ip-api.com. City name is resolved via reverse geocoding using the Nominatim OpenStreetMap API with a `LegendBar/1.0` User-Agent header. Data is cached to `AppData\Roaming\LegendBar\weather_cache.json` and loaded instantly on startup while fresh data fetches in the background. The cache expires after 1 hour and a `System.Threading.Timer` refreshes data every 30 minutes automatically.
+
+If Meteocons Lottie JSON files are present in `Assets/Weather/`, animated icons are shown via `AnimatedVisualPlayer` and `LottieVisualSource`. If a file is missing, the widget and popup fall back gracefully to a Unicode weather emoji so the bar remains functional on machines without the icon assets. Temperature unit respects `SettingsService.Current.TemperatureUnit` (`"C"` or `"F"`) throughout both the widget and popup. The popup height is dynamic, capped at 700px, and position is right-aligned to the primary monitor edge below the bar.
+
+**#F2 — Full-screen app detection**
 
 Added a full-screen watcher that runs every 2 seconds and detects when a true exclusive full-screen application (such as a game) is running on the primary monitor. When detected, the bar completely backs off — the topmost timer stops, the mouse hook is unhooked, and all auto-hide timers are paused — preventing the bar from fighting the full-screen app for focus and causing it to minimize. When the full-screen app is closed, the mouse hook is reinstalled, timers resume, and the bar reinstates itself as topmost automatically. Regular maximized windows such as browsers are excluded via a `WS_CAPTION` style check, so the bar behaves normally during everyday use.
 
-**#F2 — Pinned app & file launcher**
+**#F3 — Pinned app & file launcher**
 
 Replaced the hardcoded DevToys launcher with a fully configurable pins system. Users can now pin up to 10 files or applications of any type directly from the Settings window via a file picker. Pinned items appear in the bar as icon-only buttons with the actual filesystem icon pulled from the file or executable, and a tooltip showing the item name on hover. Clicking a pin launches the target with its default application via `UseShellExecute`. Pins are managed from a new **Pins** page in the Settings window, where items can be added, removed, and reordered. All pins persist across sessions via the existing JSON settings file.
 
@@ -17,6 +31,10 @@ Replaced the hardcoded DevToys launcher with a fully configurable pins system. U
 **#BF1 — Bar shadow bleeding onto windows when pinned**
 
 When the bar was pinned, its DWM shadow was casting onto windows positioned beneath it, making them appear trapped behind the bar rather than simply below it in the z-order. Root cause: `DwmExtendFrameIntoClientArea` called during the pin sequence was re-enabling DWM non-client rendering as a side effect, overriding the `DWMNCRP_DISABLED` attribute (`DWMWA_NCRENDERING_POLICY = 2`) set at startup. Fixed by explicitly re-applying `DwmSetWindowAttribute(hWnd, 2, ref noShadow, sizeof(int))` immediately after both `DwmExtendFrameIntoClientArea` calls in `PinButton_Click` — once outside the timer and once inside the timer tick.
+
+**#BF2 — Bar forcibly hiding when full-screen app detected**
+
+When a full-screen application was detected, the bar was calling `ForceHide()` and sliding itself off the top of the screen. This was unintended — the bar should simply stop asserting topmost and let the full-screen app sit over it naturally. Fixed by removing the `ForceHide()` call and switching from `HWND_TOPMOST` to `HWND_NOTOPMOST` when full-screen is detected, so the bar stays in place and the full-screen app covers it without any conflict.
 
 ### Improvements
 

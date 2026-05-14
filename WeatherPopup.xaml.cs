@@ -260,10 +260,9 @@ namespace LegendBar
                 presenter.SetBorderAndTitleBar(false, false);
             }
 
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(null);
             _appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
             _appWindow.TitleBar.SetDragRectangles(Array.Empty<RectInt32>());
+            _appWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
 
             ((FrameworkElement)Content).RequestedTheme = ElementTheme.Dark;
 
@@ -271,7 +270,7 @@ namespace LegendBar
             {
                 cxLeftWidth = -1,
                 cxRightWidth = -1,
-                cyTopHeight = -1,
+                cyTopHeight = 0,
                 cyBottomHeight = -1
             };
             DwmExtendFrameIntoClientArea(hWnd, ref margins);

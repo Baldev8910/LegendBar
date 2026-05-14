@@ -29,35 +29,42 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "F:\LegendBar\WindowsAppRuntimeInstall-x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
+Source: "F:\LegendBar\windowsdesktop-runtime-9.0.16-win-x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
 Source: "{#MyCertFile}"; DestDir: "{tmp}"; Flags: deleteafterinstall
 Source: "{#MyMsixBundle}"; DestDir: "{tmp}"; Flags: deleteafterinstall
 
 [Run]
-; Step 1 — Install Windows App Runtime silently
+; Step 1 — Install .NET 9 Desktop Runtime silently
+Filename: "{tmp}\windowsdesktop-runtime-9.0.16-win-x64.exe"; \
+    Parameters: "/quiet /norestart"; \
+    StatusMsg: "Installing .NET 9 Desktop Runtime..."; \
+    Flags: runhidden waituntilterminated
+
+; Step 2 — Install Windows App Runtime silently
 Filename: "{tmp}\WindowsAppRuntimeInstall-x64.exe"; \
     Parameters: "--quiet"; \
     StatusMsg: "Installing Windows App Runtime..."; \
     Flags: runhidden waituntilterminated
 
-; Step 2 — Install certificate to Trusted Root
+; Step 3 — Install certificate to Trusted Root
 Filename: "certutil.exe"; \
     Parameters: "-addstore ""Root"" ""{tmp}\LegendBar_1.1.6.5_x86_x64_arm64.cer"""; \
     StatusMsg: "Installing certificate..."; \
     Flags: runhidden waituntilterminated
 
-; Step 3 — Uninstall previous version if exists
+; Step 4 — Uninstall previous version if exists
 Filename: "powershell.exe"; \
     Parameters: "-ExecutionPolicy Bypass -Command ""Get-AppxPackage *e6524d5f* | Remove-AppxPackage"""; \
     StatusMsg: "Removing previous version..."; \
     Flags: runhidden waituntilterminated
 
-; Step 4 — Install MSIX bundle
+; Step 5 — Install MSIX bundle
 Filename: "powershell.exe"; \
     Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage -Path '{tmp}\LegendBar_1.1.6.5_x86_x64_arm64.msixbundle'"""; \
     StatusMsg: "Installing LegendBar..."; \
     Flags: runhidden waituntilterminated
 
-; Step 5 — Create desktop shortcut
+; Step 6 — Create desktop shortcut
 Filename: "powershell.exe"; \
     Parameters: "-ExecutionPolicy Bypass -Command ""$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\LegendBar.lnk'); $s.TargetPath = 'shell:AppsFolder\e6524d5f-966a-4e69-8120-134df47dc634_3e5d12425mc5r!App'; $s.Save()"""; \
     StatusMsg: "Creating shortcuts..."; \
