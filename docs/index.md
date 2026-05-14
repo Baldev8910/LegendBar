@@ -4,9 +4,6 @@
 
 ### Features
 
-![1](/Assets/w1.png)
-![2](/Assets/w2.png)
-
 **#F1 — Weather widget and popup**
 
 A weather widget sits in the bar between the Clipboard and Date widgets, showing a Meteocons Lottie animated icon and the current temperature. Clicking it opens `WeatherPopup`, a full weather detail popup showing city name, current date/time, large animated weather icon, temperature, feels like, condition description, humidity, wind speed and compass direction, UV index, precipitation, visibility, cloud cover, sunrise and sunset times, and a horizontally scrollable 7-day forecast strip with per-day animated icons, high/low temperatures, and precipitation totals.
