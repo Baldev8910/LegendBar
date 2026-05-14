@@ -4,12 +4,8 @@
 
 ### Features
 
-<br>
-
-<img src="/Assets/w1.png" alt="w1" width="100%"/> 
-<img src="/Assets/w2.png" alt="w2" width="100%"/>
-
-<br>
+![1](/Assets/w1.png)
+![2](/Assets/w2.png)
 
 **#F1 — Weather widget and popup**
 
