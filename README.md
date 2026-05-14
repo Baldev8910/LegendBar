@@ -12,7 +12,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
 <br>
 
-![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge) ![Language](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge) ![Language](https://img.shields.io/badge/C%23-.NET%209-512BD4?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 </div>
 
@@ -58,6 +58,9 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
 ### ⏰ Productivity Widgets
 
+- Live weather widget with animated Meteocons icons and full detail popup
+- Configurable app/file launcher (Pins) with real filesystem icons
+- Full-screen app detection — bar backs off automatically during games
 - Pomodoro timer with animated transitions
 - Expandable timer controls (pause/reset/skip)
 - Reminder system with recurring schedules
@@ -82,7 +85,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
 ### 🛠️ Technical Highlights
 
-- Built with WinUI 3 and .NET 8
+- Built with WinUI 3 and .NET 9
 - Uses DesktopAcrylicController for true acrylic blur
 - Uses Windows System Media Transport Controls (SMTC)
 - Uses low-level Win32 hooks for edge detection
@@ -163,7 +166,10 @@ All settings are applied live and saved automatically.
 - [Windows App SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
 - [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
 - [NAudio](https://github.com/naudio/NAudio)
-- C# / .NET 8
+- [Open-Meteo](https://open-meteo.com/) (weather data)
+- [Meteocons](https://bas.dev/work/meteocons) (animated weather icons)
+- [CommunityToolkit.WinUI.Lottie](https://github.com/CommunityToolkit/Lottie-Windows) (Lottie animations)
+- C# / .NET 9
 - Win32 APIs
 - Windows System Media Transport Controls (SMTC)
 
