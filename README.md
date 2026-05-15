@@ -6,6 +6,8 @@ A customizable Windows 11 top bar built with WinUI 3.
 
 Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Baldev8910)
+
 <br>
 
 <img src="Assets/GIF.gif" alt="LegendBar Demo" width="100%"/>
@@ -15,8 +17,6 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 ![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge) ![Language](https://img.shields.io/badge/C%23-.NET%209-512BD4?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 </div>
-
-<!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
 
 ---
 
@@ -68,7 +68,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Quick Notes popup with Markdown + KaTeX rendering
 - Clock and Date widgets
 - PowerToys shortcuts reference panel
-- DevToys launcher integration
+- Configurable app/file launcher (Pins) with real filesystem icons
 
 ---
 
@@ -102,7 +102,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 |---|---|
 | Operating System | Windows 11 |
 | Architecture | x64 |
-| Display Scaling | 100% DPI scaling on all monitors |
+| Display Scaling | 100% recommended; higher DPI scales supported |
 | Runtime | Windows App Runtime |
 
 > [!WARNING]
@@ -123,7 +123,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 > If it is not already installed, the setup process will prompt you automatically.
 
 > [!NOTE]
-> Developer Mode may be required for sideloaded MSIX installation on some systems.
+> LegendBar handles common DPI scales (100%, 125%, 150%). Non-standard scaling configurations may cause minor alignment issues.
 
 ---
 
