@@ -114,8 +114,8 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 ## Installation
 
 1. Go to the [Releases](https://github.com/Baldev8910/LegendBar/releases/latest) page
-2. Download the latest installer
-3. Run `LegendBarSetup.exe`
+2. Download `LegendBar_x.x.x.x_x86_x64_arm64.msixbundle`
+3. Double-click the bundle to install — dependencies are handled automatically
 4. Launch LegendBar from the Start Menu
 
 > [!IMPORTANT]
