@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace LegendBar.Widgets
 {

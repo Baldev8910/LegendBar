@@ -2,22 +2,23 @@ using LegendBar.Helpers;
 using LegendBar.Models;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using System;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WinRT;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
-    public sealed partial class ViewRemindersPopup : Window
+    public sealed partial class ReminderNotificationPopup : Window
     {
-        private MicaController? _micaController;
-        private readonly ReminderService _reminderService;
-        private readonly MainWindow _mainWindow;
         private AppWindow _appWindow;
+        private DesktopAcrylicController? _acrylicController;
+        private SystemBackdropConfiguration? _configurationSource;
+        private MicaController? _micaController;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -42,23 +43,13 @@ namespace LegendBar
             public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
         }
 
-        private DesktopAcrylicController? _acrylicController;
-        private SystemBackdropConfiguration? _configurationSource;
-
-        public ViewRemindersPopup(ReminderService reminderService, MainWindow mainWindow)
+        public ReminderNotificationPopup(Reminder reminder, DispatcherQueue dispatcherQueue)
         {
             InitializeComponent();
-            _reminderService = reminderService;
-            _mainWindow = mainWindow;
             _appWindow = GetAppWindow();
+            TitleText.Text = reminder.Title;
             SetupWindow();
-            LoadReminders();
-
-            this.Activated += (s, e) =>
-            {
-                if (e.WindowActivationState == WindowActivationState.Deactivated)
-                    this.Close();
-            };
+            FadeIn();
         }
 
         private void SetupWindow()
@@ -103,7 +94,7 @@ namespace LegendBar
             DwmSetWindowAttribute(hWnd, 2, ref noShadow, sizeof(int));
             int marginValue = 0;
             DwmSetWindowAttribute(hWnd, 3, ref marginValue, sizeof(int));
-            int cornerPreference = 2;
+            int cornerPreference = 2; // DWMWCP_ROUND
             DwmSetWindowAttribute(hWnd, 33, ref cornerPreference, sizeof(int));
 
             _configurationSource = new SystemBackdropConfiguration
@@ -144,117 +135,57 @@ namespace LegendBar
                     break;
             }
 
+            // Center below clock — center of primary monitor
             var primary = MonitorHelper.Primary;
             int centerX = (primary?.LogicalBounds.Left ?? 0) +
-                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 160;
+                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 140;
             int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, 320, 500));
+            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, 280, 130));
+
+            // Force topmost via Win32
+            SetWindowPos(hWnd, new IntPtr(-1), 0, 0, 0, 0,
+                0x0001 | 0x0002 | 0x0010);
         }
 
-        private void LoadReminders()
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(
+            IntPtr hWnd, IntPtr hWndInsertAfter,
+            int X, int Y, int cx, int cy, uint uFlags);
+
+        private void FadeIn()
         {
-            RemindersList.Children.Clear();
-            var reminders = _reminderService.GetAll();
-
-            if (reminders.Count == 0)
+            var fadeIn = new DoubleAnimation
             {
-                EmptyText.Visibility = Visibility.Visible;
-                return;
-            }
-
-            EmptyText.Visibility = Visibility.Collapsed;
-
-            foreach (var reminder in reminders)
-            {
-                var vm = ReminderViewModel.FromReminder(reminder);
-
-                var card = new Border
-                {
-                    Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(40, 255, 255, 255)),
-                    CornerRadius = new CornerRadius(8),
-                    Padding = new Thickness(12, 10, 12, 10)
-                };
-
-                var cardContent = new Grid();
-                cardContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                cardContent.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-                var textStack = new StackPanel { Spacing = 2 };
-
-                var titleBlock = new TextBlock
-                {
-                    Text = vm.Title,
-                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(255, 255, 255, 255)),
-                    FontSize = 13,
-                    FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                    TextTrimming = TextTrimming.CharacterEllipsis
-                };
-
-                var dateBlock = new TextBlock
-                {
-                    Text = vm.DateTimeDisplay,
-                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(180, 255, 255, 255)),
-                    FontSize = 11
-                };
-
-                var repeatBlock = new TextBlock
-                {
-                    Text = vm.RepeatDisplay,
-                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(120, 255, 255, 255)),
-                    FontSize = 11
-                };
-
-                textStack.Children.Add(titleBlock);
-                textStack.Children.Add(dateBlock);
-                if (reminder.Repeat != RepeatType.OneTime)
-                    textStack.Children.Add(repeatBlock);
-
-                Grid.SetColumn(textStack, 0);
-                cardContent.Children.Add(textStack);
-
-                var deleteBtn = new Button
-                {
-                    Content = new FontIcon
-                    {
-                        Glyph = "\uE74D",
-                        FontSize = 12,
-                        Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                            Windows.UI.Color.FromArgb(180, 255, 255, 255))
-                    },
-                    Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(0, 0, 0, 0)),
-                    BorderThickness = new Thickness(0),
-                    Padding = new Thickness(4),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Tag = reminder.Id
-                };
-                deleteBtn.Click += DeleteReminder_Click;
-
-                Grid.SetColumn(deleteBtn, 1);
-                cardContent.Children.Add(deleteBtn);
-
-                card.Child = cardContent;
-                RemindersList.Children.Add(card);
-            }
+                To = 1,
+                Duration = new Duration(TimeSpan.FromMilliseconds(300)),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+            var storyboard = new Storyboard();
+            Storyboard.SetTarget(fadeIn, NotificationBorder);
+            Storyboard.SetTargetProperty(fadeIn, "Opacity");
+            storyboard.Children.Add(fadeIn);
+            storyboard.Begin();
         }
 
-        private void DeleteReminder_Click(object sender, RoutedEventArgs e)
+        private void FadeOutAndClose()
         {
-            if (sender is Button btn && btn.Tag is Guid id)
+            var fadeOut = new DoubleAnimation
             {
-                _reminderService.Remove(id);
-                LoadReminders();
-            }
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(300)),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+            var storyboard = new Storyboard();
+            Storyboard.SetTarget(fadeOut, NotificationBorder);
+            Storyboard.SetTargetProperty(fadeOut, "Opacity");
+            storyboard.Children.Add(fadeOut);
+            storyboard.Completed += (s, e) => this.Close();
+            storyboard.Begin();
         }
 
-        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        private void Dismiss_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-            _mainWindow.OpenAddReminder();
+            FadeOutAndClose();
         }
 
         private AppWindow GetAppWindow()

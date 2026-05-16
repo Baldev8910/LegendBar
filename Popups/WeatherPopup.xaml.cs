@@ -13,7 +13,7 @@ using Windows.Foundation;
 using Windows.Graphics;
 using WinRT;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
     public sealed partial class WeatherPopup : Window
     {
@@ -242,14 +242,15 @@ namespace LegendBar
         {
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
 
-            try
-            {
-                int style = GetWindowLong(hWnd, GWL_STYLE);
-                SetWindowLong(hWnd, GWL_STYLE, style & ~WS_CAPTION);
-            }
-            catch { }
+            try                                                          // ← ADD
+            {                                                            // ← ADD
+                int style = GetWindowLong(hWnd, GWL_STYLE);             // ← ADD
+                SetWindowLong(hWnd, GWL_STYLE, style & ~WS_CAPTION);    // ← ADD
+            }                                                            // ← ADD
+            catch { /* suppress Win32 SEH */ }                          // ← ADD
 
             _appWindow.IsShownInSwitchers = false;
+            // ... rest stays as is
 
             var presenter = _appWindow.Presenter as OverlappedPresenter;
             if (presenter != null)

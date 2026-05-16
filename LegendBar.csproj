@@ -15,25 +15,25 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\Editor\editor.html" />
-    <None Remove="NotesPopup.xaml" />
+	<None Remove="Popups\NotesPopup.xaml" />
     <None Remove="Pages\AboutPage.xaml" />
     <None Remove="Pages\AppearancePage.xaml" />
     <None Remove="Pages\BehaviorPage.xaml" />
     <None Remove="Pages\PinsPage.xaml" />
     <None Remove="Pages\WidgetsPage.xaml" />
-    <None Remove="PomodoroControl.xaml" />
-    <None Remove="SettingsPopup.xaml" />
+	<None Remove="Controls\PomodoroControl.xaml" />
     <None Remove="SettingsWindow.xaml" />
-    <None Remove="AddReminderPopup.xaml" />
-	<None Remove="ClipboardHistoryPopup.xaml" />
+	<None Remove="Popups\AddReminderPopup.xaml" />
+	<None Remove="Popups\ClipboardHistoryPopup.xaml" />
     <None Remove="Widgets\ClockWidget.xaml" />
     <None Remove="Widgets\DateWidget.xaml" />
     <None Remove="Widgets\MediaWidget.xaml" />
     <None Remove="Widgets\NotesWidget.xaml" />
-    <None Remove="PowerToysPopup.xaml" />
-    <None Remove="ReminderNotificationPopup.xaml" />
-    <None Remove="ViewRemindersPopup.xaml" />
+    <None Remove="Popups\PowerToysPopup.xaml" />
+    <None Remove="Popups\ReminderNotificationPopup.xaml" />
+    <None Remove="Popups\ViewRemindersPopup.xaml" />
     <None Remove="Widgets\WeatherWidget.xaml" />
+	<None Remove="Popups\WeatherPopup.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,6 +92,8 @@
     <Folder Include="Assets\Media\" />
     <Folder Include="Assets\Weather\" />
     <Folder Include="Models\" />
+	<Folder Include="Popups\" />
+	<Folder Include="Controls\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Assets\Editor\toastui-editor-all.min.js">
@@ -110,7 +112,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="WeatherPopup.xaml">
+	  <Page Update="Popups\WeatherPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -150,22 +152,22 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="PomodoroPopup.xaml">
+	  <Page Update="Popups\PomodoroPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="PomodoroControl.xaml">
+	  <Page Update="Controls\PomodoroControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="PowerToysPopup.xaml">
+	  <Page Update="Popups\PowerToysPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="NotesPopup.xaml">
+	  <Page Update="Popups\NotesPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -175,7 +177,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ClipboardHistoryPopup.xaml">
+	  <Page Update="Popups\ClipboardHistoryPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -185,27 +187,22 @@
 		</Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ReminderNotificationPopup.xaml">
+	  <Page Update="Popups\ReminderNotificationPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ViewRemindersPopup.xaml">
+	  <Page Update="Popups\ViewRemindersPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="AddReminderPopup.xaml">
+	  <Page Update="Popups\AddReminderPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Widgets\MediaWidget.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="SettingsPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

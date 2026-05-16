@@ -174,10 +174,40 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Clock" FontSize="13" VerticalAlignment="Center"/>
                     <ToggleSwitch x:Name="ClockToggle"
-                                  Grid.Column="1"
-                                  VerticalAlignment="Center"
-                                  Margin="0"
-                                  Toggled="ClockToggle_Toggled"/>
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="0"
+                      Toggled="ClockToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Clock Format -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Text="Clock Format" FontSize="13"/>
+                        <TextBlock x:Name="ClockFormatPreview"
+                       FontSize="11"
+                       Opacity="0.6"/>
+                    </StackPanel>
+                    <ComboBox x:Name="ClockFormatCombo"
+                  Grid.Column="1"
+                  VerticalAlignment="Center"
+                  SelectionChanged="ClockFormatCombo_SelectionChanged">
+                        <ComboBoxItem Content="HH:mm" Tag="HH:mm"/>
+                        <ComboBoxItem Content="HH:mm:ss" Tag="HH:mm:ss"/>
+                        <ComboBoxItem Content="h:mm tt" Tag="h:mm tt"/>
+                        <ComboBoxItem Content="h:mm:ss tt" Tag="h:mm:ss tt"/>
+                    </ComboBox>
                 </Grid>
             </Border>
 
@@ -199,6 +229,27 @@
                                   VerticalAlignment="Center"
                                   Margin="0"
                                   Toggled="DateToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Weather -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Weather" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="WeatherToggle"
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="0"
+                      Toggled="WeatherToggle_Toggled"/>
                 </Grid>
             </Border>
 

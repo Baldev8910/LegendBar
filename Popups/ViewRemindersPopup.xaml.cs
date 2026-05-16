@@ -1,33 +1,23 @@
 using LegendBar.Helpers;
+using LegendBar.Models;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using System;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WinRT;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
-    public sealed partial class PomodoroPopup : Window
+    public sealed partial class ViewRemindersPopup : Window
     {
-        private int _popupX;
-        private int _popupY;
-
-        public event Action<int, int>? TimersChanged;
-
-        private AppWindow _appWindow;
-        private DesktopAcrylicController? _acrylicController;
-        private SystemBackdropConfiguration? _configurationSource;
         private MicaController? _micaController;
-
-        private int _focusSeconds;
-        private int _breakSeconds;
-
-        public event Action<int, int>? StartRequested;
+        private readonly ReminderService _reminderService;
+        private readonly MainWindow _mainWindow;
+        private AppWindow _appWindow;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -52,90 +42,23 @@ namespace LegendBar
             public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
         }
 
-        public PomodoroPopup(int focusSeconds, int breakSeconds, int popupX, int popupY)
+        private DesktopAcrylicController? _acrylicController;
+        private SystemBackdropConfiguration? _configurationSource;
+
+        public ViewRemindersPopup(ReminderService reminderService, MainWindow mainWindow)
         {
             InitializeComponent();
-            _focusSeconds = focusSeconds;
-            _breakSeconds = breakSeconds;
-            _popupX = popupX;
-            _popupY = popupY;
+            _reminderService = reminderService;
+            _mainWindow = mainWindow;
             _appWindow = GetAppWindow();
             SetupWindow();
-            UpdateDisplay();
-            SetupScrollWheels();
+            LoadReminders();
 
-            bool _loaded = false;
-            bool _readyToClose = false;
             this.Activated += (s, e) =>
             {
-                if (!_loaded)
-                {
-                    _loaded = true;
-                    var t = DispatcherQueue.CreateTimer();
-                    t.Interval = TimeSpan.FromMilliseconds(500);
-                    t.IsRepeating = false;
-                    t.Tick += (_, _) => { _readyToClose = true; t.Stop(); };
-                    t.Start();
-                    return;
-                }
-                if (_readyToClose && e.WindowActivationState == WindowActivationState.Deactivated)
+                if (e.WindowActivationState == WindowActivationState.Deactivated)
                     this.Close();
             };
-        }
-
-        private void SetupScrollWheels()
-        {
-            FocusTimeText.PointerWheelChanged += (s, e) =>
-            {
-                var delta = e.GetCurrentPoint(FocusTimeText).Properties.MouseWheelDelta;
-                _focusSeconds = Math.Clamp(
-                    _focusSeconds + (delta > 0 ? 60 : -60), 60, 90 * 60);
-                UpdateDisplay();
-                TimersChanged?.Invoke(_focusSeconds, _breakSeconds); // ← auto-save
-                e.Handled = true;
-            };
-
-            BreakTimeText.PointerWheelChanged += (s, e) =>
-            {
-                var delta = e.GetCurrentPoint(BreakTimeText).Properties.MouseWheelDelta;
-                _breakSeconds = Math.Clamp(
-                    _breakSeconds + (delta > 0 ? 60 : -60), 60, 30 * 60);
-                UpdateDisplay();
-                TimersChanged?.Invoke(_focusSeconds, _breakSeconds); // ← auto-save
-                e.Handled = true;
-            };
-        }
-
-        public event Action? SkipRequested;
-
-        private void Skip_Click(object sender, RoutedEventArgs e)
-        {
-            SkipRequested?.Invoke();
-        }
-
-        private void UpdateDisplay()
-        {
-            FocusTimeText.Text = $"{_focusSeconds / 60:D2}:{_focusSeconds % 60:D2}";
-            BreakTimeText.Text = $"{_breakSeconds / 60:D2}:{_breakSeconds % 60:D2}";
-        }
-
-        // Called while timer is running to show live countdown in popup
-        public void UpdateTimers(int remaining, int other, bool isFocus)
-        {
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                FocusTimeText.Text = isFocus
-                    ? $"{remaining / 60:D2}:{remaining % 60:D2}"
-                    : $"{_focusSeconds / 60:D2}:{_focusSeconds % 60:D2}";
-                BreakTimeText.Text = !isFocus
-                    ? $"{remaining / 60:D2}:{remaining % 60:D2}"
-                    : $"{_breakSeconds / 60:D2}:{_breakSeconds % 60:D2}";
-            });
-        }
-
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            StartRequested?.Invoke(_focusSeconds, _breakSeconds);
         }
 
         private void SetupWindow()
@@ -220,7 +143,118 @@ namespace LegendBar
                     _acrylicController.SetSystemBackdropConfiguration(_configurationSource);
                     break;
             }
-            _appWindow.MoveAndResize(new RectInt32(_popupX, _popupY, 270, 320));
+
+            var primary = MonitorHelper.Primary;
+            int centerX = (primary?.LogicalBounds.Left ?? 0) +
+                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 160;
+            int popupY = SettingsService.Current.BarHeight + 8;
+            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, 320, 500));
+        }
+
+        private void LoadReminders()
+        {
+            RemindersList.Children.Clear();
+            var reminders = _reminderService.GetAll();
+
+            if (reminders.Count == 0)
+            {
+                EmptyText.Visibility = Visibility.Visible;
+                return;
+            }
+
+            EmptyText.Visibility = Visibility.Collapsed;
+
+            foreach (var reminder in reminders)
+            {
+                var vm = ReminderViewModel.FromReminder(reminder);
+
+                var card = new Border
+                {
+                    Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(40, 255, 255, 255)),
+                    CornerRadius = new CornerRadius(8),
+                    Padding = new Thickness(12, 10, 12, 10)
+                };
+
+                var cardContent = new Grid();
+                cardContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                cardContent.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var textStack = new StackPanel { Spacing = 2 };
+
+                var titleBlock = new TextBlock
+                {
+                    Text = vm.Title,
+                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(255, 255, 255, 255)),
+                    FontSize = 13,
+                    FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                    TextTrimming = TextTrimming.CharacterEllipsis
+                };
+
+                var dateBlock = new TextBlock
+                {
+                    Text = vm.DateTimeDisplay,
+                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(180, 255, 255, 255)),
+                    FontSize = 11
+                };
+
+                var repeatBlock = new TextBlock
+                {
+                    Text = vm.RepeatDisplay,
+                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(120, 255, 255, 255)),
+                    FontSize = 11
+                };
+
+                textStack.Children.Add(titleBlock);
+                textStack.Children.Add(dateBlock);
+                if (reminder.Repeat != RepeatType.OneTime)
+                    textStack.Children.Add(repeatBlock);
+
+                Grid.SetColumn(textStack, 0);
+                cardContent.Children.Add(textStack);
+
+                var deleteBtn = new Button
+                {
+                    Content = new FontIcon
+                    {
+                        Glyph = "\uE74D",
+                        FontSize = 12,
+                        Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                            Windows.UI.Color.FromArgb(180, 255, 255, 255))
+                    },
+                    Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(0, 0, 0, 0)),
+                    BorderThickness = new Thickness(0),
+                    Padding = new Thickness(4),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Tag = reminder.Id
+                };
+                deleteBtn.Click += DeleteReminder_Click;
+
+                Grid.SetColumn(deleteBtn, 1);
+                cardContent.Children.Add(deleteBtn);
+
+                card.Child = cardContent;
+                RemindersList.Children.Add(card);
+            }
+        }
+
+        private void DeleteReminder_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is Guid id)
+            {
+                _reminderService.Remove(id);
+                LoadReminders();
+            }
+        }
+
+        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            _mainWindow.OpenAddReminder();
         }
 
         private AppWindow GetAppWindow()

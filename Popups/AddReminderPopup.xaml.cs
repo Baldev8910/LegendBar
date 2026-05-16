@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WinRT;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
     public sealed partial class AddReminderPopup : Window
     {

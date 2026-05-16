@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Networking.Connectivity;
 
 namespace LegendBar.Helpers
 {
@@ -14,6 +16,30 @@ namespace LegendBar.Helpers
 
         public static event Action<WeatherData>? WeatherUpdated;
         public static WeatherData? Current => _current;
+
+        private static bool _wasOffline = false;
+
+        private static void StartNetworkWatcher()
+        {
+            NetworkInformation.NetworkStatusChanged += async _ =>
+            {
+                var profile = NetworkInformation.GetInternetConnectionProfile();
+                bool isOnline = profile?.GetNetworkConnectivityLevel()
+                                == NetworkConnectivityLevel.InternetAccess;
+
+                if (isOnline && _wasOffline)
+                {
+                    System.Diagnostics.Debug.WriteLine("[Weather] Internet restored — refreshing.");
+                    _wasOffline = false;
+                    await RefreshAsync();
+                }
+                else if (!isOnline)
+                {
+                    _wasOffline = true;
+                    System.Diagnostics.Debug.WriteLine("[Weather] Internet lost.");
+                }
+            };
+        }
 
         // ── Entry point ────────────────────────────────────────────────────
         public static async Task InitializeAsync()
@@ -39,6 +65,10 @@ namespace LegendBar.Helpers
                 null,
                 TimeSpan.FromMinutes(30),
                 TimeSpan.FromMinutes(30));
+
+            // 4 — Watch for network restoration
+            StartNetworkWatcher();
+
         }
 
         public static async Task RefreshAsync()

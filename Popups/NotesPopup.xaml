@@ -1,5 +1,5 @@
 <Window
-    x:Class="LegendBar.NotesPopup"
+    x:Class="LegendBar.Popups.NotesPopup"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:web="using:Microsoft.UI.Xaml.Controls">

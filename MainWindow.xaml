@@ -3,7 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LegendBar"
-    xmlns:widgets="using:LegendBar.Widgets">
+    xmlns:widgets="using:LegendBar.Widgets"
+    xmlns:popups="using:LegendBar.Popups"
+    xmlns:controls="using:LegendBar.Controls">
 
     <Grid x:Name="RootGrid"
       Background="Transparent"
@@ -79,7 +81,7 @@
                         Margin="0,0,24,0"
                         Spacing="16">
 
-                <local:PomodoroControl x:Name="PomodoroWidgetContainer"
+                <controls:PomodoroControl x:Name="PomodoroWidgetContainer"
                         VerticalAlignment="Center"
                         Width="125"/>
 
@@ -118,17 +120,18 @@
 
                 <widgets:DateWidget x:Name="DateWidgetContainer" VerticalAlignment="Center"/>
 
-                <Rectangle Width="1"
-                           Height="14"
-                           Fill="#33FFFFFF"
+                <!-- Weather widget + its left separator as one unit -->
+                <StackPanel x:Name="WeatherWidgetContainer"
+                            Orientation="Horizontal"
+                            Spacing="16"
+                            VerticalAlignment="Center">
+                    <Rectangle Width="1"
+                               Height="14"
+                               Fill="#33FFFFFF"
+                               VerticalAlignment="Center"/>
+                    <widgets:WeatherWidget x:Name="WeatherWidgetInner"
                            VerticalAlignment="Center"/>
-
-                <widgets:WeatherWidget x:Name="WeatherWidgetContainer" VerticalAlignment="Center"/>
-
-                <Rectangle Width="1"
-                           Height="14"
-                           Fill="#33FFFFFF"
-                           VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <Button x:Name="SettingsButton"
                         Background="Transparent"

@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 1.1.6.6
+
+### Features
+
+**#F1 — NTP-synced clock with configurable format**
+
+The clock widget now synchronizes with WorldTimeAPI (`worldtimeapi.org/api/ip`) on startup and every 6 hours automatically, calculating a precise offset between the API time and the local clock (accounting for network round-trip latency using midpoint correction). The local tick timer continues running every second using the cached offset, so the display never stutters or jumps. If the sync fails, the widget silently falls back to local system time using the last known offset. A new Clock Format selector in Settings → Widgets lets the user choose between `HH:mm`, `HH:mm:ss`, `h:mm tt`, and `h:mm:ss tt`. The selected format persists across restarts via `AppSettings.ClockFormat` and is applied live on the next tick with no restart required.
+
+**#F2 — Weather widget updates on internet reconnection**
+
+The weather service now monitors network connectivity via `NetworkInformation.NetworkStatusChanged`. When the internet connection is lost, a `_wasOffline` flag is set. When connectivity is restored, `RefreshAsync()` is triggered immediately rather than waiting for the next 30-minute scheduled refresh. This ensures the weather widget and popup always show current data after a network interruption without requiring a bar restart.
+
+**#F3 — Weather widget visibility toggle in Settings**
+
+Added a Weather toggle to the Widgets page in Settings under the Right section, between Clipboard and the Center group. Toggling it off hides both the weather widget and its accompanying separator in a single operation by wrapping them in a shared `StackPanel` (`WeatherWidgetContainer`), preventing orphaned dividers from appearing when the widget is hidden. The toggle state persists across restarts via `AppSettings.ShowWeather` (default: `true`).
+
+### Bugs Fixed
+
+**#BF1 — Popup and control files reorganised into Popups\ and Controls\ folders**
+
+All popup window files (`AddReminderPopup`, `ClipboardHistoryPopup`, `NotesPopup`, `PomodoroPopup`, `PowerToysPopup`, `ReminderNotificationPopup`, `ViewRemindersPopup`, `WeatherPopup`) have been moved from the project root into a new `Popups\` folder. `PomodoroControl` has been moved into a new `Controls\` folder. Namespaces updated to `LegendBar.Popups` and `LegendBar.Controls` respectively. All referencing files updated with the corresponding `using` directives and `x:Class` declarations. The defunct `SettingsPopup.xaml` was removed entirely.
+
 ## Version 1.1.6.5
 
 ### Features

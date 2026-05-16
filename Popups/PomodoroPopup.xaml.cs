@@ -3,25 +3,31 @@ using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using System;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WinRT;
-using System.IO;
-using Windows.Data.Json;
-using System.Threading.Tasks;
-using Windows.Foundation;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
-    public sealed partial class PowerToysPopup : Window
+    public sealed partial class PomodoroPopup : Window
     {
-        private FileSystemWatcher? _settingsWatcher;
+        private int _popupX;
+        private int _popupY;
+
+        public event Action<int, int>? TimersChanged;
 
         private AppWindow _appWindow;
         private DesktopAcrylicController? _acrylicController;
         private SystemBackdropConfiguration? _configurationSource;
         private MicaController? _micaController;
+
+        private int _focusSeconds;
+        private int _breakSeconds;
+
+        public event Action<int, int>? StartRequested;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -46,76 +52,90 @@ namespace LegendBar
             public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
         }
 
-        private void InitSettingsWatcher()
-        {
-            var watchPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft", "PowerToys");
-
-            _settingsWatcher = new FileSystemWatcher(watchPath, "settings.json")
-            {
-                NotifyFilter = NotifyFilters.LastWrite,
-                EnableRaisingEvents = true
-            };
-
-            _settingsWatcher.Changed += (s, e) =>
-            {
-                Task.Delay(200).ContinueWith(_ =>
-                    DispatcherQueue.TryEnqueue(() => ApplyPowerToysVisibility()));
-            };
-
-            this.Closed += (s, e) => _settingsWatcher.Dispose();
-        }
-
-        private void ApplyPowerToysVisibility()
-        {
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft", "PowerToys", "settings.json"
-            );
-
-            if (!File.Exists(path)) return;
-
-            try
-            {
-                var json = JsonObject.Parse(File.ReadAllText(path));
-                var enabled = json["enabled"].GetObject();
-
-                bool Get(string key) =>
-                    enabled.ContainsKey(key) && enabled[key].GetBoolean();
-
-                AdvancedPasteSection.Visibility = Get("AdvancedPaste") ? Visibility.Visible : Visibility.Collapsed;
-                AlwaysOnTopSection.Visibility = Get("AlwaysOnTop") ? Visibility.Visible : Visibility.Collapsed;
-                ColorPickerSection.Visibility = Get("ColorPicker") ? Visibility.Visible : Visibility.Collapsed;
-                CommandPaletteSection.Visibility = Get("CmdPal") ? Visibility.Visible : Visibility.Collapsed;
-                CropAndLockSection.Visibility = Get("CropAndLock") ? Visibility.Visible : Visibility.Collapsed;
-                FancyZonesSection.Visibility = Get("FancyZones") ? Visibility.Visible : Visibility.Collapsed;
-                MouseHighlighterSection.Visibility = Get("MouseHighlighter") ? Visibility.Visible : Visibility.Collapsed;
-                PeekSection.Visibility = Get("Peek") ? Visibility.Visible : Visibility.Collapsed;
-                PowerToysRunSection.Visibility = Get("PowerToys Run") ? Visibility.Visible : Visibility.Collapsed;
-                ScreenRulerSection.Visibility = Get("Measure Tool") ? Visibility.Visible : Visibility.Collapsed;
-                ShortcutGuideSection.Visibility = Get("Shortcut Guide") ? Visibility.Visible : Visibility.Collapsed;
-                TextExtractorSection.Visibility = Get("TextExtractor") ? Visibility.Visible : Visibility.Collapsed;
-                WorkspacesSection.Visibility = Get("Workspaces") ? Visibility.Visible : Visibility.Collapsed;
-            }
-            catch { /* file still being written, skip this cycle */ }
-        }
-
-        public PowerToysPopup()
+        public PomodoroPopup(int focusSeconds, int breakSeconds, int popupX, int popupY)
         {
             InitializeComponent();
+            _focusSeconds = focusSeconds;
+            _breakSeconds = breakSeconds;
+            _popupX = popupX;
+            _popupY = popupY;
             _appWindow = GetAppWindow();
             SetupWindow();
-            ApplyPowerToysVisibility();
-            InitSettingsWatcher();
+            UpdateDisplay();
+            SetupScrollWheels();
 
             bool _loaded = false;
+            bool _readyToClose = false;
             this.Activated += (s, e) =>
             {
-                if (!_loaded) { _loaded = true; return; }
-                if (e.WindowActivationState == WindowActivationState.Deactivated)
+                if (!_loaded)
+                {
+                    _loaded = true;
+                    var t = DispatcherQueue.CreateTimer();
+                    t.Interval = TimeSpan.FromMilliseconds(500);
+                    t.IsRepeating = false;
+                    t.Tick += (_, _) => { _readyToClose = true; t.Stop(); };
+                    t.Start();
+                    return;
+                }
+                if (_readyToClose && e.WindowActivationState == WindowActivationState.Deactivated)
                     this.Close();
             };
+        }
+
+        private void SetupScrollWheels()
+        {
+            FocusTimeText.PointerWheelChanged += (s, e) =>
+            {
+                var delta = e.GetCurrentPoint(FocusTimeText).Properties.MouseWheelDelta;
+                _focusSeconds = Math.Clamp(
+                    _focusSeconds + (delta > 0 ? 60 : -60), 60, 90 * 60);
+                UpdateDisplay();
+                TimersChanged?.Invoke(_focusSeconds, _breakSeconds); // ← auto-save
+                e.Handled = true;
+            };
+
+            BreakTimeText.PointerWheelChanged += (s, e) =>
+            {
+                var delta = e.GetCurrentPoint(BreakTimeText).Properties.MouseWheelDelta;
+                _breakSeconds = Math.Clamp(
+                    _breakSeconds + (delta > 0 ? 60 : -60), 60, 30 * 60);
+                UpdateDisplay();
+                TimersChanged?.Invoke(_focusSeconds, _breakSeconds); // ← auto-save
+                e.Handled = true;
+            };
+        }
+
+        public event Action? SkipRequested;
+
+        private void Skip_Click(object sender, RoutedEventArgs e)
+        {
+            SkipRequested?.Invoke();
+        }
+
+        private void UpdateDisplay()
+        {
+            FocusTimeText.Text = $"{_focusSeconds / 60:D2}:{_focusSeconds % 60:D2}";
+            BreakTimeText.Text = $"{_breakSeconds / 60:D2}:{_breakSeconds % 60:D2}";
+        }
+
+        // Called while timer is running to show live countdown in popup
+        public void UpdateTimers(int remaining, int other, bool isFocus)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                FocusTimeText.Text = isFocus
+                    ? $"{remaining / 60:D2}:{remaining % 60:D2}"
+                    : $"{_focusSeconds / 60:D2}:{_focusSeconds % 60:D2}";
+                BreakTimeText.Text = !isFocus
+                    ? $"{remaining / 60:D2}:{remaining % 60:D2}"
+                    : $"{_breakSeconds / 60:D2}:{_breakSeconds % 60:D2}";
+            });
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            StartRequested?.Invoke(_focusSeconds, _breakSeconds);
         }
 
         private void SetupWindow()
@@ -200,15 +220,7 @@ namespace LegendBar
                     _acrylicController.SetSystemBackdropConfiguration(_configurationSource);
                     break;
             }
-
-            MainStackPanel.Measure(new Size(480, double.PositiveInfinity));
-            int contentHeight = (int)MainStackPanel.DesiredSize.Height - 50;
-            var primary = MonitorHelper.Primary;
-            int rightEdge = (primary?.LogicalBounds.Left ?? 0) +
-                            (primary?.LogicalBounds.Width ?? 1920);
-            int popupX = rightEdge - 480 - 24;
-            int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, 480, contentHeight));
+            _appWindow.MoveAndResize(new RectInt32(_popupX, _popupY, 270, 320));
         }
 
         private AppWindow GetAppWindow()

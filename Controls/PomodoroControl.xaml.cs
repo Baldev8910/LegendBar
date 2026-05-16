@@ -6,8 +6,9 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.UI;
+using LegendBar.Popups;
 
-namespace LegendBar
+namespace LegendBar.Controls
 {
     public sealed partial class PomodoroControl : UserControl
     {

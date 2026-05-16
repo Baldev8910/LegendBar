@@ -15,6 +15,8 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Graphics;
 using WinRT;
+using LegendBar.Popups;
+using LegendBar.Controls;
 
 namespace LegendBar
 {
@@ -248,6 +250,9 @@ namespace LegendBar
                     ? Visibility.Visible : Visibility.Collapsed;
             if (DateWidgetContainer != null)
                 DateWidgetContainer.Visibility = s.ShowDate
+                    ? Visibility.Visible : Visibility.Collapsed;
+            if (WeatherWidgetContainer != null)
+                WeatherWidgetContainer.Visibility = s.ShowWeather
                     ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -630,7 +635,7 @@ namespace LegendBar
             LoadPowerToysIcon();
             LoadPins();
             _ = WeatherService.InitializeAsync();
-            WeatherWidgetContainer.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
+            WeatherWidgetInner.OpenPopupRequested += WeatherWidget_OpenPopupRequested;
             StartFullScreenWatcher();
             this.Closed += (s, e) =>
             {

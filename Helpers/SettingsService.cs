@@ -55,6 +55,12 @@ namespace LegendBar.Helpers
 
         // ── Pins ───────────────────────────────────────────────────────────
         public List<PinnedItem> PinnedItems { get; set; } = new ();
+
+        // ── Clock ──────────────────────────────────────────────────────────
+        public string ClockFormat { get; set; } = "HH:mm";
+
+        // ── Weather ──────────────────────────────────────────────────────────
+        public bool ShowWeather { get; set; } = true;
     }
 
     public static class SettingsService

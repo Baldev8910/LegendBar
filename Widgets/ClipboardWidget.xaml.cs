@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.DataTransfer;
 using Microsoft.UI.Dispatching;
+using LegendBar.Popups;
 
 namespace LegendBar.Widgets
 {

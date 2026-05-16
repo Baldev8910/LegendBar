@@ -1,29 +1,22 @@
 using LegendBar.Helpers;
+using LegendBar.Widgets;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics;
 using WinRT;
 
-namespace LegendBar
+namespace LegendBar.Popups
 {
-    public sealed partial class NotesPopup : Window
+    public sealed partial class ClipboardHistoryPopup : Window
     {
-        private AppWindow _appWindow;
-        private DesktopAcrylicController? _acrylicController;
-        private SystemBackdropConfiguration? _configurationSource;
-        private MicaController? _micaController;
-
-        private static readonly string _notesPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "LegendBar", "notes.md");
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
@@ -32,6 +25,12 @@ namespace LegendBar
 
         private const int GWL_STYLE = -16;
         private const int WS_CAPTION = 0x00C00000;
+
+        private readonly List<ClipboardEntry> _history;
+        private AppWindow _appWindow;
+
+        private DesktopAcrylicController? _acrylicController;
+        private SystemBackdropConfiguration? _configurationSource;
 
         [DllImport("dwmapi.dll")]
         private static extern int DwmExtendFrameIntoClientArea(
@@ -47,12 +46,13 @@ namespace LegendBar
             public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
         }
 
-        public NotesPopup()
+        public ClipboardHistoryPopup(List<ClipboardEntry> history)
         {
             InitializeComponent();
+            _history = history;
             _appWindow = GetAppWindow();
             SetupWindow();
-            InitWebView();
+            PopulateItems();
 
             bool _loaded = false;
             this.Activated += (s, e) =>
@@ -66,80 +66,6 @@ namespace LegendBar
                 if (e.WindowActivationState == WindowActivationState.Deactivated)
                     this.Close();
             };
-        }
-
-        private async void InitWebView()
-        {
-            try
-            {
-                await PreviewView.EnsureCoreWebView2Async(null);
-                PreviewView.CoreWebView2.WebMessageReceived += (s, e) =>
-                {
-                    // Auto-save when content changes
-                    var markdown = e.TryGetWebMessageAsString();
-                    try
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(_notesPath)!);
-                        File.WriteAllText(_notesPath, markdown);
-                    }
-                    catch { }
-                };
-
-                var editorPath = System.IO.Path.Combine(
-                    AppContext.BaseDirectory,
-                    "Assets", "Editor", "editor.html");
-                PreviewView.Source = new Uri(editorPath);
-                PreviewView.NavigationCompleted -= PreviewView_NavigationCompleted;
-                PreviewView.NavigationCompleted += PreviewView_NavigationCompleted;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[Notes] WebView2 init failed: {ex.Message}");
-            }
-        }
-
-        private async void PreviewView_NavigationCompleted(
-            Microsoft.UI.Xaml.Controls.WebView2 sender,
-            Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
-        {
-            if (!args.IsSuccess) return;
-            try
-            {
-                var tint = SettingsService.GetTintColor();
-                var bgColor = $"#{tint.R:X2}{tint.G:X2}{tint.B:X2}";
-
-                var content = File.Exists(_notesPath)
-                    ? File.ReadAllText(_notesPath)
-                    : "";
-                content = content
-                    .Replace("\\", "\\\\")
-                    .Replace("`", "\\`")
-                    .Replace("$", "\\$");
-
-                await PreviewView.ExecuteScriptAsync($"setContent(`{content}`)");
-                await PreviewView.ExecuteScriptAsync($"window.setBackground('{bgColor}')");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[Notes] NavigationCompleted error: {ex.Message}");
-            }
-        }
-
-        private void OpenFolder_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = "explorer.exe",
-                    Arguments = $"/select,\"{_notesPath}\"",
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[Notes] error: {ex.Message}");
-            }
         }
 
         private void SetupWindow()
@@ -164,28 +90,33 @@ namespace LegendBar
                 presenter.SetBorderAndTitleBar(false, false);
             }
 
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(null);
+            //ExtendsContentIntoTitleBar = true;
+            //SetTitleBar(null);
             _appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            _appWindow.TitleBar.SetDragRectangles(Array.Empty<RectInt32>());
+            _appWindow.TitleBar.SetDragRectangles(Array.Empty<RectInt32>()); 
+            _appWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
 
             ((FrameworkElement)Content).RequestedTheme = ElementTheme.Dark;
 
-            var margins = new MARGINS
-            {
-                cxLeftWidth = -1,
-                cxRightWidth = -1,
-                cyTopHeight = -1,
-                cyBottomHeight = -1
-            };
-            DwmExtendFrameIntoClientArea(hWnd, ref margins);
-
+            // Move DwmExtendFrameIntoClientArea AFTER title bar setup
             int noShadow = 2;
             DwmSetWindowAttribute(hWnd, 2, ref noShadow, sizeof(int));
             int marginValue = 0;
             DwmSetWindowAttribute(hWnd, 3, ref marginValue, sizeof(int));
             int cornerPreference = 2;
             DwmSetWindowAttribute(hWnd, 33, ref cornerPreference, sizeof(int));
+
+            var margins = new MARGINS
+            {
+                cxLeftWidth = -1,
+                cxRightWidth = -1,
+                cyTopHeight = 0,
+                cyBottomHeight = -1
+            };
+            DwmExtendFrameIntoClientArea(hWnd, ref margins);
+
+            int borderColor = unchecked((int)0xFFFFFFFE); // DWMWA_COLOR_NONE
+            DwmSetWindowAttribute(hWnd, 34, ref borderColor, sizeof(int));
 
             _configurationSource = new SystemBackdropConfiguration
             {
@@ -225,23 +156,103 @@ namespace LegendBar
                     break;
             }
 
+            // Position — right side of primary monitor, below bar
             var primary = MonitorHelper.Primary;
             int rightEdge = (primary?.LogicalBounds.Left ?? 0) +
                             (primary?.LogicalBounds.Width ?? 1920);
             int popupX = rightEdge - 420 - 24;
             int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, 420, 460));
+            int height = 480;
+            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, 420, height));
         }
 
-        private async void MathPreview_Click(object sender, RoutedEventArgs e)
+        private void ClearAll_Click(object sender, RoutedEventArgs e)
         {
-            try
+            _history.Clear();
+            ItemsPanel.Children.Clear();
+            EmptyText.Visibility = Visibility.Visible;
+            ClearAllButton.IsEnabled = false;
+        }
+
+        private void PopulateItems()
+        {
+            if (_history.Count == 0)
             {
-                await PreviewView.ExecuteScriptAsync("window.showMathPreview()");
+                EmptyText.Visibility = Visibility.Visible;
+                return;
             }
-            catch (Exception ex)
+
+            foreach (var entry in _history)
             {
-                System.Diagnostics.Debug.WriteLine($"[Notes] error: {ex.Message}");
+                bool isImage = entry.IsImage && entry.Thumbnail != null;
+                var btn = new Button
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Background = new SolidColorBrush(
+                        Windows.UI.Color.FromArgb(34, 255, 255, 255)),
+                    BorderThickness = new Thickness(0),
+                    CornerRadius = new CornerRadius(6),
+                    Padding = isImage ? new Thickness(0) : new Thickness(10, 8, 10, 8)
+                };
+
+                if (entry.IsImage)
+                {
+                    if (entry.Thumbnail != null)
+                    {
+                        btn.Content = new Border
+                        {
+                            CornerRadius = new CornerRadius(6),
+                            Child = new Image
+                            {
+                                Source = entry.Thumbnail,
+                                MaxHeight = 100,
+                                HorizontalAlignment = HorizontalAlignment.Stretch,
+                                Stretch = Microsoft.UI.Xaml.Media.Stretch.UniformToFill
+                            }
+                        };
+                    }
+                    else
+                    {
+                        btn.Content = new TextBlock
+                        {
+                            Text = entry.Text,
+                            Foreground = new SolidColorBrush(Windows.UI.Color.FromArgb(230, 255, 255, 255)),
+                            FontSize = 12,
+                            TextTrimming = TextTrimming.CharacterEllipsis,
+                            MaxLines = 1,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            TextAlignment = TextAlignment.Left
+                        };
+                    }
+                }
+                else
+                {
+                    btn.Content = new TextBlock
+                    {
+                        Text = entry.Text,
+                        Foreground = new SolidColorBrush(Windows.UI.Color.FromArgb(230, 255, 255, 255)),
+                        FontSize = 12,
+                        TextTrimming = TextTrimming.CharacterEllipsis,
+                        MaxLines = 1
+                    };
+                }
+
+                var captured = entry;
+                btn.Click += async (s, e) =>
+                {
+                    var data = new DataPackage();
+                    if (captured.IsImage)
+                    {
+                        // Can't re-copy bitmap without the original stream — just close
+                        this.Close();
+                        return;
+                    }
+                    data.SetText(captured.Text ?? "");
+                    Clipboard.SetContent(data);
+                    this.Close();
+                };
+
+                ItemsPanel.Children.Add(btn);
             }
         }
 
