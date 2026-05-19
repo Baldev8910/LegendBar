@@ -6,26 +6,128 @@ A customizable Windows 11 top bar built with WinUI 3.
 
 Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Baldev8910) 
+
+<a href="https://github.com/Baldev8910/LegendBar/releases/latest">
+  <img src="https://img.shields.io/badge/Download-Latest%20Release-22c55e?style=for-the-badge"/>
+</a>
+
 <br>
+
+<img src="https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge&logo=windows"/>
+<img src="https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/.NET-8-512BD4?style=for-the-badge&logo=dotnet"/>
+<img src="https://img.shields.io/github/license/Baldev8910/LegendBar?style=for-the-badge"/>
+<img src="https://img.shields.io/github/stars/Baldev8910/LegendBar?style=for-the-badge"/>
+
+<br><br>
 
 <img src="Assets/GIF.gif" alt="LegendBar Demo" width="100%"/>
 
-<br>
-
-<!-- Platform & Stack -->
-![Platform](https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge&logo=windows11&logoColor=white) ![Framework](https://img.shields.io/badge/Built%20With-WinUI%203-6A5ACD?style=for-the-badge&logo=microsoft&logoColor=white) ![Language](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)
-
-![GitHub Stats](https://gh-stats.com/api?username=Baldev8910&show_icons=true&theme=tokyonight) ![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=Baldev8910&theme=tokyonight) [![GitHub Streak](https://streak-stats.demolab.com?user=Baldev8910&theme=tokyonight)](https://git.io/streak-stats) [![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=Baldev8910&theme=tokyo-night)](https://github.com/ashutosh00710/github-readme-activity-graph)
+</div>
 
 </div>
 
-<!-- Add a screenshot here: a full-width screenshot of both monitors showing the bar at the top with the media widget, clock, date, and settings icon visible. Save it as screenshot.png in the root of the repo and replace this comment with: ![LegendBar Screenshot](screenshot.png) -->
+## Contents
+
+- [LegendBar](#legendbar)
+  - [Contents](#contents)
+  - [Why LegendBar?](#why-legendbar)
+  - [Screenshots](#screenshots)
+  - [Features](#features)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Settings](#settings)
+  - [Uninstalling](#uninstalling)
+  - [Known Limitations](#known-limitations)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [Built With](#built-with)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
+
+## Why LegendBar?
+
+LegendBar was designed to bring a cleaner and more productive desktop workflow to Windows 11 while staying visually native to the operating system.
+
+Unlike traditional desktop widgets or overlays, LegendBar integrates directly with WinUI 3, Win32 APIs, AppBar behavior, and Windows composition effects to create a lightweight top bar focused on usability, media control, productivity, and customization.
+
+## Screenshots
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/13.png" width="100%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/2.png" width="50%">
+<img src="/Screenshots/AdvScreenshots/3.png" width="49%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/1.png" width="100%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/5.png" width="50%"> 
+<img src="/Screenshots/AdvScreenshots/4.png" width="49%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/7.png" width="50%"> 
+<img src="/Screenshots/AdvScreenshots/11.png" width="49%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/10.png" width="100%"> 
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/6.png" width="100%">
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/12.png" width="100%"> 
+
+</div>
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/9.png" width="100%"> 
+
+</div>
+
+<div align="center">
+
+<img src="/Screenshots/AdvScreenshots/8.png" width="100%"> 
+
+</div>
+
 
 ---
 
 ## Features
 
-### 🎨 Interface & Appearance
+<details>
+<summary><b>🎨 Interface & Appearance</b></summary>
+
+<br>
 
 - Acrylic, Mica, Mica Alt, and Solid material support
 - Live acrylic tint and blur customization
@@ -35,9 +137,12 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Dynamic popup material synchronization
 - Adjustable bar height and animation speeds
 
----
+</details>
 
-### 🖥️ Window & Monitor Integration
+<details>
+<summary><b>🖥️ Window & Monitor Integration</b></summary>
+
+<br>
 
 - Full dual-monitor support
 - Windows AppBar API integration for pinned mode
@@ -46,9 +151,12 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Hidden from Alt+Tab and taskbar switchers
 - Re-asserts topmost state automatically
 
----
+</details>
 
-### 🎵 Media Controls
+<details>
+<summary><b>🎵 Media Controls</b></summary>
+
+<br>
 
 - System-wide media controls (Spotify, Chrome, Firefox, VLC, etc.)
 - Play, pause, previous, and next controls
@@ -57,9 +165,12 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Animated volume overlay indicator
 - Dynamic media session detection
 
----
+</details>
 
-### ⏰ Productivity Widgets
+<details>
+<summary><b>⏰ Productivity Widgets</b></summary>
+
+<br>
 
 - Pomodoro timer with animated transitions
 - Expandable timer controls (pause/reset/skip)
@@ -70,9 +181,12 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - PowerToys shortcuts reference panel
 - DevToys launcher integration
 
----
+</details>
 
-### ⚙️ Customization & Settings
+<details>
+<summary><b>⚙️ Customization & Settings</b></summary>
+
+<br>
 
 - Live settings preview
 - Launch on startup support
@@ -81,9 +195,12 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Reset-to-defaults support
 - Dynamic popup resizing
 
----
+</details>
 
-### 🛠️ Technical Highlights
+<details>
+<summary><b>🛠️ Technical Highlights</b></summary>
+
+<br>
 
 - Built with WinUI 3 and .NET 8
 - Uses DesktopAcrylicController for true acrylic blur
@@ -93,6 +210,8 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - Uses NAudio for per-app audio sessions
 - JSON-based persistence system
 - Timer-driven custom animation engine
+
+</details>
 
 ---
 
@@ -160,15 +279,35 @@ All settings are applied live and saved automatically.
 
 ---
 
+## Roadmap
+
+- [ ] DPI scaling support
+- [ ] Plugin/widget system
+- [ ] Custom themes
+- [ ] Keyboard shortcut customization
+- [x] Weather widget
+- [ ] Calendar integration
+- [ ] Performance optimization pass
+
+---
+
+## Contributing
+
+Contributions, bug reports, feature suggestions, and pull requests are welcome.
+
+If you encounter issues or have ideas for improvements, feel free to open an issue or discussion.
+
+---
+
 ## Built With
 
-[![WinUI 3](https://img.shields.io/badge/WinUI%203-Docs-6A5ACD?style=flat-square&logo=microsoft&logoColor=white)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
-[![Windows App SDK](https://img.shields.io/badge/Windows%20App%20SDK-Docs-0078D6?style=flat-square&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
-[![WebView2](https://img.shields.io/badge/WebView2-Docs-0078D6?style=flat-square&logo=microsoftedge&logoColor=white)](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
-[![NAudio](https://img.shields.io/badge/NAudio-GitHub-333333?style=flat-square&logo=github&logoColor=white)](https://github.com/naudio/NAudio)
-[![C#](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=flat-square&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Win32](https://img.shields.io/badge/Win32%20APIs-Reference-0078D6?style=flat-square&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows/win32/)
-[![SMTC](https://img.shields.io/badge/SMTC-Media%20Controls-6A5ACD?style=flat-square)](https://learn.microsoft.com/en-us/uwp/api/windows.media.systemmediatransportcontrols)
+- [![WinUI 3](https://img.shields.io/badge/WinUI%203-Docs-6A5ACD?style=flat-square&logo=microsoft&logoColor=white)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
+- [![Windows App SDK](https://img.shields.io/badge/Windows%20App%20SDK-Docs-0078D6?style=flat-square&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
+- [![WebView2](https://img.shields.io/badge/WebView2-Docs-0078D6?style=flat-square&logo=microsoftedge&logoColor=white)](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+- [![NAudio](https://img.shields.io/badge/NAudio-GitHub-333333?style=flat-square&logo=github&logoColor=white)](https://github.com/naudio/NAudio)
+- [![C#](https://img.shields.io/badge/C%23-.NET%208-512BD4?style=flat-square&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+- [![Win32](https://img.shields.io/badge/Win32%20APIs-Reference-0078D6?style=flat-square&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows/win32/)
+- [![SMTC](https://img.shields.io/badge/SMTC-Media%20Controls-6A5ACD?style=flat-square)](https://learn.microsoft.com/en-us/uwp/api/windows.media.systemmediatransportcontrols)
 
 ---
 

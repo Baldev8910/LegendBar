@@ -39,6 +39,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="StartupToggle_Toggled"/>
                 </Grid>
             </Border>

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       NavigationCacheMode="Required">
 
-    <ScrollViewer Padding="32,24,32,24"
+    <ScrollViewer Padding="32,24,20,24"
                   VerticalScrollBarVisibility="Auto">
         <StackPanel Spacing="4">
 
@@ -37,6 +37,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="PinButtonToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -58,6 +59,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="MediaToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -86,6 +88,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="PomodoroToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -107,6 +110,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="PowerToysToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -128,6 +132,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="NotesToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -149,6 +154,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="ClipboardToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -177,6 +183,7 @@
                       Grid.Column="1"
                       VerticalAlignment="Center"
                       Margin="0"
+                      MinWidth="0"
                       Toggled="ClockToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -228,6 +235,7 @@
                                   Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="0"
+                                  MinWidth="0"
                                   Toggled="DateToggle_Toggled"/>
                 </Grid>
             </Border>
@@ -249,6 +257,7 @@
                       Grid.Column="1"
                       VerticalAlignment="Center"
                       Margin="0"
+                      MinWidth="0"
                       Toggled="WeatherToggle_Toggled"/>
                 </Grid>
             </Border>

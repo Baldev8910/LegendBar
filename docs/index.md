@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 1.1.6.7
+
+### Bugs Fixed
+
+**#BF1 — PowerToys icon path hardcoded to a specific user directory**
+
+`LoadPowerToysIcon()` was referencing `C:\Users\ADMIN\AppData\Local\PowerToys\PowerToys.exe` — a hardcoded path that silently failed on any machine where the username wasn't `ADMIN`. Fixed by resolving the path dynamically via `Environment.SpecialFolder.LocalApplicationData`, making it work correctly on any machine regardless of username or Windows drive. Additionally, if PowerToys is not installed at all, the PowerToys button is now automatically hidden from the bar rather than showing a blank icon that opens an empty popup.
+
+### Improvements
+
+**#I1 — Widget and behavior toggles aligned to right edge in Settings**
+
+`ToggleSwitch` controls across the Widgets and Behavior pages in the Settings window were not sitting flush against the right edge of their cards due to WinUI 3's default `MinWidth` of ~154px on the `ToggleSwitch` control. Fixed by setting `MinWidth="0"` and `HorizontalAlignment="Right"` on all toggle switches, allowing them to shrink to their natural size and align correctly to the card boundary.
+
 ## Version 1.1.6.6
 
 ### Features

@@ -648,8 +648,17 @@ namespace LegendBar
         {
             try
             {
-                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(
-                    @"C:\Users\ADMIN\AppData\Local\PowerToys\PowerToys.exe");
+                var localAppData = Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData);
+                var path = System.IO.Path.Combine(localAppData, "PowerToys", "PowerToys.exe");
+
+                if (!System.IO.File.Exists(path))
+                {
+                    PowerToysButton.Visibility = Visibility.Collapsed;
+                    return;
+                }
+
+                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
                 var thumbnail = await file.GetThumbnailAsync(
                     Windows.Storage.FileProperties.ThumbnailMode.ListView, 32);
                 var bmp = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage();
