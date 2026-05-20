@@ -236,7 +236,7 @@ Unlike traditional desktop widgets or overlays, LegendBar integrates directly wi
 
 1. Go to the [Releases](https://github.com/Baldev8910/LegendBar/releases/latest) page
 2. Download the latest installer
-3. Run `LegendBarSetup.exe`
+3. Run `LegendBar_X.X.X.X_x86_x64_arm64.msixbundle`
 4. Launch LegendBar from the Start Menu
 
 > [!IMPORTANT]
