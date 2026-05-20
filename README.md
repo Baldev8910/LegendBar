@@ -39,8 +39,8 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Settings](#settings)
 - [Uninstalling](#uninstalling)
+- [Settings](#settings)
 - [Known Limitations](#known-limitations)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -235,8 +235,8 @@ Unlike traditional desktop widgets or overlays, LegendBar integrates directly wi
 ## Installation
 
 1. Go to the [Releases](https://github.com/Baldev8910/LegendBar/releases/latest) page
-2. Download the latest installer
-3. Run `LegendBar_X.X.X.X_x86_x64_arm64.msixbundle`
+2. Download the appropriate latest installer as per your architecture
+3. Run `LegendBar_X.X.X.X_xXX.msixbundle`
 4. Launch LegendBar from the Start Menu
 
 > [!IMPORTANT]
@@ -245,6 +245,14 @@ Unlike traditional desktop widgets or overlays, LegendBar integrates directly wi
 
 > [!NOTE]
 > Developer Mode may be required for sideloaded MSIX installation on some systems.
+
+---
+
+## Uninstalling
+
+1. Open **Settings → Apps → Installed Apps**
+2. Locate **LegendBar**
+3. Click **Uninstall**
 
 ---
 
@@ -261,14 +269,6 @@ Access settings from the ⚙️ icon on the right side of the bar.
 | Behavior | Temperature unit and interaction settings |
 
 All settings are applied live and saved automatically.
-
----
-
-## Uninstalling
-
-1. Open **Settings → Apps → Installed Apps**
-2. Locate **LegendBar**
-3. Click **Uninstall**
 
 ---
 
