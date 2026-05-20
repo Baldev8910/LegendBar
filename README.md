@@ -1,6 +1,9 @@
 <div align="center">
 
-# LegendBar
+<img src="Screenshots/AdvScreenshots//LegendBar.png" alt="LegendBar" width="100%"/>
+
+<br>
+<br>
 
 A customizable Windows 11 top bar built with WinUI 3.
 
@@ -30,21 +33,20 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 
 ## Contents
 
-- [LegendBar](#legendbar)
-  - [Contents](#contents)
-  - [Why LegendBar?](#why-legendbar)
-  - [Screenshots](#screenshots)
-  - [Features](#features)
-  - [Requirements](#requirements)
-  - [Installation](#installation)
-  - [Settings](#settings)
-  - [Uninstalling](#uninstalling)
-  - [Known Limitations](#known-limitations)
-  - [Roadmap](#roadmap)
-  - [Contributing](#contributing)
-  - [Built With](#built-with)
-  - [License](#license)
-  - [Acknowledgements](#acknowledgements)
+- [Contents](#contents)
+- [Why LegendBar?](#why-legendbar)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Settings](#settings)
+- [Uninstalling](#uninstalling)
+- [Known Limitations](#known-limitations)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Built With](#built-with)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
 ## Why LegendBar?
 
