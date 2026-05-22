@@ -224,13 +224,9 @@ Unlike traditional desktop widgets or overlays, LegendBar integrates directly wi
 | Requirement | Details |
 |---|---|
 | Operating System | Windows 11 |
-| Architecture | x64 |
-| Display Scaling | 100% DPI scaling on all monitors |
+| Architecture | x64/x86/arm64 |
+| Display Scaling | Same DPI scaling on all monitors |
 | Runtime | Windows App Runtime |
-
-> [!WARNING]
-> LegendBar currently relies on fixed DPI calculations for monitor layout and popup positioning.  
-> Running at DPI scales other than 100% may cause visual alignment issues.
 
 ---
 
@@ -276,7 +272,6 @@ All settings are applied live and saved automatically.
 
 ## Known Limitations
 
-- All DPIs are supported. The DPI/Scaling should be same across multiple monitors (if at all using multiple monitors)
 - Browser volume scrolling adjusts the Windows audio session volume, not in-page player volume (e.g. YouTube volume slider)
 - When multiple media apps are playing simultaneously, title focus detection may occasionally target the wrong app
 - Windows 10 is currently unsupported and untested
