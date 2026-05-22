@@ -184,12 +184,14 @@ namespace LegendBar.Popups
                     break;
             }
 
-            // Position — center of primary monitor, below bar
             var primary = MonitorHelper.Primary;
-            int centerX = (primary?.LogicalBounds.Left ?? 0) +
-                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 210;
-            int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, 420, 500));
+            int centerX = MonitorHelper.ToPhysical(
+                (primary?.LogicalBounds.Left ?? 0) +
+                (primary?.LogicalBounds.Width ?? 1920) / 2 - 210);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
+            int popupW = MonitorHelper.ToPhysical(420);
+            int popupH = MonitorHelper.ToPhysical(500);
+            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, popupW, popupH));
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -236,11 +238,15 @@ namespace LegendBar.Popups
             MonthlyPanel.Visibility = isMonthly ? Visibility.Visible : Visibility.Collapsed;
 
             var primary = MonitorHelper.Primary;
-            int centerX = (primary?.LogicalBounds.Left ?? 0) +
-                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 210;
-            int popupY = SettingsService.Current.BarHeight + 8;
+            int centerX = MonitorHelper.ToPhysical(
+                (primary?.LogicalBounds.Left ?? 0) +
+                (primary?.LogicalBounds.Width ?? 1920) / 2 - 210);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
             int height = isMonthly ? 780 : 500;
-            _appWindow.MoveAndResize(new Windows.Graphics.RectInt32(centerX, popupY, 420, height));
+            _appWindow.MoveAndResize(new Windows.Graphics.RectInt32(
+                centerX, popupY,
+                MonitorHelper.ToPhysical(420),
+                MonitorHelper.ToPhysical(height)));
         }
 
         private void DayButton_Click(object sender, RoutedEventArgs _e)

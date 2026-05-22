@@ -145,10 +145,13 @@ namespace LegendBar.Popups
             }
 
             var primary = MonitorHelper.Primary;
-            int centerX = (primary?.LogicalBounds.Left ?? 0) +
-                          (primary?.LogicalBounds.Width ?? 1920) / 2 - 160;
-            int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, 320, 500));
+            int centerX = MonitorHelper.ToPhysical(
+                (primary?.LogicalBounds.Left ?? 0) +
+                (primary?.LogicalBounds.Width ?? 1920) / 2 - 160);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
+            int popupW = MonitorHelper.ToPhysical(320);
+            int popupH = MonitorHelper.ToPhysical(500);
+            _appWindow.MoveAndResize(new RectInt32(centerX, popupY, popupW, popupH));
         }
 
         private void LoadReminders()

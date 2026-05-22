@@ -228,9 +228,11 @@ namespace LegendBar.Popups
             var primary = MonitorHelper.Primary;
             int rightEdge = (primary?.LogicalBounds.Left ?? 0) +
                             (primary?.LogicalBounds.Width ?? 1920);
-            int popupX = rightEdge - 420 - 24;
-            int popupY = SettingsService.Current.BarHeight + 8;
-            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, 420, 460));
+            int popupX = MonitorHelper.ToPhysical(rightEdge - 420 - 24);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
+            int popupW = MonitorHelper.ToPhysical(420);
+            int popupH = MonitorHelper.ToPhysical(460);
+            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, popupW, popupH));
         }
 
         private async void MathPreview_Click(object sender, RoutedEventArgs e)

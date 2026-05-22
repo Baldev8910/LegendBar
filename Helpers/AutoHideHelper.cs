@@ -36,6 +36,7 @@ namespace LegendBar.Helpers
         private const int HideDelayMs = 300;
         private const int VK_LBUTTON = 0x01;
         private const int VK_RBUTTON = 0x02;
+        private float _dpiScale = 1.0f;
 
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
         private static IntPtr _hookID = IntPtr.Zero;
@@ -100,9 +101,14 @@ namespace LegendBar.Helpers
                 try
                 {
                     var hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                    bool mouseAtTopEdge = hookStruct.pt.Y <= 2
-                        && hookStruct.pt.X >= MouseXMin
-                        && hookStruct.pt.X <= MouseXMax;
+                    // Hook receives physical pixel coordinates
+                    // Scale logical X bounds to physical for correct comparison
+                    int topEdgeThreshold = (int)Math.Round(2 * _dpiScale);
+                    int physMouseXMin = (int)Math.Round(MouseXMin * _dpiScale);
+                    int physMouseXMax = (int)Math.Round(MouseXMax * _dpiScale);
+                    bool mouseAtTopEdge = hookStruct.pt.Y <= topEdgeThreshold
+                        && hookStruct.pt.X >= physMouseXMin
+                        && hookStruct.pt.X <= physMouseXMax;
 
                     if (mouseAtTopEdge && !_isVisible)
                     {
@@ -141,6 +147,7 @@ namespace LegendBar.Helpers
             _isPinned = false;
             _logicalBarHeight = initialHeight;
             _barHeight = initialHeight;
+            _dpiScale = MonitorHelper.PrimaryDpiScale;
 
             // Start hidden
             int hiddenY = HiddenY();
@@ -160,8 +167,8 @@ namespace LegendBar.Helpers
             _hideDelayTimer.Tick += HideDelayTimer_Tick;
         }
 
-        // Hidden Y = just above screen so 1px sliver remains visible
-        private int HiddenY() => (int)-(_barHeight - 1) - 8;
+        // Hidden Y — in physical pixels, must push bar fully off screen
+        private int HiddenY() => (int)Math.Round(-(_barHeight * _dpiScale) - 8);
 
         public void Dispose()
         {
@@ -224,9 +231,16 @@ namespace LegendBar.Helpers
         {
             GetCursorPos(out POINT pos);
 
-            bool mouseInsideBar = pos.Y <= _logicalBarHeight
-                && pos.X >= MouseXMin
-                && pos.X <= MouseXMax;
+            // GetCursorPos returns physical pixel coordinates
+            // Scale everything to physical for correct comparison
+            var primary = MonitorHelper.Primary;
+            int physXMin = primary?.PhysicalBounds.Left ?? MouseXMin;
+            int physXMax = primary?.PhysicalBounds.Right ?? MouseXMax;
+            double physBarHeight = _barHeight * _dpiScale;
+
+            bool mouseInsideBar = pos.Y <= physBarHeight
+                && pos.X >= physXMin
+                && pos.X <= physXMax;
 
             bool leftClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
             bool rightClicked = (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0;

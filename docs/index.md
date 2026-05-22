@@ -8,6 +8,10 @@
 
 `LoadPowerToysIcon()` was referencing `C:\Users\ADMIN\AppData\Local\PowerToys\PowerToys.exe` — a hardcoded path that silently failed on any machine where the username wasn't `ADMIN`. Fixed by resolving the path dynamically via `Environment.SpecialFolder.LocalApplicationData`, making it work correctly on any machine regardless of username or Windows drive. Additionally, if PowerToys is not installed at all, the PowerToys button is now automatically hidden from the bar rather than showing a blank icon that opens an empty popup.
 
+**#BF2 — Bar and popups misaligned at non-100% DPI scaling**
+
+At display scaling above 100% (e.g. 125%, 150%), several issues were present: the bar did not hide completely off screen, hover detection only worked on part of the bar width, and all popups appeared at incorrect positions. Root causes: `HiddenY()` in `AutoHideHelper` was not accounting for DPI scale when calculating the off-screen position; the mouse hook callback was comparing physical pixel coordinates against logical X bounds; `CheckTimer_Tick` was comparing physical cursor coordinates against a mix of logical and physical values; and all popup positioning was using `LogicalBounds` coordinates directly in `MoveAndResize` which expects physical pixels. Fixed by introducing `MonitorHelper.PrimaryDpiScale` and a `ToPhysical()` helper, scaling `HiddenY()` and all mouse hook thresholds correctly, and wrapping all popup `MoveAndResize` calls with `ToPhysical()` across all six popup files — `AddReminderPopup`, `ClipboardHistoryPopup`, `NotesPopup`, `PomodoroPopup`, `PowerToysPopup`, and `ViewRemindersPopup`.
+
 ### Improvements
 
 **#I1 — Widget and behavior toggles aligned to right edge in Settings**

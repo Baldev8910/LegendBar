@@ -285,8 +285,8 @@ namespace LegendBar.Controls
             var primary = MonitorHelper.Primary;
             int primaryLeft = primary?.LogicalBounds.Left ?? 0;
             int primaryWidth = primary?.LogicalBounds.Width ?? 1920;
-            int popupX = primaryLeft + primaryWidth - 490;
-            int popupY = SettingsService.Current.BarHeight + 8;
+            int popupX = MonitorHelper.ToPhysical(primaryLeft + primaryWidth - 490);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
 
             _popup = new PomodoroPopup(_focusSeconds, _breakSeconds, popupX, popupY);
             _popup.StartRequested += (focusSecs, breakSecs) =>

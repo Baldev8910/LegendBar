@@ -23,6 +23,11 @@ namespace LegendBar.Helpers
         // ── Per-monitor info ───────────────────────────────────────────────
         public static List<MonitorInfo> Monitors { get; private set; } = new();
         public static MonitorInfo? Primary { get; private set; }
+        public static float PrimaryDpiScale { get; private set; } = 1.0f;
+
+        // Converts logical pixel coordinates to physical pixels for use with MoveAndResize.
+        public static int ToPhysical(int logicalValue)
+            => (int)Math.Round(logicalValue * PrimaryDpiScale);
 
         public static void Initialize()
         {
@@ -63,11 +68,12 @@ namespace LegendBar.Helpers
             WinX = physLeft - 8;
             WinW = totalPhysicalWidth + 16;
 
-            // WinY — based on primary monitor DPI
-            // At 100% DPI: -4 works
-            // At 125% DPI: need more overlap
             float primaryDpi = Primary.DpiScale;
-            WinY = primaryDpi > 1.0f ? (int)Math.Round(-4 * primaryDpi) : -4;
+            PrimaryDpiScale = primaryDpi;
+
+            // WinY must be negative enough to hide the 1px top border
+            // In physical pixels: -4 at 100%, scaled up at higher DPI
+            WinY = (int)Math.Round(-4 * primaryDpi);
 
             // Logical bounds for mouse detection and AppBar
             int logLeft = int.MaxValue;

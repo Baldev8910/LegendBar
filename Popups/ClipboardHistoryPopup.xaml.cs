@@ -156,14 +156,14 @@ namespace LegendBar.Popups
                     break;
             }
 
-            // Position — right side of primary monitor, below bar
             var primary = MonitorHelper.Primary;
             int rightEdge = (primary?.LogicalBounds.Left ?? 0) +
                             (primary?.LogicalBounds.Width ?? 1920);
-            int popupX = rightEdge - 420 - 24;
-            int popupY = SettingsService.Current.BarHeight + 8;
-            int height = 480;
-            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, 420, height));
+            int popupX = MonitorHelper.ToPhysical(rightEdge - 420 - 24);
+            int popupY = MonitorHelper.ToPhysical(SettingsService.Current.BarHeight + 8);
+            int popupW = MonitorHelper.ToPhysical(420);
+            int popupH = MonitorHelper.ToPhysical(480);
+            _appWindow.MoveAndResize(new RectInt32(popupX, popupY, popupW, popupH));
         }
 
         private void ClearAll_Click(object sender, RoutedEventArgs e)

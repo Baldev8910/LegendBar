@@ -12,7 +12,7 @@ xmlns:systemai="http://schemas.microsoft.com/appx/manifest/systemai/windows10"
   <Identity
     Name="e6524d5f-966a-4e69-8120-134df47dc634"
     Publisher="CN=Baldevsinghgautam"
-    Version="1.1.6.6" />
+    Version="1.1.6.7" />
 
   <mp:PhoneIdentity PhoneProductId="e6524d5f-966a-4e69-8120-134df47dc634" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

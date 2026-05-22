@@ -12,6 +12,6 @@
                    FontFamily="Segoe UI"
                    FontSize="18"
                    VerticalAlignment="Center"/>
-
+    
     </StackPanel>
 </UserControl>

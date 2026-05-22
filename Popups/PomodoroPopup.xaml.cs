@@ -220,7 +220,10 @@ namespace LegendBar.Popups
                     _acrylicController.SetSystemBackdropConfiguration(_configurationSource);
                     break;
             }
-            _appWindow.MoveAndResize(new RectInt32(_popupX, _popupY, 270, 320));
+            _appWindow.MoveAndResize(new RectInt32(
+                _popupX, _popupY,
+                MonitorHelper.ToPhysical(270),
+                MonitorHelper.ToPhysical(320)));
         }
 
         private AppWindow GetAppWindow()
