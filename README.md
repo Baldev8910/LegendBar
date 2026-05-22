@@ -276,7 +276,7 @@ All settings are applied live and saved automatically.
 
 ## Known Limitations
 
-- Only **100% DPI scaling** is currently supported across all monitors
+- All DPIs are supported. The DPI/Scaling should be same across multiple monitors (if at all using multiple monitors)
 - Browser volume scrolling adjusts the Windows audio session volume, not in-page player volume (e.g. YouTube volume slider)
 - When multiple media apps are playing simultaneously, title focus detection may occasionally target the wrong app
 - Windows 10 is currently unsupported and untested
@@ -285,7 +285,7 @@ All settings are applied live and saved automatically.
 
 ## Roadmap
 
-- [ ] DPI scaling support
+- [x] DPI scaling support
 - [ ] Plugin/widget system
 - [ ] Custom themes
 - [ ] Keyboard shortcut customization
