@@ -16,6 +16,8 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 </a>
 ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square)
 
+![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.5/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.4/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.3/total?style=flat-square)
+
 <br>
 
 <img src="https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge&logo=windows"/>
