@@ -6,7 +6,7 @@
 
 **#BF1 — PowerToys icon path hardcoded to a specific user directory**
 
-`LoadPowerToysIcon()` was referencing `C:\Users\ADMIN\AppData\Local\PowerToys\PowerToys.exe` — a hardcoded path that silently failed on any machine where the username wasn't `ADMIN`. Fixed by resolving the path dynamically via `Environment.SpecialFolder.LocalApplicationData`, making it work correctly on any machine regardless of username or Windows drive. Additionally, if PowerToys is not installed at all, the PowerToys button is now automatically hidden from the bar rather than showing a blank icon that opens an empty popup.
+`LoadPowerToysIcon()` was referencing `C:\Users\XXXXX\AppData\Local\PowerToys\PowerToys.exe` — a hardcoded path that silently failed on any machine where the username wasn't `ADMIN`. Fixed by resolving the path dynamically via `Environment.SpecialFolder.LocalApplicationData`, making it work correctly on any machine regardless of username or Windows drive. Additionally, if PowerToys is not installed at all, the PowerToys button is now automatically hidden from the bar rather than showing a blank icon that opens an empty popup.
 
 **#BF2 — Bar and popups misaligned at non-100% DPI scaling**
 

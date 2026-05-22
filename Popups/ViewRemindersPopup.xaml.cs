@@ -154,7 +154,7 @@ namespace LegendBar.Popups
             _appWindow.MoveAndResize(new RectInt32(centerX, popupY, popupW, popupH));
         }
 
-        private void LoadReminders()
+        private void LoadReminders()    
         {
             RemindersList.Children.Clear();
             var reminders = _reminderService.GetAll();
