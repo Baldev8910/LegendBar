@@ -14,9 +14,8 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 <a href="https://github.com/Baldev8910/LegendBar/releases/latest">
   <img src="https://img.shields.io/badge/Download-Latest%20Release-22c55e?style=for-the-badge"/>
 </a>
-![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square)
 
-![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.5/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.4/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.3/total?style=flat-square)
+![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.7/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.5/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.4/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.3/total?style=flat-square)
 
 <br>
 
