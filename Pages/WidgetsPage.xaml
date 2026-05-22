@@ -159,6 +159,50 @@
                 </Grid>
             </Border>
 
+            <!-- Date -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Date" FontSize="13" VerticalAlignment="Center"/>
+                    <ToggleSwitch x:Name="DateToggle"
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="0"
+                      MinWidth="0"
+                      Toggled="DateToggle_Toggled"/>
+                </Grid>
+            </Border>
+
+            <!-- Weather -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Weather" FontSize="13" VerticalAlignment="Center"/>
+                                <ToggleSwitch x:Name="WeatherToggle"
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="0"
+                      MinWidth="0"
+                      Toggled="WeatherToggle_Toggled"/>
+                </Grid>
+            </Border>
+
             <!-- Section: Center -->
             <TextBlock Text="Center"
                        FontSize="13"
@@ -215,50 +259,6 @@
                         <ComboBoxItem Content="h:mm tt" Tag="h:mm tt"/>
                         <ComboBoxItem Content="h:mm:ss tt" Tag="h:mm:ss tt"/>
                     </ComboBox>
-                </Grid>
-            </Border>
-
-            <!-- Date -->
-            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="0,0,8,8"
-                    Padding="16,14"
-                    Margin="0,0,0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Date" FontSize="13" VerticalAlignment="Center"/>
-                    <ToggleSwitch x:Name="DateToggle"
-                                  Grid.Column="1"
-                                  VerticalAlignment="Center"
-                                  Margin="0"
-                                  MinWidth="0"
-                                  Toggled="DateToggle_Toggled"/>
-                </Grid>
-            </Border>
-
-            <!-- Weather -->
-            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="0,0,8,8"
-                    Padding="16,14"
-                    Margin="0,0,0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Weather" FontSize="13" VerticalAlignment="Center"/>
-                    <ToggleSwitch x:Name="WeatherToggle"
-                      Grid.Column="1"
-                      VerticalAlignment="Center"
-                      Margin="0"
-                      MinWidth="0"
-                      Toggled="WeatherToggle_Toggled"/>
                 </Grid>
             </Border>
 
