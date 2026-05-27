@@ -15,8 +15,6 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
   <img src="https://img.shields.io/badge/Download-Latest%20Release-22c55e?style=for-the-badge"/>
 </a>
 
-![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.7/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.6/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.5/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.4/total?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/Baldev8910/LegendBar/1.1.6.3/total?style=flat-square)
-
 <br>
 
 <img src="https://img.shields.io/badge/Platform-Windows%2011-0078D6?style=for-the-badge&logo=windows"/>
@@ -24,6 +22,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 <img src="https://img.shields.io/badge/.NET-8-512BD4?style=for-the-badge&logo=dotnet"/>
 <img src="https://img.shields.io/github/license/Baldev8910/LegendBar?style=for-the-badge"/>
 <img src="https://img.shields.io/github/stars/Baldev8910/LegendBar?style=for-the-badge"/>
+<img src="https://img.shields.io/github/downloads/Baldev8910/LegendBar/total?style=for-the-badge"/>
 
 <br><br>
 
