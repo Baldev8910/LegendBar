@@ -22,7 +22,7 @@ Acrylic glass • Auto-hide • Media controls • Multi-monitor support
 <img src="https://img.shields.io/badge/.NET-8-512BD4?style=for-the-badge&logo=dotnet"/>
 <img src="https://img.shields.io/github/license/Baldev8910/LegendBar?style=for-the-badge"/>
 <img src="https://img.shields.io/github/stars/Baldev8910/LegendBar?style=for-the-badge"/>
-<img src="https://img.shields.io/github/downloads/Baldev8910/LegendBar/total?style=for-the-badge"/>
+<img src="https://img.shields.io/github/downloads/Baldev8910/LegendBar/total.svg?style=for-the-badge"/>
 
 <br><br>
 
