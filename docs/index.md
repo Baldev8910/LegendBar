@@ -1,5 +1,47 @@
 # Release Notes
 
+## Version 1.1.6.8
+
+### Features
+
+**#F1 — Modes**
+
+A new premium feature coming to LegendBar: Modes. You can create named time blocks with a custom color and assign them a start and end time. When a mode is active, the clock widget transforms into a colored pill displaying the mode name. Hover over the clock to reveal pause and stop controls. Modes can repeat daily or run once on a specific date, auto-activate at their scheduled time, and auto-deactivate when the time block ends. Manage all your modes from the clock widget's context menu — add, edit, reorder, and manually activate any mode at any time. The clock text color can also be customized per mode via advanced settings.
+
+**#F2 — Monitor selection for bar spanning**
+Added a new Monitor section in the Behavior settings page allowing users to choose how the bar spans across displays. Options are All Monitors (default, existing behavior), Primary Monitor Only, and Specific Monitor (with a dropdown listing all detected monitors by resolution). Changes apply live without restarting. Addresses feedback from users with unequal height multi-monitor setups where the bar visually crossed into the wrong display area.
+
+### Bugs Fixed
+
+**#BF1 — Bar and popup misalignment at non-100% DPI scaling**
+At display scaling above 100%, the bar did not hide completely, hover detection only worked on part of the bar width, and all popups appeared at incorrect positions. Fixed by introducing `MonitorHelper.PrimaryDpiScale` and a `ToPhysical()` helper, scaling `HiddenY()` and mouse hook thresholds correctly, and wrapping all popup `MoveAndResize` calls with `ToPhysical()` across all six popup files.
+
+**#BF2 — PowerToys icon path hardcoded to a specific user directory**
+`LoadPowerToysIcon()` referenced a hardcoded path tied to the `ADMIN` username. Fixed by resolving the path dynamically via `Environment.SpecialFolder.LocalApplicationData`. If PowerToys is not installed, the button now hides itself automatically.
+
+**#BF3 — Bar shadow bleeding onto windows when pinned**
+When pinned, the bar's DWM shadow cast onto windows beneath it. Fixed by re-applying `DwmSetWindowAttribute` after both `DwmExtendFrameIntoClientArea` calls in `PinButton_Click`.
+
+**#BF4 — Bar spillover and gap on primary monitor only mode**
+When set to Primary Monitor Only, the bar was spilling 2-3 pixels onto the adjacent monitor and had a small gap at both edges. Fixed by using exact monitor physical bounds with a minimal `-3`/`+6` correction to account for the invisible DWM resize border, without crossing into adjacent monitors.
+
+**#BF5 — AppBar space reserved on all monitors regardless of mode**
+When pinned in Primary Monitor Only mode, Windows was reserving taskbar space on secondary monitors too because `AppBarHelper` was registering dummy windows for all monitors. Fixed by skipping AppBar registration for monitors not covered by the current bar mode.
+
+**#BF6 — Bar spanning full width in unpinned auto-hide mode when set to primary only**
+In auto-hide mode with Primary Monitor Only selected, the bar window and hover detection still used the full virtual desktop bounds. Fixed by updating `AutoHideHelper` to use `MonitorHelper.GetBarBounds()` for window positioning and mouse hook X range detection.
+
+### Improvements
+
+**#I1 — Widget and behavior toggles aligned to right edge in Settings**
+`ToggleSwitch` controls across Widgets and Behavior pages were not sitting flush against the right edge of their cards due to WinUI 3's default `MinWidth`. Fixed by setting `MinWidth="0"` and `HorizontalAlignment="Right"` on all toggles.
+
+**#I2 — Manifest capability namespace corrected**
+The `location` capability was declared as `DeviceCapability` which caused a schema validation warning in Visual Studio. Corrected to `uap:Capability` which matches the modern manifest schema and clears the warning.
+
+**#I3 — Unused fields cleaned up across popup files**
+Removed unused `_micaController` fields from all popup files and removed unused `_clockTextWidth` field from `ClockWidget.xaml.cs`.
+
 ## Version 1.1.6.7
 
 ### Bugs Fixed
