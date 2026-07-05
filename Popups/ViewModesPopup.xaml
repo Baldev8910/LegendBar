@@ -1,0 +1,47 @@
+<Window
+    x:Class="LegendBar.Popups.ViewModesPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Modes">
+
+    <Grid>
+        <StackPanel Padding="20,20,20,20" Spacing="12">
+
+            <!-- Title -->
+            <TextBlock Text="Modes"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Foreground="White"
+                       Margin="0,0,0,4"/>
+
+            <!-- Divider -->
+            <Rectangle Height="1"
+                       Fill="White"
+                       Opacity="0.15"/>
+
+            <!-- Modes list -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          MaxHeight="400">
+                <StackPanel x:Name="ModesList"
+                            Spacing="8"/>
+            </ScrollViewer>
+
+            <!-- Empty state -->
+            <TextBlock x:Name="EmptyText"
+                       Text="No modes added yet."
+                       Foreground="White"
+                       Opacity="0.4"
+                       FontSize="13"
+                       HorizontalAlignment="Center"
+                       Visibility="Collapsed"/>
+
+            <!-- Add Mode button -->
+            <Button x:Name="AddModeButton"
+                    Content="+ Add Mode"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource AccentButtonStyle}"
+                    Click="AddMode_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

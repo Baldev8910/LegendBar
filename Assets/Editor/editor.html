@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="toastui-editor.min.css"/>
+		<link rel="stylesheet" href="toastui-editor-dark.min.css"/>
+		<link rel="stylesheet" href="katex.min.css"/>
+		<style>
+			* { box-sizing: border-box; margin: 0; padding: 0; }
+			html, body {
+			height: 100%;
+			background: #1a1a1a;
+			overflow: hidden;
+			}
+			#editor { height: 100vh; }
+			.toastui-editor-defaultUI {
+			border: none !important;
+			background: #1a1a1a !important;
+			}
+			.toastui-editor-main {
+			background: #1a1a1a !important;
+			}
+			.toastui-editor-ww-container {
+			background: #1a1a1a !important;
+			}
+			.toastui-editor-contents {
+			background: #1a1a1a !important;
+			color: #eeeeee !important;
+			font-family: 'Segoe UI', sans-serif !important;
+			font-size: 13px !important;
+			}
+			.toastui-editor-contents p { color: #eeeeee !important; }
+			.toastui-editor-contents h1,
+			.toastui-editor-contents h2,
+			.toastui-editor-contents h3 { color: #ffffff !important; }
+			.toastui-editor-contents code {
+			background: #2a2a2a !important;
+			color: #e0e0e0 !important;
+			font-family: 'Cascadia Code', Consolas, monospace;
+			}
+			.toastui-editor-contents pre {
+			background: #2a2a2a !important;
+			border-radius: 6px;
+			}
+			.toastui-editor-contents blockquote {
+			border-left: 3px solid #555;
+			color: #aaaaaa !important;
+			}
+			.toastui-editor-contents ul,
+			.toastui-editor-contents ol { color: #eeeeee !important; }
+			.toastui-editor-contents a { color: #4fc3f7 !important; }
+			.toastui-editor-contents input[type=checkbox] {
+			margin-right: 6px;
+			accent-color: #4fc3f7;
+			}
+			.ProseMirror {
+			background: #1a1a1a !important;
+			color: #eeeeee !important;
+			caret-color: #ffffff !important;
+			font-family: 'Segoe UI', sans-serif !important;
+			font-size: 13px !important;
+			padding: 12px !important;
+			min-height: 100%;
+			}
+			.ProseMirror p { color: #eeeeee !important; }
+			.toastui-editor-toolbar {
+			background: #141414 !important;
+			border-bottom: 1px solid #333 !important;
+			}
+			.toastui-editor-toolbar-item-wrapper button {
+			color: #ccc !important;
+			}
+			.toastui-editor-toolbar-item-wrapper button:hover {
+			background: #2a2a2a !important;
+			}
+			.toastui-editor-popup {
+			background: #1e1e1e !important;
+			border: 1px solid #333 !important;
+			color: #eee !important;
+			}
+			/* KaTeX */
+			.katex { color: #eeeeee; }
+			.katex-display {
+			color: #eeeeee;
+			margin: 8px 0;
+			overflow-x: auto;
+			}
+			/* Scrollbar */
+			::-webkit-scrollbar { width: 6px; }
+			::-webkit-scrollbar-track { background: #1a1a1a; }
+			::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+			/* Math preview overlay */
+			#math-overlay {
+				display: none;
+				position: fixed;
+				top: 0; left: 0; right: 0; bottom: 0;
+				background: rgba(0,0,0,0.85);
+				z-index: 9999;
+				overflow-y: auto;
+				padding: 20px;
+			}
+			#math-overlay-content {
+				background: #1e1e1e;
+				border-radius: 10px;
+				padding: 20px;
+				color: #eeeeee;
+				font-family: 'Segoe UI', sans-serif;
+				font-size: 13px;
+				line-height: 1.8;
+			}
+			#math-overlay-close {
+				float: right;
+				background: #333;
+				border: none;
+				color: #eee;
+				padding: 4px 12px;
+				border-radius: 6px;
+				cursor: pointer;
+				font-size: 13px;
+				margin-bottom: 12px;
+			}
+			#math-overlay-close:hover { background: #444; }
+			.math-preview-block {
+				margin: 12px 0;
+				padding: 10px;
+				background: #2a2a2a;
+				border-radius: 6px;
+				border-left: 3px solid #4fc3f7;
+			}
+			.math-preview-source {
+				color: #888;
+				font-size: 11px;
+				font-family: 'Cascadia Code', Consolas, monospace;
+				margin-bottom: 6px;
+			}
+			.math-empty {
+				color: #666;
+				text-align: center;
+				padding: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="math-overlay">
+			<div id="math-overlay-content">
+				<button id="math-overlay-close" onclick="window.hideMathPreview()">✕ Close</button>
+				<div style="clear:both; margin-bottom: 8px;">
+					<strong style="font-size:15px;">Math Preview</strong>
+				</div>
+				<div id="math-overlay-items"></div>
+			</div>
+		</div>
+		<div id="editor"></div>
+		<script src="toastui-editor-all.min.js"></script>
+		<script src="katex.min.js"></script>
+		<script src="auto-render.min.js"></script>
+		<script>
+			const editor = new toastui.Editor({
+			el: document.querySelector('#editor'),
+			height: '100%',
+			initialEditType: 'wysiwyg',
+			previewStyle: 'vertical',
+			theme: 'dark',
+			hideModeSwitch: true,
+			useCommandShortcut: true,
+			autofocus: true,
+			toolbarItems: [
+			['heading', 'bold', 'italic', 'strike'],
+			['hr', 'quote'],
+			['ul', 'ol', 'task'],
+			['table', 'code', 'codeblock'],
+			],
+			initialValue: '',
+			customHTMLRenderer: {
+			htmlBlock: {
+			iframe(node) {
+			return [
+			{ type: 'openTag', tagName: 'iframe', outerNewLine: true, attributes: node.attrs },
+			{ type: 'closeTag', tagName: 'iframe', outerNewLine: true }
+			];
+			}
+			}
+			}
+			});
+
+			// Disable spellcheck
+			setTimeout(() => {
+			const pm = document.querySelector('.ProseMirror');
+			if (pm) pm.setAttribute('spellcheck', 'false');
+			}, 500);
+
+			// Render KaTeX in the WYSIWYG content
+			function renderMath() {
+			const content = document.querySelector('.toastui-editor-contents');
+			if (!content) return;
+			renderMathInElement(content, {
+			delimiters: [
+			{ left: '$$', right: '$$', display: true },
+			{ left: '$',  right: '$',  display: false },
+			{ left: '\\(', right: '\\)', display: false },
+			{ left: '\\[', right: '\\]', display: true  }
+			],
+			throwOnError: false,
+			ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+			trust: true
+			});
+			}
+
+			// Re-render math after every change with debounce
+			let mathTimer = null;
+			editor.on('change', () => {
+			window.chrome.webview.postMessage(editor.getMarkdown());
+			clearTimeout(mathTimer);
+			mathTimer = setTimeout(renderMath, 400);
+			});
+
+			editor.on('load', () => {
+			setTimeout(renderMath, 300);
+			});
+
+			function getContent() {
+			return editor.getMarkdown();
+			}
+
+			function setContent(text) {
+			editor.setMarkdown(text);
+			setTimeout(renderMath, 400);
+			}
+
+			// Background sync
+			window.setBackground = function(color) {
+			document.documentElement.style.setProperty('--bg', color);
+			document.body.style.background = color;
+			const el = document.getElementById('editor');
+			if (el) el.style.background = color;
+			const style = document.createElement('style');
+			style.textContent = `
+			.toastui-editor-defaultUI,
+			.toastui-editor-main,
+			.toastui-editor-ww-container,
+			.toastui-editor-contents,
+			.ProseMirror { background: ${color} !important; }
+			`;
+			document.head.appendChild(style);
+			};
+			window.showMathPreview = function() {
+        const markdown = editor.getMarkdown()
+			.replace(/\\\\/g, '\\');
+        const lines = markdown.split('\n');
+        const items = document.getElementById('math-overlay-items');
+        items.innerHTML = '';
+
+        // Find all math expressions
+        const found = [];
+
+        // Block math $$...$$
+        let inBlock = false;
+        let blockContent = '';
+        for (const line of lines) {
+            if (line.trim() === '$$' && !inBlock) {
+                inBlock = true;
+                blockContent = '';
+            } else if (line.trim() === '$$' && inBlock) {
+                inBlock = false;
+                found.push({ source: `$$\n${blockContent}\n$$`, formula: blockContent.trim().replace(/\\_/g, '_'), display: true });
+                blockContent = '';
+            } else if (inBlock) {
+                blockContent += line + '\n';
+            } else {
+                // Single line $$...$$
+                const singleBlock = line.match(/^\$\$(.+)\$\$$/);
+                if (singleBlock) {
+                    found.push({ source: line.trim(), formula: singleBlock[1].trim().replace(/\\_/g, '_'), display: true });
+                }
+                // Inline $...$
+                const inlineRegex = /\$([^$\n]+)\$/g;
+                let m;
+                while ((m = inlineRegex.exec(line)) !== null) {
+                    found.push({ source: m[0], formula: m[1].trim().replace(/\\_/g, '_'), display: false });
+                }
+            }
+        }
+
+        if (found.length === 0) {
+            items.innerHTML = '<div class="math-empty">No math formulas found.<br/>Use $...$ for inline or $$...$$ for block math.</div>';
+        } else {
+            found.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'math-preview-block';
+                const src = document.createElement('div');
+                src.className = 'math-preview-source';
+                src.textContent = item.source;
+                div.appendChild(src);
+                const rendered = document.createElement('div');
+                try {
+                    rendered.innerHTML = katex.renderToString(item.formula, {
+                        displayMode: item.display,
+                        throwOnError: false,
+                        strict: false
+                    });
+                } catch(e) {
+                    rendered.textContent = 'Error rendering: ' + e.message;
+                    rendered.style.color = '#ff6b6b';
+                }
+                div.appendChild(rendered);
+                items.appendChild(div);
+            });
+        }
+
+        document.getElementById('math-overlay').style.display = 'block';
+    };
+
+    window.hideMathPreview = function() {
+        document.getElementById('math-overlay').style.display = 'none';
+    };
+		</script>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+<UserControl
+    x:Class="LegendBar.Widgets.ClipboardWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Button x:Name="ClipboardButton"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Width="16"
+            VerticalAlignment="Center"
+            Click="ClipboardButton_Click"
+            ToolTipService.ToolTip="Clipboard history">
+        <FontIcon Glyph="&#xE8C8;"
+                  FontSize="14"
+                  Foreground="White"/>
+    </Button>
+
+</UserControl>

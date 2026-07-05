@@ -1,0 +1,152 @@
+<Window
+    x:Class="LegendBar.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LegendBar"
+    xmlns:widgets="using:LegendBar.Widgets"
+    xmlns:popups="using:LegendBar.Popups"
+    xmlns:controls="using:LegendBar.Controls">
+
+    <Grid x:Name="RootGrid"
+      Background="Transparent"
+      Margin="0,-1,0,0"
+      Padding="0,1,0,0"
+      RightTapped="RootGrid_RightTapped">
+
+        <!-- Context menu -->
+        <FlyoutBase.AttachedFlyout>
+            <MenuFlyout x:Name="ContextMenu">
+                <MenuFlyoutItem x:Name="AddReminderItem"
+                                Text="Add Reminder"
+                                Icon="Add"
+                                Click="AddReminder_Click"/>
+                <MenuFlyoutItem x:Name="ViewRemindersItem"
+                                Text="View Reminders"
+                                Icon="Clock"
+                                Click="ViewReminders_Click"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem x:Name="PinMenuItem"
+                                Text="Pin Bar"
+                                Icon="Pin"
+                                Click="PinMenuItem_Click"/>
+                <MenuFlyoutItem Text="Settings"
+                                Icon="Setting"
+                                Click="SettingsButton_Click"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Exit"
+                                Icon="Cancel"
+                                Click="Exit_Click"/>
+            </MenuFlyout>
+        </FlyoutBase.AttachedFlyout>
+
+        <!-- Offset to primary monitor -->
+        <Grid x:Name="ContentGrid"
+              VerticalAlignment="Center">
+
+            <!-- LEFT: Pin + Media -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="24,0,0,0"
+                        Spacing="12">
+
+                <Button x:Name="PinButton"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Width="16"
+                        Height="16"
+                        Click="PinButton_Click"
+                        ToolTipService.ToolTip="Pin bar">
+                    <Image x:Name="PinIcon"
+                           Width="14"
+                           Height="14"
+                           Opacity="0.5"/>
+                </Button>
+
+                <widgets:MediaWidget x:Name="MediaWidgetContainer" VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+            <!-- CENTER: Clock -->
+            <widgets:ClockWidget x:Name="ClockWidgetContainer"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"/>
+
+            <!-- RIGHT: Date + Settings -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="0,0,24,0"
+                        Spacing="16">
+
+                <controls:PomodoroControl x:Name="PomodoroWidgetContainer"
+                        VerticalAlignment="Center"
+                        Width="125"/>
+
+                <Rectangle Width="1"
+                    Height="14"
+                    Fill="#33FFFFFF"
+                    VerticalAlignment="Center"/>
+
+                <StackPanel x:Name="PinsPanel"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Spacing="16"/>
+
+                <Button x:Name="PowerToysButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Width="18"
+                        Height="18"
+                        VerticalAlignment="Center"
+                        Click="PowerToysButton_Click"
+                        ToolTipService.ToolTip="PowerToys Shortcuts">
+                    <Image x:Name="PowerToysIcon"
+                           Width="16"
+                           Height="16"/>
+                </Button>
+
+                <widgets:NotesWidget x:Name="NotesWidgetContainer" VerticalAlignment="Center"/>
+
+                <widgets:ClipboardWidget x:Name="ClipboardWidgetContainer" VerticalAlignment="Center"/>
+
+                <Rectangle Width="1"
+                           Height="14"
+                           Fill="#33FFFFFF"
+                           VerticalAlignment="Center"/> 
+
+                <widgets:DateWidget x:Name="DateWidgetContainer" VerticalAlignment="Center"/>
+
+                <!-- Weather widget + its left separator as one unit -->
+                <StackPanel x:Name="WeatherWidgetContainer"
+                            Orientation="Horizontal"
+                            Spacing="16"
+                            VerticalAlignment="Center">
+                    <Rectangle Width="1"
+                               Height="14"
+                               Fill="#33FFFFFF"
+                               VerticalAlignment="Center"/>
+                    <widgets:WeatherWidget x:Name="WeatherWidgetInner"
+                           VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <Button x:Name="SettingsButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Width="16"
+                        VerticalAlignment="Center"
+                        Click="SettingsButton_Click">
+                    <FontIcon Glyph="&#xE713;"
+                              FontSize="14"
+                              Foreground="White"/>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>

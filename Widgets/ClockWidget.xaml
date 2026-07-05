@@ -1,0 +1,99 @@
+<UserControl
+    x:Class="LegendBar.Widgets.ClockWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    PointerEntered="Root_PointerEntered"
+    PointerExited="Root_PointerExited">
+
+    <Grid VerticalAlignment="Center"
+          HorizontalAlignment="Center">
+
+        <Grid x:Name="PillGrid"
+              Height="28"
+              HorizontalAlignment="Center">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftActionsColumn" Width="0"/>
+                <ColumnDefinition x:Name="ClockColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="RightActionsColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Pill background spans all columns -->
+            <Border x:Name="PillBackground"
+                    Grid.ColumnSpan="3"
+                    CornerRadius="14"
+                    Background="Transparent"/>
+
+            <!-- Left actions panel -->
+            <StackPanel x:Name="LeftActionsPanel"
+                        Grid.Column="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Opacity="0"
+                        Visibility="Collapsed"
+                        Spacing="4"
+                        Margin="8,0,4,0">
+                <Button x:Name="StopButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Width="20"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        Click="StopButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <FontIcon Glyph="&#xE711;"
+                              FontSize="11"
+                              Foreground="White"/>
+                </Button>
+                <Button x:Name="PausePlayButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Width="20"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        Click="PausePlayButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <FontIcon x:Name="PausePlayIcon"
+                              Glyph="&#xE769;"
+                              FontSize="11"
+                              Foreground="White"/>
+                </Button>
+            </StackPanel>
+
+            <!-- Clock text — always fixed, never moves -->
+            <TextBlock x:Name="TimeText"
+                       Grid.Column="1"
+                       Foreground="White"
+                       FontFamily="Segoe UI"
+                       FontSize="18"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Margin="8,0,8,0"
+                       PointerPressed="TimeText_PointerPressed"/>
+
+            <!-- Mode name — right column -->
+            <TextBlock x:Name="ModeNameText"
+                       Grid.Column="2"
+                       Foreground="White"
+                       FontFamily="Segoe UI"
+                       FontSize="12"
+                       Opacity="0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Visibility="Collapsed"
+                       Margin="4,0,8,0"/>
+
+        </Grid>
+    </Grid>
+</UserControl>

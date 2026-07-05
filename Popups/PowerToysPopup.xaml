@@ -1,0 +1,211 @@
+<Window
+    x:Class="LegendBar.Popups.PowerToysPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="Transparent">
+        <Border CornerRadius="12"
+                BorderThickness="0"
+                Background="Transparent">
+                <StackPanel x:Name="MainStackPanel" Padding="20,16,20,20" Spacing="10">
+
+                <!-- Header -->
+                <TextBlock Text="PowerToys Shortcuts"
+                           Foreground="White"
+                           FontFamily="Segoe UI"
+                           FontSize="16"
+                           FontWeight="SemiBold"/>
+
+                <!-- Divider -->
+                <Rectangle Height="1" Fill="#22FFFFFF"/>
+
+                <!-- Advanced Paste -->
+                <StackPanel x:Name="AdvancedPasteSection" Spacing="10">
+                    <TextBlock Text="ADVANCED PASTE" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Open Advanced Paste window" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Shift  V" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="Paste as plain text" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  Alt  V" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Always on Top -->
+                <StackPanel x:Name="AlwaysOnTopSection" Spacing="10">
+                <TextBlock Text="ALWAYS ON TOP" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Activation shortcut" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  T" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Color Picker -->
+                <StackPanel x:Name="ColorPickerSection" Spacing="10">
+                    <TextBlock Text="COLOR PICKER" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                    <TextBlock Text="Pick a color" Foreground="White" FontSize="12"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                        <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="Shift  C" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+                <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Command Palette -->
+                <StackPanel x:Name="CommandPaletteSection" Spacing="10">
+                    <TextBlock Text="COMMAND PALETTE" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Open Command Palette" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Alt  Space" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+                
+                <!-- Crop And Lock -->
+                <StackPanel x:Name="CropAndLockSection" Spacing="10">
+                    <TextBlock Text="CROP AND LOCK" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Crop and create a thumbnail" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  Shift  T" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="Crop into a cropped window" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  Shift  R" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="Crop into a screenshot window" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  Shift  S" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- FancyZones -->
+                <StackPanel x:Name="FancyZonesSection" Spacing="10">
+                    <TextBlock Text="FANCY ZONES" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Activate zones" Foreground="White" FontSize="12"/>
+                    <TextBlock Text="Hold Shift" HorizontalAlignment="Right" Foreground="#AAAAAA" FontSize="12"/>
+                </Grid>
+                    <Grid>
+                        <TextBlock Text="Open editor" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Shift  `" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Mouse Highlighter -->
+                <StackPanel x:Name="MouseHighlighterSection" Spacing="10">
+                <TextBlock Text="MOUSE HIGHLIGHTER" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Turn on clicks highlighter" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Shift  H" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Peek -->
+                <StackPanel x:Name="PeekSection" Spacing="10">
+                    <TextBlock Text="PEEK" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Preview file" Foreground="White" FontSize="12"/>
+                        <TextBlock Text="Ctrl  Space" HorizontalAlignment="Right" Foreground="#AAAAAA" FontSize="12"/>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- PowerToys Run -->
+                <StackPanel x:Name="PowerToysRunSection" Spacing="10">
+                    <TextBlock Text="POWERTOYS RUN" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Open Run" Foreground="White" FontSize="12"/>
+                        <TextBlock Text="Alt  Space" HorizontalAlignment="Right" Foreground="#AAAAAA" FontSize="12"/>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Screen Ruler -->
+                <StackPanel x:Name="ScreenRulerSection" Spacing="10">
+                    <TextBlock Text="SCREEN RULER" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Start measurement" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  Shift  M" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Shortcut Guide -->
+                <StackPanel x:Name="ShortcutGuideSection" Spacing="10">
+                    <TextBlock Text="SHORTCUT GUIDE" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Open Shortcut Guide" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Shift  /" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Text Extractor -->
+                <StackPanel x:Name="TextExtractorSection" Spacing="10">
+                    <TextBlock Text="TEXT EXTRACTOR" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Start text extraction" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Shift  T" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Rectangle Height="1" Fill="#11FFFFFF"/>
+                </StackPanel>
+
+                <!-- Workspaces -->
+                <StackPanel x:Name="WorkspacesSection" Spacing="10">
+                    <TextBlock Text="WORKSPACES" Foreground="#AAAAAA" FontSize="10" FontWeight="SemiBold"/>
+                    <Grid>
+                        <TextBlock Text="Open editor" Foreground="White" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="ms-appx:///Assets/windows11.svg" Width="12" Height="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl  `" Foreground="#AAAAAA" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

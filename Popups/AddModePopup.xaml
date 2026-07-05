@@ -1,0 +1,128 @@
+<Window
+    x:Class="LegendBar.Popups.AddModePopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Add Mode">
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Padding="20,20,20,20" Spacing="12">
+
+                <!-- Title -->
+                <TextBlock Text="Add Mode"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           Margin="0,0,0,4"/>
+
+                <!-- Divider -->
+                <Rectangle Height="1"
+                           Fill="White"
+                           Opacity="0.15"/>
+
+                <!-- Mode Name -->
+                <TextBlock Text="Mode Name"
+                           FontSize="11"
+                           Foreground="White"
+                           Opacity="0.6"/>
+                <TextBox x:Name="NameBox"
+                         PlaceholderText="e.g. Deep Work"
+                         Background="#14FFFFFF"
+                         Foreground="White"
+                         CornerRadius="6"
+                         BorderBrush="#26FFFFFF"
+                         BorderThickness="1"/>
+
+                <!-- Mode Color -->
+                <TextBlock Text="Mode Color"
+                           FontSize="11"
+                           Foreground="White"
+                           Opacity="0.6"/>
+                <ColorPicker x:Name="ModePicker"
+                             ColorSpectrumShape="Ring"
+                             IsAlphaEnabled="False"
+                             IsHexInputVisible="True"
+                             Color="#FF00B4D8"/>
+
+                <!-- Start Time -->
+                <TextBlock Text="Start Time"
+                           FontSize="11"
+                           Foreground="White"
+                           Opacity="0.6"/>
+                <TimePicker x:Name="StartTimePicker"
+                            ClockIdentifier="24HourClock"/>
+
+                <!-- End Time -->
+                <TextBlock Text="End Time"
+                           FontSize="11"
+                           Foreground="White"
+                           Opacity="0.6"/>
+                <TimePicker x:Name="EndTimePicker"
+                            ClockIdentifier="24HourClock"/>
+
+                <!-- Repeat -->
+                <TextBlock Text="Repeat"
+                           FontSize="11"
+                           Foreground="White"
+                           Opacity="0.6"/>
+                <ComboBox x:Name="RepeatBox"
+                          HorizontalAlignment="Stretch"
+                          SelectedIndex="0">
+                    <ComboBoxItem Content="Daily"/>
+                    <ComboBoxItem Content="One-time"/>
+                </ComboBox>
+
+                <!-- One-time date picker -->
+                <DatePicker x:Name="OneTimeDatePicker"
+                            Visibility="Collapsed"/>
+
+                <!-- Advanced Settings Expander -->
+                <Expander x:Name="AdvancedExpander"
+                          Header="Advanced Settings"
+                          HorizontalAlignment="Stretch"
+                          HorizontalContentAlignment="Stretch">
+                    <StackPanel Spacing="8" Padding="0,8,0,0">
+                        <TextBlock Text="Clock Text Color"
+                                   FontSize="11"
+                                   Foreground="White"
+                                   Opacity="0.6"/>
+                        <ColorPicker x:Name="TextColorPicker"
+                                     ColorSpectrumShape="Ring"
+                                     IsAlphaEnabled="False"
+                                     IsHexInputVisible="True"
+                                     Color="#FFFFFFFF"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Overlap warning -->
+                <TextBlock x:Name="OverlapWarning"
+                           Text="This time range overlaps with an existing mode."
+                           Foreground="#FFCC4444"
+                           FontSize="12"
+                           Visibility="Collapsed"
+                           TextWrapping="Wrap"/>
+
+                <!-- Buttons -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="CancelButton"
+                            Grid.Column="0"
+                            Content="Cancel"
+                            HorizontalAlignment="Stretch"
+                            Click="Cancel_Click"/>
+                    <Button x:Name="SaveButton"
+                            Grid.Column="2"
+                            Content="Save"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="Save_Click"/>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

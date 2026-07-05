@@ -1,0 +1,82 @@
+# =========================================
+# Visual Studio / WinUI / .NET
+# =========================================
+
+.vs/
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+ARM/
+ARM64/
+
+# Build & publish outputs
+AppPackages/
+BundleArtifacts/
+Publish/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache
+*.VC.db
+*.VC.opendb
+
+# Logs
+*.log
+
+# NuGet
+packages/
+*.nupkg
+
+# Generated files
+Generated Files/
+
+# Windows thumbnails
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+# Certificates / signing
+*.pfx
+
+# Installer outputs
+*.msix
+*.msixbundle
+*.appxbundle
+*.appxupload
+Installer/*.exe
+*.exe
+
+# Runtime installers
+WindowsAppRuntimeInstall-x64.exe
+
+# Optional: screenshots/docs PDFs
+# Uncomment if you don't want them on GitHub
+
+# Screenshots/
+# *.pdf
+
+# =========================================
+# KEEP THESE
+# =========================================
+# Assets/
+# Models/
+# Widgets/
+# Pages/
+# Helpers/
+# Installer/
+# *.xaml
+# *.cs
+# *.csproj
+# *.slnx
+# README.md
+# LICENSE
