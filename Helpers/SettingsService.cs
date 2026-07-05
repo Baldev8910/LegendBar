@@ -61,6 +61,11 @@ namespace LegendBar.Helpers
 
         // ── Weather ──────────────────────────────────────────────────────────
         public bool ShowWeather { get; set; } = true;
+
+        // ── Monitor ───────────────────────────────────────────────────────────
+        // "All" = span all monitors, "Primary" = primary only, "Custom" = specific monitor
+        public string BarMonitorMode { get; set; } = "All";
+        public int BarMonitorIndex { get; set; } = 0;
     }
 
     public static class SettingsService

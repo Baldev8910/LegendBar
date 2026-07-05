@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Navigation;
+using System;
 
 namespace LegendBar.Pages
 {
@@ -28,6 +29,30 @@ namespace LegendBar.Pages
             var s = SettingsService.Current;
 
             StartupToggle.IsOn = StartupHelper.IsStartupEnabled();
+
+            // Load monitor mode
+            MonitorModeCombo.SelectedIndex = s.BarMonitorMode switch
+            {
+                "Primary" => 1,
+                "Custom" => 2,
+                _ => 0
+            };
+
+            // Populate monitor list
+            MonitorIndexCombo.Items.Clear();
+            for (int i = 0; i < MonitorHelper.Monitors.Count; i++)
+            {
+                var m = MonitorHelper.Monitors[i];
+                var label = m.IsPrimary
+                    ? $"Monitor {i + 1} (Primary) — {m.PhysicalBounds.Width}×{m.PhysicalBounds.Height}"
+                    : $"Monitor {i + 1} — {m.PhysicalBounds.Width}×{m.PhysicalBounds.Height}";
+                MonitorIndexCombo.Items.Add(new ComboBoxItem { Content = label, Tag = i });
+            }
+            MonitorIndexCombo.SelectedIndex = Math.Clamp(
+                s.BarMonitorIndex, 0, MonitorHelper.Monitors.Count - 1);
+
+            MonitorIndexCard.Visibility = s.BarMonitorMode == "Custom"
+                ? Visibility.Visible : Visibility.Collapsed;
 
             ShowSpeedSlider.Value = s.ShowDurationMs;
             ShowSpeedLabel.Text = $"{s.ShowDurationMs:0}ms";
@@ -86,6 +111,26 @@ namespace LegendBar.Pages
             string unit = CelsiusRadio.IsChecked == true ? "C" : "F";
             SettingsService.Current.TemperatureUnit = unit;
             SettingsService.Save();
+        }
+
+        private void MonitorModeCombo_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (_loading) return;
+            var tag = (MonitorModeCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "All";
+            SettingsService.Current.BarMonitorMode = tag;
+            SettingsService.Save();
+            MonitorIndexCard.Visibility = tag == "Custom"
+                ? Visibility.Visible : Visibility.Collapsed;
+            _mainWindow?.UpdateMonitorMode();
+        }
+
+        private void MonitorIndexCombo_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (_loading) return;
+            var index = (MonitorIndexCombo.SelectedItem as ComboBoxItem)?.Tag is int i ? i : 0;
+            SettingsService.Current.BarMonitorIndex = index;
+            SettingsService.Save();
+            _mainWindow?.UpdateMonitorMode();
         }
     }
 }

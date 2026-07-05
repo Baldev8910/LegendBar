@@ -184,6 +184,63 @@
                 </Grid>
             </Border>
 
+            <!-- Section: Monitor -->
+            <TextBlock Text="Monitor"
+                       FontSize="13"
+                       FontWeight="SemiBold"
+                       Opacity="0.6"
+                       Margin="4,16,0,6"/>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8,8,0,0"
+                    Padding="16,14"
+                    Margin="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="Bar Spans"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                    <ComboBox x:Name="MonitorModeCombo"
+                              Grid.Column="1"
+                              VerticalAlignment="Center"
+                              SelectionChanged="MonitorModeCombo_Changed">
+                        <ComboBoxItem Content="All Monitors" Tag="All"/>
+                        <ComboBoxItem Content="Primary Monitor" Tag="Primary"/>
+                        <ComboBoxItem Content="Specific Monitor" Tag="Custom"/>
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <Border x:Name="MonitorIndexCard"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="0,0,8,8"
+                    Padding="16,14"
+                    Margin="0,0,0,1"
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="Monitor"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                    <ComboBox x:Name="MonitorIndexCombo"
+                              Grid.Column="1"
+                              VerticalAlignment="Center"
+                              SelectionChanged="MonitorIndexCombo_Changed"/>
+                </Grid>
+            </Border>
+            
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -54,9 +54,22 @@ namespace LegendBar.Helpers
         {
             if (_isRegistered) return;
 
+            var mode = Helpers.SettingsService.Current.BarMonitorMode;
+
             // Register AppBar for each monitor separately
             foreach (var monitor in MonitorHelper.Monitors)
             {
+                // Skip non-primary monitors when in Primary or Custom mode
+                if (mode == "Primary" && !monitor.IsPrimary) continue;
+                if (mode == "Custom")
+                {
+                    int idx = Helpers.SettingsService.Current.BarMonitorIndex;
+                    var target = MonitorHelper.Monitors.Count > idx
+                        ? MonitorHelper.Monitors[idx] : null;
+                    if (target != null &&
+                        monitor.PhysicalBounds.Left != target.PhysicalBounds.Left) continue;
+                }
+
                 // Convert physical bounds to logical for AppBar API
                 int logLeft = monitor.LogicalBounds.Left;
                 int logRight = monitor.LogicalBounds.Right;
@@ -84,16 +97,6 @@ namespace LegendBar.Helpers
                     }
                 }
             }
-
-            try
-            {
-                SystemParametersInfo(0x002F, 0, IntPtr.Zero, 0x0002);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[AppBar] Register failed: {ex.Message}");
-            }
-            _isRegistered = true;
         }
 
         private static void RegisterSingleAppBar(IntPtr hwnd, int left, int right, int height)

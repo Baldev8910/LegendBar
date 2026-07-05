@@ -40,6 +40,8 @@ namespace LegendBar
             ("delay", "Behavior"), ("temperature", "Behavior"),
             ("celsius", "Behavior"), ("fahrenheit", "Behavior"),
             ("about", "About"), ("version", "About"),
+            ("monitor", "Behavior"), ("display", "Behavior"),
+            ("span", "Behavior"), ("screen", "Behavior"),
             ("github", "About"), ("reset", "About"),
             ("pins", "Pins"), ("pin", "Pins"),
             ("launch", "Pins"), ("shortcut", "Pins"),

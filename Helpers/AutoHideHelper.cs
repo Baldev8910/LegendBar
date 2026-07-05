@@ -15,11 +15,11 @@ namespace LegendBar.Helpers
         private static LowLevelMouseProc? _mouseProc;
 
         // All layout values come from MonitorHelper — nothing hardcoded
-        private int WindowX => MonitorHelper.WinX;
-        private int WindowW => MonitorHelper.WinW;
-        private int ShownY => MonitorHelper.WinY;
-        private int MouseXMin => MonitorHelper.MouseXMin;
-        private int MouseXMax => MonitorHelper.MouseXMax;
+        private int WindowX => MonitorHelper.GetBarBounds().WinX;
+        private int WindowW => MonitorHelper.GetBarBounds().WinW;
+        private int ShownY => MonitorHelper.GetBarBounds().WinY;
+        private int MouseXMin => MonitorHelper.GetBarBounds().WinX;
+        private int MouseXMax => MonitorHelper.GetBarBounds().WinX + MonitorHelper.GetBarBounds().WinW;
 
         private bool _isPinnedByUser = false;
         private readonly AppWindow _appWindow;
@@ -101,14 +101,11 @@ namespace LegendBar.Helpers
                 try
                 {
                     var hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                    // Hook receives physical pixel coordinates
-                    // Scale logical X bounds to physical for correct comparison
+                    var bounds = MonitorHelper.GetBarBounds();
                     int topEdgeThreshold = (int)Math.Round(2 * _dpiScale);
-                    int physMouseXMin = (int)Math.Round(MouseXMin * _dpiScale);
-                    int physMouseXMax = (int)Math.Round(MouseXMax * _dpiScale);
                     bool mouseAtTopEdge = hookStruct.pt.Y <= topEdgeThreshold
-                        && hookStruct.pt.X >= physMouseXMin
-                        && hookStruct.pt.X <= physMouseXMax;
+                        && hookStruct.pt.X >= bounds.WinX
+                        && hookStruct.pt.X <= bounds.WinX + bounds.WinW;
 
                     if (mouseAtTopEdge && !_isVisible)
                     {
@@ -188,6 +185,11 @@ namespace LegendBar.Helpers
             _barHeight = height;
         }
 
+        public void UpdateBarBounds(int winX, int winW, int winY)
+        {
+            _dpiScale = MonitorHelper.PrimaryDpiScale;
+        }
+
         public void UpdateSpeeds(double showMs, double hideMs)
         {
             _showDurationMs = (int)showMs;
@@ -231,11 +233,9 @@ namespace LegendBar.Helpers
         {
             GetCursorPos(out POINT pos);
 
-            // GetCursorPos returns physical pixel coordinates
-            // Scale everything to physical for correct comparison
-            var primary = MonitorHelper.Primary;
-            int physXMin = primary?.PhysicalBounds.Left ?? MouseXMin;
-            int physXMax = primary?.PhysicalBounds.Right ?? MouseXMax;
+            var bounds = MonitorHelper.GetBarBounds();
+            int physXMin = bounds.WinX;
+            int physXMax = bounds.WinX + bounds.WinW;
             double physBarHeight = _barHeight * _dpiScale;
 
             bool mouseInsideBar = pos.Y <= physBarHeight

@@ -29,6 +29,39 @@ namespace LegendBar.Helpers
         public static int ToPhysical(int logicalValue)
             => (int)Math.Round(logicalValue * PrimaryDpiScale);
 
+        /// <summary>
+        /// Returns the physical bounds of the bar's active monitor(s) based on settings.
+        /// </summary>
+        public static (int WinX, int WinW, int WinY, int ContentOffsetX) GetBarBounds()
+        {
+            var mode = Helpers.SettingsService.Current.BarMonitorMode;
+            var index = Helpers.SettingsService.Current.BarMonitorIndex;
+
+            if (mode == "Primary" || Monitors.Count == 1)
+            {
+                var m = Primary ?? Monitors[0];
+                int winX = m.PhysicalBounds.Left - 3;
+                int winW = m.PhysicalBounds.Width + 8;
+                float dpi = m.DpiScale;
+                int winY = dpi > 1.0f ? (int)Math.Round(-3 * dpi) : -3;
+                return (winX, winW, winY, 0);
+            }
+            else if (mode == "Custom" && index >= 0 && index < Monitors.Count)
+            {
+                var m = Monitors[index];
+                int winX = m.PhysicalBounds.Left - 3;
+                int winW = m.PhysicalBounds.Width + 8;
+                float dpi = m.DpiScale;
+                int winY = dpi > 1.0f ? (int)Math.Round(-3 * dpi) : -3;
+                return (winX, winW, winY, 0);
+            }
+            else
+            {
+                // All monitors — current behavior
+                return (WinX, WinW, WinY, PrimaryOffsetX);
+            }
+        }
+
         public static void Initialize()
         {
             Monitors.Clear();

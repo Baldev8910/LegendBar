@@ -24,9 +24,9 @@ namespace LegendBar
     {
         private static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
 
-        private int WinX => MonitorHelper.WinX;
-        private int WinW => MonitorHelper.WinW;
-        private int WinY => MonitorHelper.WinY;
+        private int WinX => MonitorHelper.GetBarBounds().WinX;
+        private int WinW => MonitorHelper.GetBarBounds().WinW;
+        private int WinY => MonitorHelper.GetBarBounds().WinY;
 
         private bool _isPinned = false;
         private bool _blockWindowPos = false;
@@ -436,7 +436,8 @@ namespace LegendBar
             MonitorHelper.Initialize();
 
             if (ContentGrid != null)
-                ContentGrid.Margin = new Thickness(MonitorHelper.PrimaryOffsetX, 0, 0, 0);
+                ContentGrid.Margin = new Thickness(
+                    MonitorHelper.GetBarBounds().ContentOffsetX, 0, 0, 0);
 
             _appWindow = GetAppWindowForCurrentWindow();
             SetupWindow();
@@ -617,6 +618,7 @@ namespace LegendBar
                 _autoHide?.SetExternalWindowOpen(false);
             };
 
+            ApplyRootGridEdgeCorrection();
             // Apply widget visibility
             UpdateWidgetVisibility();
 
@@ -725,9 +727,38 @@ namespace LegendBar
         public void UpdateBarHeight(int height)
         {
             _appWindow.MoveAndResize(new RectInt32(WinX, WinY, WinW, height));
-            _autoHide?.UpdateBarHeight(height);
+            _autoHide?.UpdateBarBounds(WinX, WinW, WinY);
             if (_settingsWindow == null)
                 _autoHide?.ForceHide();
+        }
+
+        public void UpdateMonitorMode()
+        {
+            var bounds = MonitorHelper.GetBarBounds();
+            if (ContentGrid != null)
+                ContentGrid.Margin = new Thickness(bounds.ContentOffsetX, 0, 0, 0);
+            _appWindow.MoveAndResize(new RectInt32(
+                bounds.WinX, bounds.WinY, bounds.WinW,
+                SettingsService.Current.BarHeight));
+            _autoHide?.UpdateBarBounds(bounds.WinX, bounds.WinW, bounds.WinY);
+            ApplyRootGridEdgeCorrection();
+        }
+
+        private void ApplyRootGridEdgeCorrection()
+        {
+            var mode = SettingsService.Current.BarMonitorMode;
+            if (mode == "All")
+            {
+                // Full span — hide window border edges
+                RootGrid.Margin = new Thickness(0, -1, 0, 0);
+                RootGrid.Padding = new Thickness(0, 1, 0, 0);
+            }
+            else
+            {
+                // Single monitor — no edge correction needed
+                RootGrid.Margin = new Thickness(0);
+                RootGrid.Padding = new Thickness(0);
+            }
         }
 
         public void UpdateAnimationSpeeds(double showMs, double hideMs)
