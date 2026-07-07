@@ -1,4 +1,5 @@
 using LegendBar.Controls;
+using LegendBar.Extensibility;
 using LegendBar.Helpers;
 using LegendBar.Models;
 using LegendBar.Popups;
@@ -449,17 +450,29 @@ namespace LegendBar
         public void LoadExtensions()
         {
             ExtensionHostPanel.Children.Clear();
+
+            var namedWidgets = new Dictionary<string, FrameworkElement>
+            {
+                { "DateWidget", DateWidgetContainer }
+            };
+
             foreach (var ext in ExtensionLoader.LoadAll())
             {
                 try
                 {
                     var widget = ext.CreateWidget();
                     ExtensionHostPanel.Children.Add(widget);
-                    var namedWidgets = new Dictionary<string, FrameworkElement>
-                    {
-                        { "DateWidget", DateWidgetContainer }
-                    };
-                    ext.AttachToHost(RootGrid, this, new ThemeSettingsAdapter(), namedWidgets);
+
+                    // Only call each optional capability if the plugin actually implements it —
+                    // this is what lets us add new capabilities later without breaking old plugins.
+                    if (ext is IHostBackgroundAware hostAware)
+                        hostAware.AttachToHost(RootGrid, this);
+
+                    if (ext is IThemeAware themeAware)
+                        themeAware.SetThemeProvider(new ThemeSettingsAdapter());
+
+                    if (ext is INamedWidgetAware widgetAware)
+                        widgetAware.SetNamedWidgets(namedWidgets);
                 }
                 catch (Exception ex)
                 {
