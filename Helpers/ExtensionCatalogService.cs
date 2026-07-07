@@ -13,7 +13,7 @@ namespace LegendBar.Helpers
     public static class ExtensionCatalogService
     {
         private const string ManifestUrl =
-            "https://raw.githubusercontent.com/Baldev8910/LegendBar/main/extensions/manifest.json";
+            "https://raw.githubusercontent.com/Baldev8910/LegendBar/main/Extensions/manifest.json";
 
         private static readonly HttpClient _http = new();
 
