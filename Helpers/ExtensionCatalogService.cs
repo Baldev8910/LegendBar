@@ -21,7 +21,8 @@ namespace LegendBar.Helpers
         {
             try
             {
-                var json = await _http.GetStringAsync(ManifestUrl);
+                string cacheBustedUrl = $"{ManifestUrl}?t={DateTimeOffset.UtcNow.Ticks}";
+                var json = await _http.GetStringAsync(cacheBustedUrl);
                 return JsonSerializer.Deserialize<List<ExtensionCatalogEntry>>(json,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
                     ?? new List<ExtensionCatalogEntry>();
