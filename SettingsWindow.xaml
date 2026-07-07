@@ -67,7 +67,18 @@
                         <FontIcon Glyph="&#xE840;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Name="ExtensionsItem"
+                        Content="Extensions"
+                        Tag="Extensions">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xEA86;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
             </NavigationView.MenuItems>
+
+                
 
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="AboutItem"

@@ -44,6 +44,9 @@ namespace LegendBar
             ("span", "Behavior"), ("screen", "Behavior"),
             ("github", "About"), ("reset", "About"),
             ("pins", "Pins"), ("pin", "Pins"),
+            ("extensions", "Extensions"), ("plugins", "Extensions"),
+            ("install", "Extensions"), ("download", "Extensions"),
+            ("drag", "Extensions"), ("drop", "Extensions"),
             ("launch", "Pins"), ("shortcut", "Pins"),
             ("app", "Pins"), ("file", "Pins"),
         };
@@ -169,6 +172,7 @@ namespace LegendBar
                 "Widgets" => typeof(Pages.WidgetsPage),
                 "Behavior" => typeof(Pages.BehaviorPage),
                 "Pins" => typeof(Pages.PinsPage),
+                "Extensions" => typeof(Pages.ExtensionsPage),
                 "About" => typeof(Pages.AboutPage),
                 _ => null
             };
@@ -217,6 +221,7 @@ namespace LegendBar
                 "Widgets" => WidgetsItem,
                 "Behavior" => BehaviorItem,
                 "Pins" => PinsItem,
+                "Extensions" => ExtensionsItem,
                 "About" => AboutItem,
                 _ => null
             };

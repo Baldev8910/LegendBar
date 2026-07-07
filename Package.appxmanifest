@@ -55,9 +55,10 @@ xmlns:systemai="http://schemas.microsoft.com/appx/manifest/systemai/windows10"
     </Application>
   </Applications>
 
-  <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
-    <systemai:Capability Name="systemAIModels"/>
-	<DeviceCapability Name="location"/>
-  </Capabilities>
+	<Capabilities>
+		<rescap:Capability Name="runFullTrust" />
+		<systemai:Capability Name="systemAIModels"/>
+		<Capability Name="internetClient"/>
+		<DeviceCapability Name="location"/>
+	</Capabilities>
 </Package>

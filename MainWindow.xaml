@@ -93,6 +93,11 @@
                             VerticalAlignment="Center"
                             Spacing="16"/>
 
+                <StackPanel x:Name="ExtensionHostPanel"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Spacing="16"/>
+
                 <Button x:Name="PowerToysButton"
                         Background="Transparent"
                         BorderThickness="0"

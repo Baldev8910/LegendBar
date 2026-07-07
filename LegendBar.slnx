@@ -4,6 +4,8 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="../LegendBar.Extensibility/LegendBar.Extensibility.csproj" />
+  <Project Path="../LegendBar.Extensions.DragDropShelf/LegendBar.Extensions.DragDropShelf.csproj" />
   <Project Path="LegendBar.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />

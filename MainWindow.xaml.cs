@@ -441,6 +441,25 @@ namespace LegendBar
 
             _appWindow = GetAppWindowForCurrentWindow();
             SetupWindow();
+            LoadExtensions();
+        }
+
+        public void LoadExtensions()
+        {
+            ExtensionHostPanel.Children.Clear();
+            foreach (var ext in ExtensionLoader.LoadAll())
+            {
+                try
+                {
+                    var widget = ext.CreateWidget();
+                    ExtensionHostPanel.Children.Add(widget);
+                    ext.AttachToHost(RootGrid, this, new ThemeSettingsAdapter());
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[Extensions] Failed to create widget for {ext.Id}: {ex.Message}");
+                }
+            }
         }
 
         [DllImport("user32.dll")]
