@@ -5,7 +5,7 @@
     "description": "Turns the whole bar into a drop zone for files, with previews and quick access.",
     "version": "1.0.0",
     "fileName": "LegendBar.Extensions.DragDropShelf.dll",
-    "downloadUrl": "https://github.com/Baldev8910/LegendBar/releases/download/ext-dragdrop-shelf-1.0.0/LegendBar.Extensions.DragDropShelf.dll",
-    "sha256": "0ACC7CADDE0EB6E117939542EFF8F53EA9DDCE7D46326B4808101E6B74B493DB"
+    "downloadUrl": "https://github.com/Baldev8910/LegendBar/releases/download/ext-dragdrop-shelf-1.0.1/LegendBar.Extensions.DragDropShelf.dll",
+    "sha256": "BF1110E67C649B1D39B05C8768A6E55FAC21C7708CD6BBE78BD3AF76915108CF"
   }
 ]

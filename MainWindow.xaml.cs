@@ -1,5 +1,7 @@
+using LegendBar.Controls;
 using LegendBar.Helpers;
 using LegendBar.Models;
+using LegendBar.Popups;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Dispatching;
@@ -10,13 +12,12 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Graphics;
 using WinRT;
-using LegendBar.Popups;
-using LegendBar.Controls;
 
 namespace LegendBar
 {
@@ -441,6 +442,7 @@ namespace LegendBar
 
             _appWindow = GetAppWindowForCurrentWindow();
             SetupWindow();
+            ExtensionCleanupService.ProcessPendingRemovals();
             LoadExtensions();
         }
 
@@ -453,7 +455,11 @@ namespace LegendBar
                 {
                     var widget = ext.CreateWidget();
                     ExtensionHostPanel.Children.Add(widget);
-                    ext.AttachToHost(RootGrid, this, new ThemeSettingsAdapter());
+                    var namedWidgets = new Dictionary<string, FrameworkElement>
+                    {
+                        { "DateWidget", DateWidgetContainer }
+                    };
+                    ext.AttachToHost(RootGrid, this, new ThemeSettingsAdapter(), namedWidgets);
                 }
                 catch (Exception ex)
                 {

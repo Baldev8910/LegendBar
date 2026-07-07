@@ -74,18 +74,15 @@ namespace LegendBar.Helpers
 
         public static bool Remove(ExtensionCatalogEntry entry)
         {
-            try
-            {
-                string path = Path.Combine(ExtensionLoader.ExtensionsFolderPath, entry.FileName);
-                if (File.Exists(path))
-                    File.Delete(path);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[Extensions] Remove failed for {entry.Id}: {ex.Message}");
-                return false;
-            }
+            // Loaded plugin files are locked for the whole session — deleting immediately
+            // will almost always fail. Instead, queue it and actually delete on next launch.
+            ExtensionCleanupService.MarkForRemoval(entry.FileName);
+            return true;
+        }
+
+        public static bool IsPendingRemoval(ExtensionCatalogEntry entry)
+        {
+            return ExtensionCleanupService.IsPendingRemoval(entry.FileName);
         }
     }
 }

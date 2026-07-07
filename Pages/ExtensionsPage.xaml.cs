@@ -50,6 +50,7 @@ namespace LegendBar.Pages
         private Border BuildCard(ExtensionCatalogEntry entry)
         {
             bool installed = ExtensionCatalogService.IsInstalled(entry);
+            bool pendingRemoval = ExtensionCatalogService.IsPendingRemoval(entry);
 
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -73,7 +74,8 @@ namespace LegendBar.Pages
 
             var actionButton = new Button
             {
-                Content = installed ? "Remove" : "Install",
+                Content = pendingRemoval ? "Pending removal (restart)" : (installed ? "Remove" : "Install"),
+                IsEnabled = !pendingRemoval,
                 VerticalAlignment = VerticalAlignment.Center
             };
             actionButton.Click += async (s, e) => await OnActionClicked(entry, actionButton, installed);
@@ -107,8 +109,10 @@ namespace LegendBar.Pages
             {
                 var dialog = new ContentDialog
                 {
-                    Title = wasInstalled ? "Extension removed" : "Extension installed",
-                    Content = "Restart LegendBar for this change to take effect.",
+                    Title = wasInstalled ? "Extension queued for removal" : "Extension installed",
+                    Content = wasInstalled
+                        ? "This extension will be fully removed the next time you restart LegendBar."
+                        : "Restart LegendBar for this change to take effect.",
                     CloseButtonText = "OK",
                     XamlRoot = this.XamlRoot
                 };
